@@ -64,4 +64,10 @@ function db_addGroup($name, $description, $password){
 	
 	return -1;
 }
+
+function db_getGroupDescription($id){
+	$sql = "SELECT * FROM groups WHERE id=".$id;
+	return dbSQL($sql)[0]['description'];
+}
+
 ?>

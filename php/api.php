@@ -68,4 +68,18 @@
 		}
 	}
 	
+	/*
+	 * Gets group description
+	 * group = group-id
+	 * @return = <status>;<group description>
+	 */
+	if( $_GET['function'] == "getGroupDescription" ){
+		$result = db_getGroupDescription( $_GET['group'] );
+		if( strlen($result) > 0 ){
+			print $OK.$SEP.$result;
+		} else {
+			print $ERR;
+		}
+	}
+	
 ?>

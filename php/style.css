@@ -31,7 +31,7 @@ h1{
 	width: 98%;
 }
 
-.mainframe div:not(.table){
+.mainframe div:not(.table):not(.groupdescription){
 	width: calc(100% - 20px);
 	padding-left: 10px;
 	padding-right: 10px;
@@ -87,6 +87,25 @@ h1{
 	display: table-cell;
 	width: 100%;
 	font-weight: bold;
+}
+
+.groupdescription{
+	display: none;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	max-width: 30%;
+	max-height: 20%;
+	padding: 5px;
+	overflow: auto;
+	
+	border-radius: 5px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #303030;
+	font-weight: normal;
+	font-size: 10pt;
+	background-color: #ffffff;
 }
 
 .groupitem .loginbutton{

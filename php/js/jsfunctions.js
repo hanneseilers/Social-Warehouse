@@ -105,3 +105,52 @@ function changeGroupInfo(){
 		}
 	}
 }
+
+function showGroupDescription($id){
+	// show loading
+	document.getElementById( 'groupdescriptiontext' ).style.display = "none";
+	document.getElementById( 'descriptionloading' ).style.display = "block";
+	document.getElementById( 'groupdescription' ).style.display = "block";
+	
+	// get description
+	$.get( 	"api.php",
+			{'function': 'getGroupDescription', 'group': $id},
+			function(data, status){
+				data = data.split(";");
+				if( status == "success" && data.length > 0 && data[0] == "ok" ){
+					document.getElementById( 'groupdescriptiontext' ).innerHTML = data[1];
+					document.getElementById( 'groupdescriptiontext' ).style.display = "block";
+					document.getElementById( 'descriptionloading' ).style.display = "none";
+				}
+			});
+	
+}
+
+function moveGroupDescription(event){
+    var dot, eventDoc, doc, body, pageX, pageY;
+
+    event = event || window.event; // IE-ism
+
+    // If pageX/Y aren't available and clientX/Y are,
+    // calculate pageX/Y - logic taken from jQuery.
+    // (This is to support old IE)
+    if (event.pageX == null && event.clientX != null) {
+        eventDoc = (event.target && event.target.ownerDocument) || document;
+        doc = eventDoc.documentElement;
+        body = eventDoc.body;
+
+        event.pageX = event.clientX +
+          (doc && doc.scrollLeft || body && body.scrollLeft || 0) -
+          (doc && doc.clientLeft || body && body.clientLeft || 0);
+        event.pageY = event.clientY +
+          (doc && doc.scrollTop  || body && body.scrollTop  || 0) -
+          (doc && doc.clientTop  || body && body.clientTop  || 0 );
+    }
+
+    document.getElementById( 'groupdescription' ).style.top = event.pageY;
+    document.getElementById( 'groupdescription' ).style.left = event.pageX;
+}
+
+function hideGroupDescription(){
+	document.getElementById( 'groupdescription' ).style.display = "none";
+}
