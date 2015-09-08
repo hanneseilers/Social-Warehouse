@@ -26,7 +26,7 @@ function dbSQL($sql){
 }
 
 function db_getGroups(){
-	$sql = "SELECT * FROM groups";
+	$sql = "SELECT * FROM groups ORDER BY name ASC";
 	return dbSQL($sql);
 }
 
@@ -37,6 +37,16 @@ function db_checkGroupLogin($id, $password){
 		return True;
 	
 	return False;
+}
+
+function db_getGroupInfo($id){
+	$sql = "SELECT * FROM groups WHERE id=".$id;
+	return dbSQL($sql);
+}
+
+function db_changeGroupName($id, $name){
+	$sql = "UPDATE groups SET name='".$name."' WHERE id=".$id;
+	return dbSQL($sql);
 }
 
 ?>

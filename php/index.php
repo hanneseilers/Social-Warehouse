@@ -5,9 +5,10 @@
 <link type="text/css" rel="stylesheet" href="style.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="js/md5.js"></script>
+<script src="js/base64.js"></script>
 <script src="js/jsfunctions.js"></script>
 
-<meta charset="iso-8859-1">
+<meta charset="utf-8">
 </head>
 <body>
 
@@ -20,7 +21,7 @@
 	
 		include( "header.php" );
 		
-		if( !isset($_SESSION['groupid']) || $_SESSION['groupid'] == null ){
+		if( !isset($_SESSION['groupinfo']) || $_SESSION['groupinfo'] == null ){
 			include( "groups.php" );
 			include( "register.php" );
 		} else {

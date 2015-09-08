@@ -25,22 +25,31 @@ function login(id){
 		
 		// check if password ok
 		var vPassword = MD5( vPasswordInput.value );
-		$.get( "db/checklogin.php", {'group': id, 'pw': vPassword}, login_result );
+		$.get( "api.php", {'function': 'checkLogin', 'group': id, 'pw': vPassword}, login_result );
 		
 	}
 }
 
 function login_result(data, status, xhr){
 	data = data.split(";");
-	if( status == "success" && data.length > 1 && data[1] == "ok" ){
-		
-		location.reload();
-		
+	if( status == "success" && data.length > 0 && data[0] == "ok" ){		
+		location.reload();		
 	} else {
-		var id = data[0];
+		var id = data[1];
 		document.getElementById( 'grouploginfailed' + id ).style.display = "block";
 		document.getElementById( 'grouppw' + id ).parentElement.style.display = "table-cell";
 		document.getElementById( 'grouplogin' + id ).style.display = "table-cell";
 		document.getElementById( 'groupload' + id ).style.display = "none";
 	}
+}
+
+function logout(){
+	$.get( "api.php", {'function': 'logout'}, function(){location.reload();} );
+}
+
+function changeGroupName(){
+	$name = document.getElementById( 'groupnamenew' ).value;
+	$.get( "api.php", {'function': 'changeGroupName', 'name': base64_encode($name)}, function(data, success){
+		location.reload();
+	} );
 }
