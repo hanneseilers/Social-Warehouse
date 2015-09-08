@@ -21,6 +21,10 @@ h1{
 	color: #ff0000;
 }
 
+.hidetext{
+	display: none;
+}
+
 .mainframe{
 	background-color: #ffffff;
 	padding: 1%;
@@ -124,6 +128,15 @@ h1{
 	color: #303030;
 }
 
+.button{
+	display: block;
+	padding: 10px;
+	border-radius: 5px;
+	background-color: #a6a6a6;
+	text-decoration: none;
+	color: #303030;
+}
+
 .groupinfo{
 	width: 100%;
 	margin-bottom: 0.5%;
@@ -143,10 +156,6 @@ h1{
 
 .groupedit{
 	display: block;
-}
-
-.hidetext{
-	display: none;
 }
 
 .register{

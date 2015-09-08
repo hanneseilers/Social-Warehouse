@@ -26,7 +26,7 @@
 			include( "register.php" );
 		} else {
 			include( "groupheader.php" );
-			include( "showgroup.php" );
+			include( "showdata.php" );
 		}
 	?>
 
