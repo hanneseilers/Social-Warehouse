@@ -55,6 +55,19 @@
 	}
 	
 	/*
+	 * Deletes the current group
+	 * @return = <status>
+	 */
+	if( isset($_SESSION['groupinfo']) && $_GET['function'] == "deleteGroup" ){
+		if( db_deleteGroup($_SESSION['groupinfo']['id']) ){
+			print $OK;
+			session_destroy();
+		} else{
+			print $ERR;
+		}
+	}
+	
+	/*
 	 * Change group name
 	 * name = new group name
 	 * @return = <status>

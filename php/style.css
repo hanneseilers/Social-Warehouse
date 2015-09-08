@@ -11,6 +11,10 @@ h1{
 	font-size: 14pt;
 }
 
+textarea{
+	width: 100%;
+}
+
 .table{
 	display: table;
 	width: calc(100% - 20px);
@@ -112,12 +116,24 @@ h1{
 	display: table-cell;
 }
 
-.loginbutton{
+.button{
 	padding: 10px;
 	border-radius: 5px;
-	background-color: #86ff86;
+	background-color: #a6a6a6;
 	text-decoration: none;
 	color: #303030;
+}
+
+.button_block{
+	display: block;
+}
+
+.logoutbutton{
+	background-color: #ff8686;
+}
+
+.loginbutton{
+	background-color: #86ff86;
 }
 
 .loginpw{
@@ -137,23 +153,6 @@ h1{
 	padding-left: 10px;
 	color: #ff0000;
 	white-space: nowrap;
-}
-
-.logoutbutton{
-	padding: 10px;
-	border-radius: 5px;
-	background-color: #ff8686;
-	text-decoration: none;
-	color: #303030;
-}
-
-.button{
-	display: block;
-	padding: 10px;
-	border-radius: 5px;
-	background-color: #a6a6a6;
-	text-decoration: none;
-	color: #303030;
 }
 
 .groupinfo{

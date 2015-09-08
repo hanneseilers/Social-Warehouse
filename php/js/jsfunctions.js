@@ -80,6 +80,10 @@ function addGroup(){
 	
 }
 
+function deleteGroup(){
+	$.get( "api.php", {'function': 'deleteGroup'}, function(){ location.reload(); } );
+}
+
 function changeGroupInfo(){
 	
 	$tableEdit = document.getElementById( 'groupeditdata' );
@@ -110,7 +114,7 @@ function showGroupDescription($id){
 	// show loading
 	document.getElementById( 'groupdescriptiontext' ).style.display = "none";
 	document.getElementById( 'descriptionloading' ).style.display = "block";
-	document.getElementById( 'groupdescription' ).style.display = "block";
+	document.getElementById( 'groupdescriptionoverlay' ).style.display = "block";
 	
 	// get description
 	$.get( 	"api.php",
@@ -147,10 +151,10 @@ function moveGroupDescription(event){
           (doc && doc.clientTop  || body && body.clientTop  || 0 );
     }
 
-    document.getElementById( 'groupdescription' ).style.top = event.pageY;
-    document.getElementById( 'groupdescription' ).style.left = event.pageX;
+    document.getElementById( 'groupdescriptionoverlay' ).style.top = event.pageY;
+    document.getElementById( 'groupdescriptionoverlay' ).style.left = event.pageX;
 }
 
 function hideGroupDescription(){
-	document.getElementById( 'groupdescription' ).style.display = "none";
+	document.getElementById( 'groupdescriptionoverlay' ).style.display = "none";
 }

@@ -18,10 +18,10 @@
 		</tr>
 		<tr>
 			<td>Beschreibung (optional):</td>
-			<td><textarea rows="5" cols="35" id="groupdescription"></textarea>
+			<td><textarea rows="5" id="groupdescription"></textarea>
 		</tr>
 		<tr>
-			<td colspan="2" align="center"><a href="javascript: addGroup();" class="button">Gruppe anlegen</a></td>
+			<td colspan="2" align="center"><a href="javascript: addGroup();" class="button button_block">Gruppe anlegen</a></td>
 		</tr>
 	</table>
 </div>
