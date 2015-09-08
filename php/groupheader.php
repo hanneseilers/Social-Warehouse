@@ -18,7 +18,7 @@
 		<td><input type="password" id="password" /></td>
 		<td>Passwort wiederholen:</td>
 		<td><input type="password" id="password-repeat" /></td>
-		<td id="passwordwrong" class="errortext">Passw&ouml;rter stimmen nicht überein!</td>
+		<td id="passwordwrong" class="errortext hidetext">Passw&ouml;rter stimmen nicht überein!</td>
 	</tr>
 	<tr>
 		<td colspan="4"><textarea rows="3" cols="80" id="groupdescription"><?php print $_SESSION['groupinfo']['description']; ?></textarea></td>

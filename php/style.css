@@ -145,7 +145,7 @@ h1{
 	display: block;
 }
 
-#passwordwrong{
+.hidetext{
 	display: none;
 }
 
