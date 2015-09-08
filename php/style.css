@@ -81,10 +81,19 @@ textarea{
 .groupitem{
 	display: table;
 	width: 100%;
+	border-spacing: 5px 0px;
 	margin-bottom: 0.5%;
 	border-style: solid;
 	border-width: 1px;
 	border-color: #303030;	
+}
+
+.groupitem .loginbutton{
+	display: table-cell;
+}
+
+.groupitem .yellowbutton{
+	display: table-cell;
 }
 
 .groupname{
@@ -112,10 +121,6 @@ textarea{
 	background-color: #ffffff;
 }
 
-.groupitem .loginbutton{
-	display: table-cell;
-}
-
 .button{
 	padding: 10px;
 	border-radius: 5px;
@@ -134,6 +139,10 @@ textarea{
 
 .loginbutton{
 	background-color: #86ff86;
+}
+
+.yellowbutton{
+	background-color: #ffff86;
 }
 
 .loginpw{

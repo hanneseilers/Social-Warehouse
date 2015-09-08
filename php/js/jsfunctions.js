@@ -20,6 +20,7 @@ function login(id){
 		
 		// show wait
 		document.getElementById( 'grouplogin' + id ).style.display = "none";
+		document.getElementById( 'groupreq' + id ).style.display = "none";
 		document.getElementById( 'groupload' + id ).style.display = "table-cell";
 		vPasswordInput.parentElement.style.display = 'none';
 		

@@ -21,7 +21,9 @@
 	
 		include( "header.php" );
 		
-		if( !isset($_SESSION['groupinfo']) || $_SESSION['groupinfo'] == null ){
+		if( isset($_GET['requirements']) ){
+			include( "requirements.php" );
+		}else if( !isset($_SESSION['groupinfo']) || $_SESSION['groupinfo'] == null ){
 			include( "groups.php" );
 			include( "register.php" );
 		} else {

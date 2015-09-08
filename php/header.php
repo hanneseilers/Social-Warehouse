@@ -1,21 +1,24 @@
 <div class="header">Spendenverwaltung</div>
 <div class="breadcrumps">
-	<a href="">
+	
 	<?php 
 	
 		// Show root
 		if( isset($_SESSION['groupinfo']) )
-			print $_SESSION['groupinfo']['name'];
+			print "<a href=\"\">".$_SESSION['groupinfo']['name']."</a>";
 		else
-			print "Home";
+			print "<a href=\"?\">Home</a>";
 	?>
 	</a>
 	
 	<?php
 	
 		// show current catgeory
-		if( isset($_SESSION['curCategory']) ){
-			print ">";
+		if( isset($_GET['requirements']) ){
+			print " > <a href=\"\">Bedarf x</a>";
+		}
+		else if( isset($_SESSION['curCategory']) ){
+			print " > ";
 		}
 	
 	?>
