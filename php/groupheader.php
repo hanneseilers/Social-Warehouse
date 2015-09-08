@@ -3,7 +3,7 @@
 		$name = $_SESSION['groupinfo']['name'];
 		$id = $_SESSION['groupinfo']['id'];
 		
-		print "<div class=\"table\"><span class=\"groupname\">Gruppe ".$name."</span>";
+		print "<div class=\"table\"><span class=\"groupname\">Gruppe: ".$name."</span>";
 		print "<span class=\"edit\"><a href=\"javascript: changeGroupInfo();\" class=\"loginbutton\">&Auml;ndern</a> ";
 		print "<a href=\"javascript: logout();\" class=\"logoutbutton\">Ausloggen</a></span></div>";
 		
