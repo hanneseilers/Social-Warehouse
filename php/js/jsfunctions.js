@@ -34,7 +34,7 @@ function login_result(data, status, xhr){
 	data = data.split(";");
 	if( status == "success" && data.length > 1 && data[1] == "ok" ){
 		
-		alert("login");
+		location.reload();
 		
 	} else {
 		var id = data[0];

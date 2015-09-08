@@ -14,13 +14,19 @@
 <div class="mainframe">
 
 	<?php
+		session_start();
+	
 		include( "db/db.php" );
 	
 		include( "header.php" );
 		
-		include( "groups.php" );
-		
-		include( "register.php" );
+		if( !isset($_SESSION['groupid']) || $_SESSION['groupid'] == null ){
+			include( "groups.php" );
+			include( "register.php" );
+		} else {
+			include( "groupheader.php" );
+			include( "showgroup.php" );
+		}
 	?>
 
 	<div class="footer">
