@@ -10,6 +10,7 @@
 			<td>Passwort:</td>
 			<td><input type="password" id="password" /></td>
 			<td id="passwordwrong" class="errortext hidetext">Passw&ouml;rter stimmen nicht überein!</td>
+			<td id="passwordmissing" class="errortext hidetext">Kein Passwort vergeben!</td>
 		</tr>
 		<tr>
 			<td>Passwort wiederholen:</td>
@@ -17,10 +18,10 @@
 		</tr>
 		<tr>
 			<td>Beschreibung (optional):</td>
-			<td><textarea rows="5" cols="35"></textarea>
+			<td><textarea rows="5" cols="35" id="groupdescription"></textarea>
 		</tr>
 		<tr>
-			<td colspan="3" align="center"><a href="javascript: alert('new');" class="button">Gruppe anlegen</a></td>
+			<td colspan="2" align="center"><a href="javascript: addGroup();" class="button">Gruppe anlegen</a></td>
 		</tr>
 	</table>
 </div>

@@ -40,6 +40,21 @@
 	}
 	
 	/*
+	 * Add a new group
+	 * name = group name
+	 * desc = description
+	 * pw = md5 password
+	 * @return = <status>;<group-id>
+	 */
+	if( $_GET['function'] == "addGroup" ){
+		$id = db_addGroup( base64_decode($_GET['name']), base64_decode($_GET['desc']), $_GET['pw'] );
+		if( $id > 0 )
+			print $OK.$SEP.$id;
+		else
+			print $ERR;
+	}
+	
+	/*
 	 * Change group name
 	 * name = new group name
 	 * @return = <status>
@@ -52,7 +67,5 @@
 			print $ERR;
 		}
 	}
-	
-	
 	
 ?>

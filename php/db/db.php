@@ -52,4 +52,16 @@ function db_changeGroupInfo($id, $name, $description, $password){
 	return dbSQL($sql);
 }
 
+function db_addGroup($name, $description, $password){
+	$sql = "SELECT * FROM groups WHERE name='".$name."'";
+	if( count(dbSQL($sql)) == 0 ){		
+		$sql = "INSERT INTO groups (name, description, password) VALUES ('".$name."', '".$description."', '".$password."')";
+		if( dbSQL($sql) ){
+			$sql = "SELECT id FROM groups WHERE name='".$name."' AND description='".$description."'AND password='".$password."'";
+			return dbSQL($sql)[0]['id'];
+		}
+	}
+	
+	return -1;
+}
 ?>
