@@ -1,8 +1,8 @@
 <?php
 
-$dbDatabase = "dbname";
+$dbDatabase = "Spendenliste";
 $dbUser = "root";
-$dbPassword = "password";
+$dbPassword = "ch07siath05";
 $dbHost = "localhost";
 $log_enabled = false;
 
