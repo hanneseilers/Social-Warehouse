@@ -17,6 +17,10 @@ h1{
 	padding: 10px;
 }
 
+.errortext{
+	color: #ff0000;
+}
+
 .mainframe{
 	background-color: #ffffff;
 	padding: 1%;
@@ -125,7 +129,7 @@ h1{
 	margin-bottom: 0.5%;
 	border-style: solid;
 	border-width: 1px;
-	border-color: #303030;	
+	border-color: #303030;
 }
 
 .groupinfo span{
@@ -133,8 +137,16 @@ h1{
 	white-space: nowrap;
 }
 
+.groupinfo table.edit{
+	display: none;
+}
+
 .groupedit{
 	display: block;
+}
+
+#passwordwrong{
+	display: none;
 }
 
 .register{

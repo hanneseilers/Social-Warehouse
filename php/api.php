@@ -44,8 +44,8 @@
 	 * name = new group name
 	 * @return = <status>
 	 */
-	if( isset($_SESSION['groupinfo']) && $_GET['function'] == "changeGroupName" ){
-		if( db_changeGroupName($_SESSION['groupinfo']['id'], base64_decode($_GET['name'])) ){
+	if( isset($_SESSION['groupinfo']) && $_GET['function'] == "changeGroupInfo" ){
+		if( db_changeGroupInfo($_SESSION['groupinfo']['id'], base64_decode($_GET['name']), base64_decode($_GET['desc']), $_GET['pw']) ){
 			_updateGroupInfo( $_SESSION['groupinfo']['id'] );
 			print $OK;
 		} else {

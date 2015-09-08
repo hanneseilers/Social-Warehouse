@@ -44,8 +44,11 @@ function db_getGroupInfo($id){
 	return dbSQL($sql);
 }
 
-function db_changeGroupName($id, $name){
-	$sql = "UPDATE groups SET name='".$name."' WHERE id=".$id;
+function db_changeGroupInfo($id, $name, $description, $password){
+	if( strlen($password) > 0 )
+		$sql = "UPDATE groups SET name='".$name."', description='".$description."', password='".$password."' WHERE id=".$id;
+	else 
+		$sql = "UPDATE groups SET name='".$name."', description='".$description."' WHERE id=".$id;
 	return dbSQL($sql);
 }
 

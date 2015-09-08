@@ -47,9 +47,28 @@ function logout(){
 	$.get( "api.php", {'function': 'logout'}, function(){location.reload();} );
 }
 
-function changeGroupName(){
-	$name = document.getElementById( 'groupnamenew' ).value;
-	$.get( "api.php", {'function': 'changeGroupName', 'name': base64_encode($name)}, function(data, success){
-		location.reload();
-	} );
+function changeGroupInfo(){
+	
+	$tableEdit = document.getElementById( 'groupeditdata' );
+	if( $tableEdit.style.display != "block" ){
+		$tableEdit.style.display = "block";
+	} else {	
+		$name = document.getElementById( 'groupnamenew' ).value.trim();
+		$password = document.getElementById( 'password' ).value.trim();
+		$password2 = document.getElementById( 'password-repeat' ).value.trim();
+		$description = document.getElementById( 'groupdescription' ).value.trim();
+		
+		if( $password != $password2 ){
+			document.getElementById( 'passwordwrong' ).style.display = "block";
+		} else {
+			if( $password.length > 0 )
+				$password = MD5($password);
+				
+			$.get( 	"api.php",
+					{'function': 'changeGroupInfo', 'name': base64_encode($name), 'desc': base64_encode($description), 'pw': $password},
+					function(data, success){
+						location.reload();
+					} );
+		}
+	}
 }
