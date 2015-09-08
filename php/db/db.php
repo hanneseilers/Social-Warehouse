@@ -30,4 +30,13 @@ function db_getGroups(){
 	return dbSQL($sql);
 }
 
+function db_checkGroupLogin($id, $password){
+	$sql = "SELECT * FROM groups WHERE id=".$id." AND password='".$password."'";
+	$result = dbSQL($sql);
+	if( count($result) > 0 )
+		return True;
+	
+	return False;
+}
+
 ?>

@@ -1,7 +1,13 @@
 <html>
 <head>
 <title>Spendenliste</title>
+
 <link type="text/css" rel="stylesheet" href="style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="js/md5.js"></script>
+<script src="js/jsfunctions.js"></script>
+
+<meta charset="iso-8859-1">
 </head>
 <body>
 
