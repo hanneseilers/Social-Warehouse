@@ -103,6 +103,11 @@ function deleteWarehouse(){
 function changeWarehouseInfo(){
 	
 	$tableEdit = document.getElementById( 'warehouseeditdata' );
+	
+	// hide errors
+	document.getElementById( 'passwordwrong' ).style.display = "none";
+	document.getElementById( 'citymissing' ).style.display = "none";
+	
 	if( $tableEdit.style.display != "block" ){
 		$tableEdit.style.display = "block";
 	} else {	
@@ -110,15 +115,26 @@ function changeWarehouseInfo(){
 		$password = document.getElementById( 'password' ).value.trim();
 		$password2 = document.getElementById( 'password-repeat' ).value.trim();
 		$description = document.getElementById( 'warehousedescription' ).value.trim();
+		$country = document.getElementById( 'country' ).value.trim();
+		$city = document.getElementById( 'city' ).value.trim();
 		
 		if( $password != $password2 ){
 			document.getElementById( 'passwordwrong' ).style.display = "block";
+		} else if( $city.length == 0 ){
+			document.getElementById( 'citymissing' ).style.display = "block";
 		} else {
 			if( $password.length > 0 )
 				$password = MD5($password);
 				
 			$.get( 	"api.php",
-					{'function': 'changeWarehouseInfo', 'name': base64_encode($name), 'desc': base64_encode($description), 'pw': $password},
+					{
+						'function': 'changeWarehouseInfo',
+						'name': base64_encode($name),
+						'desc': base64_encode($description),
+						'pw': $password,
+						'country': base64_encode($country),
+						'city': base64_encode($city)
+					},
 					function(data, success){
 						location.reload();
 					} );

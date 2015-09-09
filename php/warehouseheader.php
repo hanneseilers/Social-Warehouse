@@ -2,6 +2,8 @@
 	<?php		
 		$name = $_SESSION['warehouseinfo']['name'];
 		$id = $_SESSION['warehouseinfo']['id'];
+		$country = $_SESSION['warehouseinfo']['country'];
+		$city = $_SESSION['warehouseinfo']['city'];
 		
 		print "<div class=\"table\"><span class=\"warehousename\">Warehouse: ".$name."</span>";
 		print "<span class=\"edit\"><a href=\"javascript: changeWarehouseInfo();\" class=\"button loginbutton\">Edit</a> ";
@@ -18,14 +20,19 @@
 		<td>
 			<select id="country">
 				<?php
-					print getCountryDropdownOptions( "countries/countries" );
+					print getCountryDropdownOptions( "countries/countries", $country );
 				?>
 			</select>
 		</td>
 	</tr>
 	<tr>
 		<td>City:</td>
-		<td><input type="text" id="city" /></td>
+		<td colspan="3">
+			<?php 
+				print "<input type=\"text\" id=\"city\" value=\"".$city."\" />";
+			?>
+		</td>
+		<td id="citymissing" class="errortext hidetext">City is missing!</td>
 	</tr>
 	<tr>
 		<td><br /></td>

@@ -44,11 +44,11 @@ function db_getWarehouseInfo($id){
 	return dbSQL($sql);
 }
 
-function db_changeWarehouseInfo($id, $name, $description, $password){
+function db_changeWarehouseInfo($id, $name, $description, $password, $country, $city){
 	if( strlen($password) > 0 )
-		$sql = "UPDATE warehouses SET name='".$name."', description='".$description."', password='".$password."' WHERE id=".$id;
+		$sql = "UPDATE warehouses SET name='".$name."', description='".$description."', password='".$password."', country='".$country."', city='".$city."' WHERE id=".$id;
 	else 
-		$sql = "UPDATE warehouses SET name='".$name."', description='".$description."' WHERE id=".$id;
+		$sql = "UPDATE warehouses SET name='".$name."', description='".$description."', country='".$country."', city='".$city."' WHERE id=".$id;
 	return dbSQL($sql);
 }
 

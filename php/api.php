@@ -44,6 +44,8 @@
 	 * name = warehouse name
 	 * desc = description
 	 * pw = md5 password
+	 * country = warehouse country
+	 * city = warehouse city
 	 * @return = <status>;<warehouse-id>
 	 */
 	if( $_GET['function'] == "addWarehouse" ){
@@ -70,10 +72,13 @@
 	/*
 	 * Change warehouse name
 	 * name = new warehouse name
+	 * pw = new md5 password
+	 * country = warehouse country
+	 * city = warehouse city
 	 * @return = <status>
 	 */
 	if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "changeWarehouseInfo" ){
-		if( db_changeWarehouseInfo($_SESSION['warehouseinfo']['id'], base64_decode($_GET['name']), base64_decode($_GET['desc']), $_GET['pw']) ){
+		if( db_changeWarehouseInfo($_SESSION['warehouseinfo']['id'], base64_decode($_GET['name']), base64_decode($_GET['desc']), $_GET['pw'], base64_decode($_GET['country']), base64_decode($_GET['city'])) ){
 			_updateWarehouseInfo( $_SESSION['warehouseinfo']['id'] );
 			print $OK;
 		} else {

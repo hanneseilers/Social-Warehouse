@@ -17,11 +17,14 @@
 		return $countries;
 	}
 	
-	function getCountryDropdownOptions($file){
+	function getCountryDropdownOptions($file, $selected=""){
 		$countries = getCountries($file);
 		$html = "";
 		foreach( $countries as $country ){
-			$html = $html."\t<option>".$country[0]."</option>\n";
+			$html = $html."\t<option";
+			if( $country[0] == $selected )
+				$html = $html." selected";
+			$html = $html.">".$country[0]."</option>\n";
 		}
 		
 		return $html;
