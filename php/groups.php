@@ -1,4 +1,4 @@
-<h1>Gruppen</h1>
+<h1>Warehouses</h1>
 <div class="groupslist">
 	<?php
 		
@@ -10,7 +10,7 @@
 			print "<span class=\"loginfailed\" id=\"grouploginfailed".$vGroup['id']."\">Passwort falsch!</span>";
 			print "<span class=\"loginpw\">Passwort: <input type=\"password\" id=\"grouppw".$vGroup['id']."\" onkeypress=\"if(event.keyCode == 13) login(".$vGroup['id'].");\" /></span>";
 			print "<img src=\"img/loading.gif\" class=\"loginloading\" id=\"groupload".$vGroup['id']."\" />";
-			print "<span class=\"edit\"><a href=\"?requirements=".$vGroup['id']."\" class=\"button yellowbutton\" id=\"groupreq".$vGroup['id']."\">Bedarf</a>";
+			print "<span class=\"edit\"><a href=\"?requirements=".$vGroup['id']."\" class=\"button yellowbutton\" id=\"groupreq".$vGroup['id']."\">Demand</a>";
 			print "<a href=\"javascript: login(".$vGroup['id'].");\" class=\"button loginbutton\" id=\"grouplogin".$vGroup['id']."\">Login</a></span></div>";
 		}
 	
