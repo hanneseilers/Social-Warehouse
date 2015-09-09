@@ -1,5 +1,10 @@
 <?php 
 
+	/*
+	 * Get list of countries from:
+	 * http://countrylist.net/de/
+	 */
+
 	function getCountries($file){
 		$f = file( $file );
 		$countries = array();
