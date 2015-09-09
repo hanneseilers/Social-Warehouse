@@ -7,6 +7,24 @@
 			<td id="warehousewrong" class="errortext hidetext">Warehousename already available</td>
 		</tr>
 		<tr>
+			<td>Country:</td>
+			<td>
+				<select id="country">
+					<?php
+						include( "countries/countries.php" );
+						print getCountryDropdownOptions( "countries/countries" );
+					?>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>City:</td>
+			<td><input type="text" id="city" /></td>
+		</tr>
+		<tr>
+			<td><br /></td>
+		</tr>
+		<tr>
 			<td>Password:</td>
 			<td><input type="password" id="password" /></td>
 			<td id="passwordwrong" class="errortext hidetext">Passwords aren't the same!</td>

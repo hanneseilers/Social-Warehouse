@@ -14,6 +14,24 @@
 		<td><?php print "<input type=\"text\" value=\"".$name."\" id=\"warehousenamenew\" />"; ?></td>
 	</tr>
 	<tr>
+		<td>Country:</td>
+		<td>
+			<select id="country">
+				<?php
+					include( "countries/countries.php" );
+					print getCountryDropdownOptions( "countries/countries" );
+				?>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>City:</td>
+		<td><input type="text" id="city" /></td>
+	</tr>
+	<tr>
+		<td><br /></td>
+	</tr>
+	<tr>
 		<td>Password:</td>
 		<td><input type="password" id="password" /></td>
 		<td>Repeat password:</td>
