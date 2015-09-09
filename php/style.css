@@ -35,7 +35,7 @@ textarea{
 	width: 98%;
 }
 
-.mainframe div:not(.table):not(.groupdescription){
+.mainframe div:not(.table):not(.warehousedescription){
 	width: calc(100% - 20px);
 	padding-left: 10px;
 	padding-right: 10px;
@@ -85,12 +85,12 @@ textarea{
 	text-decoration: underline;
 }
 
-.groupslist{
+.warehouseslist{
 	overflow: auto;
 	max-height: 50%;
 }
 
-.groupitem{
+.warehouseitem{
 	display: table;
 	width: 100%;
 	border-spacing: 5px 0px;
@@ -100,21 +100,21 @@ textarea{
 	border-color: #303030;	
 }
 
-.groupitem .loginbutton{
+.warehouseitem .loginbutton{
 	display: table-cell;
 }
 
-.groupitem .yellowbutton{
+.warehouseitem .yellowbutton{
 	display: table-cell;
 }
 
-.groupname{
+.warehousename{
 	display: table-cell;
 	width: 100%;
 	font-weight: bold;
 }
 
-.groupdescription{
+.warehousedescription{
 	display: none;
 	position: absolute;
 	top: 0px;
@@ -176,7 +176,7 @@ textarea{
 	white-space: nowrap;
 }
 
-.groupinfo{
+.warehouseinfo{
 	width: 100%;
 	margin-bottom: 0.5%;
 	border-style: solid;
@@ -184,16 +184,16 @@ textarea{
 	border-color: #303030;
 }
 
-.groupinfo span{
+.warehouseinfo span{
 	display: table-cell;
 	white-space: nowrap;
 }
 
-.groupinfo table.edit{
+.warehouseinfo table.edit{
 	display: none;
 }
 
-.groupedit{
+.warehouseedit{
 	display: block;
 }
 

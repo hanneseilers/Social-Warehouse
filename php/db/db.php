@@ -25,13 +25,13 @@ function dbSQL($sql){
 	}
 }
 
-function db_getGroups(){
-	$sql = "SELECT * FROM groups ORDER BY name ASC";
+function db_getWarehouses(){
+	$sql = "SELECT * FROM warehouses ORDER BY name ASC";
 	return dbSQL($sql);
 }
 
-function db_checkGroupLogin($id, $password){
-	$sql = "SELECT * FROM groups WHERE id=".$id." AND password='".$password."'";
+function db_checkWarehouseLogin($id, $password){
+	$sql = "SELECT * FROM warehouses WHERE id=".$id." AND password='".$password."'";
 	$result = dbSQL($sql);
 	if( count($result) > 0 )
 		return True;
@@ -39,25 +39,25 @@ function db_checkGroupLogin($id, $password){
 	return False;
 }
 
-function db_getGroupInfo($id){
-	$sql = "SELECT * FROM groups WHERE id=".$id;
+function db_getWarehouseInfo($id){
+	$sql = "SELECT * FROM warehouses WHERE id=".$id;
 	return dbSQL($sql);
 }
 
-function db_changeGroupInfo($id, $name, $description, $password){
+function db_changeWarehouseInfo($id, $name, $description, $password){
 	if( strlen($password) > 0 )
-		$sql = "UPDATE groups SET name='".$name."', description='".$description."', password='".$password."' WHERE id=".$id;
+		$sql = "UPDATE warehouses SET name='".$name."', description='".$description."', password='".$password."' WHERE id=".$id;
 	else 
-		$sql = "UPDATE groups SET name='".$name."', description='".$description."' WHERE id=".$id;
+		$sql = "UPDATE warehouses SET name='".$name."', description='".$description."' WHERE id=".$id;
 	return dbSQL($sql);
 }
 
-function db_addGroup($name, $description, $password){
-	$sql = "SELECT * FROM groups WHERE name='".$name."'";
+function db_addWarehouse($name, $description, $password){
+	$sql = "SELECT * FROM warehouses WHERE name='".$name."'";
 	if( count(dbSQL($sql)) == 0 ){		
-		$sql = "INSERT INTO groups (name, description, password) VALUES ('".$name."', '".$description."', '".$password."')";
+		$sql = "INSERT INTO warehouses (name, description, password) VALUES ('".$name."', '".$description."', '".$password."')";
 		if( dbSQL($sql) ){
-			$sql = "SELECT id FROM groups WHERE name='".$name."' AND description='".$description."'AND password='".$password."'";
+			$sql = "SELECT id FROM warehouses WHERE name='".$name."' AND description='".$description."'AND password='".$password."'";
 			return dbSQL($sql)[0]['id'];
 		}
 	}
@@ -65,13 +65,13 @@ function db_addGroup($name, $description, $password){
 	return -1;
 }
 
-function db_deleteGroup($id){
-	$sql = "DELETE FROM groups WHERE id=".$id;
+function db_deleteWarehouse($id){
+	$sql = "DELETE FROM warehouses WHERE id=".$id;
 	return dbSQL($sql);
 }
 
-function db_getGroupDescription($id){
-	$sql = "SELECT * FROM groups WHERE id=".$id;
+function db_getWarehouseDescription($id){
+	$sql = "SELECT * FROM warehouses WHERE id=".$id;
 	return dbSQL($sql)[0]['description'];
 }
 

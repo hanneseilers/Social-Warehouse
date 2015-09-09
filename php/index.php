@@ -21,13 +21,13 @@
 	
 		include( "header.php" );
 		
-		if( isset($_GET['requirements']) ){
-			include( "requirements.php" );
-		}else if( !isset($_SESSION['groupinfo']) || $_SESSION['groupinfo'] == null ){
-			include( "groups.php" );
+		if( isset($_GET['demand']) ){
+			include( "demand.php" );
+		}else if( !isset($_SESSION['warehouseinfo']) || $_SESSION['warehouseinfo'] == null ){
+			include( "warehouses.php" );
 			include( "register.php" );
 		} else {
-			include( "groupheader.php" );
+			include( "warehouseheader.php" );
 			include( "showdata.php" );
 		}
 	?>

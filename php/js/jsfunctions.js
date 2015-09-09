@@ -1,10 +1,10 @@
 function login(id){
 	
-	var vPasswordInput = document.getElementById( 'grouppw' + id );	
+	var vPasswordInput = document.getElementById( 'warehousepw' + id );	
 	
 	// hide all password inputs
 	var vElements = document.getElementsByClassName('loginpw');
-	document.getElementById( 'grouploginfailed' + id ).style.display = "none";
+	document.getElementById( 'warehouseloginfailed' + id ).style.display = "none";
 	for( var i=0; i < vElements.length; i++ ){
 		vElements[i].style.display = "none";
 		
@@ -19,14 +19,14 @@ function login(id){
 	} else {
 		
 		// show wait
-		document.getElementById( 'grouplogin' + id ).style.display = "none";
-		document.getElementById( 'groupreq' + id ).style.display = "none";
-		document.getElementById( 'groupload' + id ).style.display = "table-cell";
+		document.getElementById( 'warehouselogin' + id ).style.display = "none";
+		document.getElementById( 'warehousereq' + id ).style.display = "none";
+		document.getElementById( 'warehouseload' + id ).style.display = "table-cell";
 		vPasswordInput.parentElement.style.display = 'none';
 		
 		// check if password ok
 		var vPassword = MD5( vPasswordInput.value );
-		$.get( "api.php", {'function': 'checkLogin', 'group': id, 'pw': vPassword}, login_result );
+		$.get( "api.php", {'function': 'checkLogin', 'warehouse': id, 'pw': vPassword}, login_result );
 		
 	}
 }
@@ -37,10 +37,10 @@ function login_result(data, status, xhr){
 		location.reload();		
 	} else {
 		var id = data[1];
-		document.getElementById( 'grouploginfailed' + id ).style.display = "block";
-		document.getElementById( 'grouppw' + id ).parentElement.style.display = "table-cell";
-		document.getElementById( 'grouplogin' + id ).style.display = "table-cell";
-		document.getElementById( 'groupload' + id ).style.display = "none";
+		document.getElementById( 'warehouseloginfailed' + id ).style.display = "block";
+		document.getElementById( 'warehousepw' + id ).parentElement.style.display = "table-cell";
+		document.getElementById( 'warehouselogin' + id ).style.display = "table-cell";
+		document.getElementById( 'warehouseload' + id ).style.display = "none";
 	}
 }
 
@@ -48,14 +48,14 @@ function logout(){
 	$.get( "api.php", {'function': 'logout'}, function(){location.reload();} );
 }
 
-function addGroup(){
-	$name = document.getElementById( 'groupname' ).value.trim();
+function addWarehouse(){
+	$name = document.getElementById( 'warehousename' ).value.trim();
 	$password = document.getElementById( 'password' ).value.trim();
 	$password2 = document.getElementById( 'password-repeat' ).value.trim();
-	$description = document.getElementById( 'groupdescription' ).value.trim();
+	$description = document.getElementById( 'warehousedescription' ).value.trim();
 
 	// hide errors
-	document.getElementById( 'groupwrong' ).style.display = "none";
+	document.getElementById( 'warehousewrong' ).style.display = "none";
 	document.getElementById( 'passwordmissing' ).style.display = "none";
 	document.getElementById( 'passwordwrong' ).style.display = "none";
 	
@@ -65,36 +65,36 @@ function addGroup(){
 	} else if( $password != $password2 ){
 		document.getElementById( 'passwordwrong' ).style.display = "block";
 		
-	// try to create new group
+	// try to create new warehouse
 	} else {
 		$password = MD5($password);
 		$.get( 	"api.php",
-				{'function': 'addGroup', 'name': base64_encode($name), 'desc': base64_encode($description), 'pw': $password},
+				{'function': 'addWarehouse', 'name': base64_encode($name), 'desc': base64_encode($description), 'pw': $password},
 				function(data, status){
 					data = data.split(";");
 					if( status == "success" && data.length > 0 && data[0] == "ok" )
 						location.reload();
 					else
-						document.getElementById( 'groupwrong' ).style.display = "block";
+						document.getElementById( 'warehousewrong' ).style.display = "block";
 				});
 	}
 	
 }
 
-function deleteGroup(){
-	$.get( "api.php", {'function': 'deleteGroup'}, function(){ location.reload(); } );
+function deleteWarehouse(){
+	$.get( "api.php", {'function': 'deleteWarehouse'}, function(){ location.reload(); } );
 }
 
-function changeGroupInfo(){
+function changeWarehouseInfo(){
 	
-	$tableEdit = document.getElementById( 'groupeditdata' );
+	$tableEdit = document.getElementById( 'warehouseeditdata' );
 	if( $tableEdit.style.display != "block" ){
 		$tableEdit.style.display = "block";
 	} else {	
-		$name = document.getElementById( 'groupnamenew' ).value.trim();
+		$name = document.getElementById( 'warehousenamenew' ).value.trim();
 		$password = document.getElementById( 'password' ).value.trim();
 		$password2 = document.getElementById( 'password-repeat' ).value.trim();
-		$description = document.getElementById( 'groupdescription' ).value.trim();
+		$description = document.getElementById( 'warehousedescription' ).value.trim();
 		
 		if( $password != $password2 ){
 			document.getElementById( 'passwordwrong' ).style.display = "block";
@@ -103,7 +103,7 @@ function changeGroupInfo(){
 				$password = MD5($password);
 				
 			$.get( 	"api.php",
-					{'function': 'changeGroupInfo', 'name': base64_encode($name), 'desc': base64_encode($description), 'pw': $password},
+					{'function': 'changeWarehouseInfo', 'name': base64_encode($name), 'desc': base64_encode($description), 'pw': $password},
 					function(data, success){
 						location.reload();
 					} );
@@ -111,27 +111,27 @@ function changeGroupInfo(){
 	}
 }
 
-function showGroupDescription($id){
+function showWarehouseDescription($id){
 	// show loading
-	document.getElementById( 'groupdescriptiontext' ).style.display = "none";
+	document.getElementById( 'warehousedescriptiontext' ).style.display = "none";
 	document.getElementById( 'descriptionloading' ).style.display = "block";
-	document.getElementById( 'groupdescriptionoverlay' ).style.display = "block";
+	document.getElementById( 'warehousedescriptionoverlay' ).style.display = "block";
 	
 	// get description
 	$.get( 	"api.php",
-			{'function': 'getGroupDescription', 'group': $id},
+			{'function': 'getWarehouseDescription', 'warehouse': $id},
 			function(data, status){
 				data = data.split(";");
 				if( status == "success" && data.length > 0 && data[0] == "ok" ){
-					document.getElementById( 'groupdescriptiontext' ).innerHTML = data[1];
-					document.getElementById( 'groupdescriptiontext' ).style.display = "block";
+					document.getElementById( 'warehousedescriptiontext' ).innerHTML = data[1];
+					document.getElementById( 'warehousedescriptiontext' ).style.display = "block";
 					document.getElementById( 'descriptionloading' ).style.display = "none";
 				}
 			});
 	
 }
 
-function moveGroupDescription(event){
+function moveWarehouseDescription(event){
     var dot, eventDoc, doc, body, pageX, pageY;
 
     event = event || window.event; // IE-ism
@@ -152,10 +152,10 @@ function moveGroupDescription(event){
           (doc && doc.clientTop  || body && body.clientTop  || 0 );
     }
 
-    document.getElementById( 'groupdescriptionoverlay' ).style.top = event.pageY;
-    document.getElementById( 'groupdescriptionoverlay' ).style.left = event.pageX;
+    document.getElementById( 'warehousedescriptionoverlay' ).style.top = event.pageY;
+    document.getElementById( 'warehousedescriptionoverlay' ).style.left = event.pageX;
 }
 
-function hideGroupDescription(){
-	document.getElementById( 'groupdescriptionoverlay' ).style.display = "none";
+function hideWarehouseDescription(){
+	document.getElementById( 'warehousedescriptionoverlay' ).style.display = "none";
 }
