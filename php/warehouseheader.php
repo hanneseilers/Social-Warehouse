@@ -18,7 +18,6 @@
 		<td>
 			<select id="country">
 				<?php
-					include( "countries/countries.php" );
 					print getCountryDropdownOptions( "countries/countries" );
 				?>
 			</select>

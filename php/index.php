@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Spendenliste</title>
+<title>Social Warehouse</title>
 
 <link type="text/css" rel="stylesheet" href="style.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -18,6 +18,7 @@
 		session_start();
 	
 		include( "db/db.php" );
+		include( "countries/countries.php" );
 	
 		include( "header.php" );
 		

@@ -11,7 +11,6 @@
 			<td>
 				<select id="country">
 					<?php
-						include( "countries/countries.php" );
 						print getCountryDropdownOptions( "countries/countries" );
 					?>
 				</select>
@@ -20,6 +19,7 @@
 		<tr>
 			<td>City:</td>
 			<td><input type="text" id="city" /></td>
+			<td id="citymissing" class="errortext hidetext">City is missing!</td>
 		</tr>
 		<tr>
 			<td><br /></td>

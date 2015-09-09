@@ -108,6 +108,10 @@ textarea{
 	display: table-cell;
 }
 
+.warehouseitem img{
+	vertical-align: middle;
+}
+
 .warehousename{
 	display: table-cell;
 	width: 100%;

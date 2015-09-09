@@ -47,7 +47,7 @@
 	 * @return = <status>;<warehouse-id>
 	 */
 	if( $_GET['function'] == "addWarehouse" ){
-		$id = db_addWarehouse( base64_decode($_GET['name']), base64_decode($_GET['desc']), $_GET['pw'] );
+		$id = db_addWarehouse( base64_decode($_GET['name']), base64_decode($_GET['desc']), $_GET['pw'], base64_decode($_GET['country']), base64_decode($_GET['city']) );
 		if( $id > 0 )
 			print $OK.$SEP.$id;
 		else

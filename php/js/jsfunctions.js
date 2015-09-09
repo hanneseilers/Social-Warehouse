@@ -53,23 +53,38 @@ function addWarehouse(){
 	$password = document.getElementById( 'password' ).value.trim();
 	$password2 = document.getElementById( 'password-repeat' ).value.trim();
 	$description = document.getElementById( 'warehousedescription' ).value.trim();
+	$country = document.getElementById( 'country' ).value.trim();
+	$city = document.getElementById( 'city' ).value.trim();
 
 	// hide errors
 	document.getElementById( 'warehousewrong' ).style.display = "none";
 	document.getElementById( 'passwordmissing' ).style.display = "none";
 	document.getElementById( 'passwordwrong' ).style.display = "none";
+	document.getElementById( 'citymissing' ).style.display = "none";
 	
 	// check password
 	if( $password.length == 0){
 		document.getElementById( 'passwordmissing' ).style.display = "block";
 	} else if( $password != $password2 ){
 		document.getElementById( 'passwordwrong' ).style.display = "block";
+	}
+	// check city
+	else if( $city.length == 0 ) {
+		document.getElementById( 'citymissing' ).style.display = "block";
+	}
+	
 		
 	// try to create new warehouse
-	} else {
+	else {
 		$password = MD5($password);
 		$.get( 	"api.php",
-				{'function': 'addWarehouse', 'name': base64_encode($name), 'desc': base64_encode($description), 'pw': $password},
+				{	'function': 'addWarehouse',
+					'name': base64_encode($name),
+					'desc': base64_encode($description),
+					'pw': $password,
+					'country': base64_encode($country),
+					'city': base64_encode($city)
+				},
 				function(data, status){
 					data = data.split(";");
 					if( status == "success" && data.length > 0 && data[0] == "ok" )
