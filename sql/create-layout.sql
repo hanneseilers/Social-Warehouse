@@ -15,7 +15,14 @@ CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`warehouses` (
   `country` TINYTEXT NOT NULL,
   `city` TINYTEXT NOT NULL,
   `password` MEDIUMTEXT NOT NULL,
-  PRIMARY KEY (`id`))
+  `parent` INT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_warehouses_warehouses1_idx` (`parent` ASC),
+  CONSTRAINT `fk_warehouses_warehouses1`
+    FOREIGN KEY (`parent`)
+    REFERENCES `Social-Warehouse`.`warehouses` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -25,14 +32,14 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`categories` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `parent` INT NULL,
-  `group` INT NOT NULL,
+  `warehouse` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `required` INT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_categories_groups_idx` (`group` ASC),
+  INDEX `fk_categories_groups_idx` (`warehouse` ASC),
   INDEX `fk_categories_categories1_idx` (`parent` ASC),
   CONSTRAINT `fk_categories_groups`
-    FOREIGN KEY (`group`)
+    FOREIGN KEY (`warehouse`)
     REFERENCES `Social-Warehouse`.`warehouses` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
@@ -49,12 +56,12 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`palettes` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `group` INT NOT NULL,
+  `warehouse` INT NOT NULL,
   `name` MEDIUMTEXT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_palettes_groups1_idx` (`group` ASC),
+  INDEX `fk_palettes_groups1_idx` (`warehouse` ASC),
   CONSTRAINT `fk_palettes_groups1`
-    FOREIGN KEY (`group`)
+    FOREIGN KEY (`warehouse`)
     REFERENCES `Social-Warehouse`.`warehouses` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -68,7 +75,8 @@ CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`storages` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `category` INT NOT NULL,
   `palette` INT NULL,
-  `amount` INT NOT NULL,
+  `in` INT NOT NULL,
+  `out` BIGINT NOT NULL,
   `estimated` TINYINT(1) NOT NULL,
   `male` TINYINT(1) NULL,
   `female` TINYINT(1) NULL,
