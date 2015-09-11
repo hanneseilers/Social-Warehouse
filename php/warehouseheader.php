@@ -6,8 +6,9 @@
 		$city = $_SESSION['warehouseinfo']['city'];
 		
 		print "<div class=\"table\"><span class=\"warehousename\">Warehouse: ".$name."</span>";
-		print "<span class=\"edit\"><a href=\"javascript: changeWarehouseInfo();\" class=\"button loginbutton\">Edit</a> ";
-		print "<a href=\"javascript: logout();\" class=\"button logoutbutton\">Logout</a></span></div>";
+		print "<a href=\"javascript: changeWarehouseInfo();\" class=\"button button_table_cell green\">Edit</a> ";
+		print "<a href=\"?demand=".$id."\" class=\"button button_table_cell yellow\">Demand</a>";
+		print "<a href=\"javascript: logout();\" class=\"button button_table_cell red\">Logout</a></div>";
 		
 	?>
 	<table class="edit" id="warehouseeditdata">
@@ -48,7 +49,7 @@
 		<td colspan="4"><textarea rows="3" id="warehousedescription"><?php print $_SESSION['warehouseinfo']['description']; ?></textarea></td>
 	</tr>
 	<tr>
-		<td align="center"><a href="javascript: deleteWarehouse();" class="button button_block logoutbutton">Delete Warehouse</a></td>
+		<td align="center"><a href="javascript: deleteWarehouse();" class="button button_block red">Delete Warehouse</a></td>
 	</tr>
 	</table>
 	

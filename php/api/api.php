@@ -5,11 +5,14 @@
 	 */
 
 	session_start();
-	include( "db/db.php" );
+	include( "../db/db.php" );
 	
 	$OK = "ok";
 	$ERR = "err";
 	$SEP = ";";
+	
+	// include sup api fiels
+	include( "categories.php" );
 	
 	function _updateWarehouseInfo($id){
 		$_SESSION['warehouseinfo'] = db_getWarehouseInfo( $id )[0];

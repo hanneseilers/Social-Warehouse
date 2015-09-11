@@ -7,6 +7,7 @@
 <script src="js/md5.js"></script>
 <script src="js/base64.js"></script>
 <script src="js/jsfunctions.js"></script>
+<script src="js/categories.js"></script>
 
 <meta charset="utf-8">
 </head>
@@ -16,8 +17,24 @@
 
 	<?php
 		session_start();
-	
 		include( "db/db.php" );
+		
+		// get language
+		$default_language = "lang/en.php";
+		if( !empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) ){
+			$local_language = explode( ",", $_SERVER['HTTP_ACCEPT_LANGUAGE'] );
+			if( count($local_language) > 0 )
+				$local_language = $local_language[0];
+			$local_language = "lang/".$local_language.".php";
+		}
+		
+		// load language file
+		if( file_exists($local_language) )
+			include( $local_language );
+		else
+			include( $default_language );
+	
+		// include content
 		include( "countries/countries.php" );
 	
 		include( "header.php" );

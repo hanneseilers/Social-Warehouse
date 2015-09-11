@@ -19,6 +19,7 @@ textarea{
 	display: table;
 	width: calc(100% - 20px);
 	padding: 10px;
+	border-spacing: 5px 0px;
 }
 
 .errortext{
@@ -27,6 +28,42 @@ textarea{
 
 .hidetext{
 	display: none;
+}
+
+.button{
+	padding: 10px;
+	border-radius: 5px;
+	background-color: #a6a6a6;
+	text-decoration: none;
+	color: #303030;
+}
+
+.button_block{
+	display: block;
+	height: 100%;
+}
+
+.button_table_cell{
+	display: table-cell;
+	text-align: center;
+}
+
+.button3{
+	width: 33%;
+}
+
+.button4{
+	width: 25%;
+}
+
+.button5{
+	width: 20%;
+}
+
+.bigbutton{
+	padding-top: 5%;
+	padding-bottom: 5%;
+	font-weight: bold;
 }
 
 .mainframe{
@@ -100,14 +137,6 @@ textarea{
 	border-color: #303030;	
 }
 
-.warehouseitem .loginbutton{
-	display: table-cell;
-}
-
-.warehouseitem .yellowbutton{
-	display: table-cell;
-}
-
 .warehouseitem img{
 	vertical-align: middle;
 }
@@ -135,30 +164,6 @@ textarea{
 	font-weight: normal;
 	font-size: 10pt;
 	background-color: #ffffff;
-}
-
-.button{
-	padding: 10px;
-	border-radius: 5px;
-	background-color: #a6a6a6;
-	text-decoration: none;
-	color: #303030;
-}
-
-.button_block{
-	display: block;
-}
-
-.logoutbutton{
-	background-color: #ff8686;
-}
-
-.loginbutton{
-	background-color: #86ff86;
-}
-
-.yellowbutton{
-	background-color: #ffff86;
 }
 
 .loginpw{
@@ -207,4 +212,24 @@ textarea{
 
 .footer{
 	font-size: 8pt;
+}
+
+.red{
+	background-color: #ff8686;
+}
+
+.green{
+	background-color: #86ff86;
+}
+
+.yellow{
+	background-color: #ffff86;
+}
+
+.purple{
+	background-color: #ff86ff;
+}
+
+.blue{
+	background-color: #8686ff;
 }

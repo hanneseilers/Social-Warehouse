@@ -16,6 +16,7 @@ function login(id){
 	if( !vPasswordInput.value.length ){		
 		// show selected entry
 		vPasswordInput.parentElement.style.display = "table-cell";
+		vPasswordInput.focus();
 	} else {
 		
 		// show wait
@@ -26,7 +27,7 @@ function login(id){
 		
 		// check if password ok
 		var vPassword = MD5( vPasswordInput.value );
-		$.get( "api.php", {'function': 'checkLogin', 'warehouse': id, 'pw': vPassword}, login_result );
+		$.get( "api/api.php", {'function': 'checkLogin', 'warehouse': id, 'pw': vPassword}, login_result );
 		
 	}
 }
@@ -45,7 +46,7 @@ function login_result(data, status, xhr){
 }
 
 function logout(){
-	$.get( 	"api.php",
+	$.get( 	"api/api.php",
 			{'function': 'logout'},
 			function(){location.reload();} 
 		);
@@ -80,7 +81,7 @@ function addWarehouse(){
 	// try to create new warehouse
 	else {
 		$password = MD5($password);
-		$.get( 	"api.php",
+		$.get( 	"api/api.php",
 				{	'function': 'addWarehouse',
 					'name': base64_encode($name),
 					'desc': base64_encode($description),
@@ -100,7 +101,7 @@ function addWarehouse(){
 }
 
 function deleteWarehouse(){
-	$.get( "api.php", {'function': 'deleteWarehouse'}, function(){ location.reload(); } );
+	$.get( "api/api.php", {'function': 'deleteWarehouse'}, function(){ location.reload(); } );
 }
 
 function changeWarehouseInfo(){
@@ -129,7 +130,7 @@ function changeWarehouseInfo(){
 			if( $password.length > 0 )
 				$password = MD5($password);
 				
-			$.get( 	"api.php",
+			$.get( 	"api/api.php",
 					{
 						'function': 'changeWarehouseInfo',
 						'name': base64_encode($name),
@@ -152,7 +153,7 @@ function showWarehouseDescription($id){
 	document.getElementById( 'warehousedescriptionoverlay' ).style.display = "block";
 	
 	// get description
-	$.get( 	"api.php",
+	$.get( 	"api/api.php",
 			{'function': 'getWarehouseDescription', 'warehouse': $id},
 			function(data, status){
 				data = data.split(";");

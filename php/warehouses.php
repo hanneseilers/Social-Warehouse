@@ -22,8 +22,8 @@ City: <input type="text" id="filtercity" onkeypress="filterCity();" />
 			print "<span class=\"loginfailed\" id=\"warehouseloginfailed".$vWarehouse['id']."\">Passwort falsch!</span>";
 			print "<span class=\"loginpw\">Password: <input type=\"password\" id=\"warehousepw".$vWarehouse['id']."\" onkeypress=\"if(event.keyCode == 13) login(".$vWarehouse['id'].");\" /></span>";
 			print "<img src=\"img/loading.gif\" class=\"loginloading\" id=\"warehouseload".$vWarehouse['id']."\" />";
-			print "<span class=\"edit\"><a href=\"?demand=".$vWarehouse['id']."\" class=\"button yellowbutton\" id=\"warehousereq".$vWarehouse['id']."\">Demand</a>";
-			print "<a href=\"javascript: login(".$vWarehouse['id'].");\" class=\"button loginbutton\" id=\"warehouselogin".$vWarehouse['id']."\">Login</a></span></div>";
+			print "<span class=\"edit\"><a href=\"?demand=".$vWarehouse['id']."\" class=\"button yellow button_table_cell\" id=\"warehousereq".$vWarehouse['id']."\">Demand</a>";
+			print "<a href=\"javascript: login(".$vWarehouse['id'].");\" class=\"button green button_table_cell\" id=\"warehouselogin".$vWarehouse['id']."\">Login</a></span></div>";
 		}
 	
 	?>

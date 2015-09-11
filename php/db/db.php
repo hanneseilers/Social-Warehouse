@@ -75,4 +75,7 @@ function db_getWarehouseDescription($id){
 	return dbSQL($sql)[0]['description'];
 }
 
+// include sub php files
+include( "db_categories.php" );
+
 ?>

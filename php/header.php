@@ -5,7 +5,7 @@
 	
 		// Show root
 		if( isset($_SESSION['warehouseinfo']) )
-			print "<a href=\"\">".$_SESSION['warehouseinfo']['name']."</a>";
+			print "<a href=\"?\">".$_SESSION['warehouseinfo']['name']."</a>";
 		else
 			print "<a href=\"?\">Home</a>";
 	?>
@@ -18,8 +18,8 @@
 			$vWarehouse = db_getWarehouseInfo( $_GET['demand'] )[0];
 			print " > <a href=\"\">Warehouse Demand: ".$vWarehouse['name']."</a>";
 		}
-		else if( isset($_SESSION['curCategory']) ){
-			print " > ";
+		else {
+			print " <span id=\"breadcrumb_js\"></span>";
 		}
 	
 	?>
