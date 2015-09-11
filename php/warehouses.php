@@ -1,4 +1,14 @@
 <h1>Warehouses</h1>
+<!--
+Country: <select id="filtercountry" onchange="filterCountry();">
+	<option>-All-</option>
+	<?php
+		print getCountryDropdownOptions( "countries/countries" );
+	?>
+</select>
+City: <input type="text" id="filtercity" onkeypress="filterCity();" />
+-->
+
 <div class="warehouseslist">
 	<?php
 		

@@ -45,7 +45,10 @@ function login_result(data, status, xhr){
 }
 
 function logout(){
-	$.get( "api.php", {'function': 'logout'}, function(){location.reload();} );
+	$.get( 	"api.php",
+			{'function': 'logout'},
+			function(){location.reload();} 
+		);
 }
 
 function addWarehouse(){
@@ -153,11 +156,13 @@ function showWarehouseDescription($id){
 			{'function': 'getWarehouseDescription', 'warehouse': $id},
 			function(data, status){
 				data = data.split(";");
-				if( status == "success" && data.length > 0 && data[0] == "ok" ){
+				if( status == "success" && data.length > 0 && data[0] == "ok" )
 					document.getElementById( 'warehousedescriptiontext' ).innerHTML = data[1];
-					document.getElementById( 'warehousedescriptiontext' ).style.display = "block";
-					document.getElementById( 'descriptionloading' ).style.display = "none";
-				}
+				else
+					document.getElementById( 'warehousedescriptiontext' ).innerHTML = "no description found";
+				
+				document.getElementById( 'warehousedescriptiontext' ).style.display = "block";
+				document.getElementById( 'descriptionloading' ).style.display = "none";
 			});
 	
 }
@@ -189,4 +194,12 @@ function moveWarehouseDescription(event){
 
 function hideWarehouseDescription(){
 	document.getElementById( 'warehousedescriptionoverlay' ).style.display = "none";
+}
+
+function filterCountry(){
+	$country = document.getElementById( 'filtercountry' ).value;
+}
+
+function filterCity(){
+	$city = document.getElementById( 'filtercity' ).value;
 }
