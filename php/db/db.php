@@ -28,5 +28,6 @@ function dbSQL($sql){
 // include sub php files
 include( "db_warehouses.php" );
 include( "db_categories.php" );
+include( "db_locations.php" );
 
 ?>

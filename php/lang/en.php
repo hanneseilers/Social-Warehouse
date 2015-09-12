@@ -21,11 +21,10 @@ $LANG = [
 	'children_baby' => "Children / Baby",
 	'income' => "Income",
 	'outgo' => "Outgo",
-	'add_loose_storage' => "Add to loose storage",
+	'add_loose_stock' => "Add to loose stock",
 	'add_palette' => "Add to palette",
 		
 	'city_missing' => "City missing!",
-	'categories' => "Categories",
 	'stock' => "Stock",
 	'palettes' => "Palettes",
 	

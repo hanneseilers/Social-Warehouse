@@ -14,6 +14,7 @@
 	// include sup api fiels
 	include( "categories.php" );
 	include( "warehouses.php" );
+	include( "locations.php" );
 	
 	function _updateWarehouseInfo($id){
 		$_SESSION['warehouseinfo'] = db_getWarehouseInfo( $id )[0];

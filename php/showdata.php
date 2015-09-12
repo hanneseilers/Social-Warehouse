@@ -6,8 +6,8 @@
 		$classes = "button button3 button_table_cell";
 		
 		if( isset($_GET['mode']) ){			
-			if( $_GET['mode'] == "categories" ){				
-				$callback = "showCategories(".$warehouseId.", addToStock, true);";
+			if( $_GET['mode'] == "stock" ){				
+				$callback = "showStock(".$warehouseId.", addToStock, true);";
 			} else if( $_GET['mode'] == "locations" ){				
 				$callback = "showLocations(".$warehouseId.");";
 			} else if( $_GET['mode'] == "palettes" ){
@@ -18,7 +18,7 @@
 		}
 		
 		// print buttons
-		print "<a href=\"?mode=categories\" class=\"".$classes."\">".LANG('categories')."</a>";
+		print "<a href=\"?mode=stock\" class=\"".$classes."\">".LANG('stock')."</a>";
 		print "<a href=\"?mode=locations\" class=\"".$classes."\">".LANG('locations')."</a>";
 		print "<a href=\"?mode=palettes\" class=\"".$classes."\">".LANG('palettes')."</a>";
 	

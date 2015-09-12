@@ -66,8 +66,15 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`locations` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `warehouse` INT NOT NULL,
   `name` TINYTEXT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  INDEX `fk_locations_warehouses1_idx` (`warehouse` ASC),
+  CONSTRAINT `fk_locations_warehouses1`
+    FOREIGN KEY (`warehouse`)
+    REFERENCES `Social-Warehouse`.`warehouses` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -77,7 +84,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`storages` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `category` INT NOT NULL,
-  `locations_id` INT NOT NULL,
+  `location` INT NULL,
   `palette` INT NULL,
   `in` BIGINT NOT NULL,
   `out` BIGINT NOT NULL,
@@ -88,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`storages` (
   PRIMARY KEY (`id`),
   INDEX `fk_storages_categories1_idx` (`category` ASC),
   INDEX `fk_storages_palettes1_idx` (`palette` ASC),
-  INDEX `fk_storages_locations1_idx` (`locations_id` ASC),
+  INDEX `fk_storages_locations1_idx` (`location` ASC),
   CONSTRAINT `fk_storages_categories1`
     FOREIGN KEY (`category`)
     REFERENCES `Social-Warehouse`.`categories` (`id`)
@@ -100,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`storages` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_storages_locations1`
-    FOREIGN KEY (`locations_id`)
+    FOREIGN KEY (`location`)
     REFERENCES `Social-Warehouse`.`locations` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
