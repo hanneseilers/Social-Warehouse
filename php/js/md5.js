@@ -381,7 +381,7 @@ function hexa(n) {
 
 
 var ascii="01234567890123456789012345678901" +
-" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ"+
+" !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ"+
 "[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
 
 function MD5(nachricht)

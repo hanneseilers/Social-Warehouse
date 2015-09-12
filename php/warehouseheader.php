@@ -7,10 +7,10 @@
 		$country = $_SESSION['warehouseinfo']['country'];
 		$city = $_SESSION['warehouseinfo']['city'];
 		
-		print "<span class=\"group_left text_bold\">".LANG('warehouse').": ".$name."</span>";
-		print "<a href=\"javascript: changeWarehouseInfo();\" class=\"button green\">".LANG('edit')."</a> ";
-		print "<a href=\"?demand=".$id."\" class=\"button yellow\">".LANG('demand')."</a>";
-		print "<a href=\"javascript: logout();\" class=\"button red\">".LANG('logout')."</a>";
+		print "<span class='group_left text_bold'>".LANG('warehouse').": ".$name."</span>";
+		print "<a href='javascript: changeWarehouseInfo();' class='button green'>".LANG('edit')."</a> ";
+		print "<a href='?demand=".$id."' class='button yellow'>".LANG('demand')."</a>";
+		print "<a href='javascript: logout();' class='button red'>".LANG('logout')."</a>";
 		
 	?>
 	</div>
@@ -18,7 +18,7 @@
 	<table class="edit hidetext" id="warehouseeditdata">
 	<tr>
 		<td><?php print LANG('warehouse_name'); ?>:</td>
-		<td><?php print "<input type=\"text\" value=\"".$name."\" id=\"warehousenamenew\" />"; ?></td>
+		<td><?php print "<input type='text' value='".$name."' id='warehousenamenew' />"; ?></td>
 	</tr>
 	<tr>
 		<td><?php print LANG('country'); ?>:</td>
@@ -34,7 +34,7 @@
 		<td><?php print LANG('city'); ?>:</td>
 		<td colspan="3">
 			<?php 
-				print "<input type=\"text\" id=\"city\" value=\"".$city."\" />";
+				print "<input type='text' id='city' value='".$city."' />";
 			?>
 		</td>
 		<td id="citymissing" class="errortext hidetext"><?php print LANG('city_missing'); ?></td>

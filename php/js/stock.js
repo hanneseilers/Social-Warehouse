@@ -151,13 +151,13 @@ function _showCategories(rootId=_rootId){
 	}
 	
 	// create html
-	html = "<span id=\"scrollTarget\"></span>";
+	html = "<h1 id='scrollTarget'>" + LANG('categories') + "</h1>";
 	
 	// create root category
 	root = getCategory(rootId);
 	if( root != null ){		
-		html += "<a href=\"javascript: _showCategories("
-			+ root['parent'] + ");\" class=\"button centertext block\">"
+		html += "<a href='javascript: _showCategories("
+			+ root['parent'] + ");' class='button centertext block'>"
 			+ (_location ? _location + ": " : "" )
 			+ getCategoryHierrachy(root['id']) + "</a>\n";
 	}
@@ -174,15 +174,15 @@ function _showCategories(rootId=_rootId){
 		if( _categories[i]['parent'] == rootId ){
 			// check if to open row
 			if( row == 0 ){
-				html += "\n<div class=\" table\">";
+				html += "\n<div class=' table'>";
 			}
 			
 			// set link
 			href = "_showCategories(" + _categories[i]['id'] + ");";
 			
 			// add button
-			html += "\t<a href=\"javascript: " + href + "\" class=\"button button"+ vClass
-					+ " button_table_cell blue bigbutton\">"
+			html += "\t<a href='javascript: " + href + "' class='button button"+ vClass
+					+ " table_cell blue bigbutton'>"
 					+ _categories[i]['name'] + "</a>\n";
 			row++;
 			
@@ -200,44 +200,44 @@ function _showCategories(rootId=_rootId){
 	}
 			
 	// add spacer
-	html += "<div class=\"hspacer\"></div>";
+	html += "<div class='hspacer'></div>";
 			
 	// show options to add storage
 	if( addIncomeOutgo ){		
 		// show gender button
-		html += "<div class=\"table\">"
-			+ "<a href=\"javascript: _male = !_male; _baby = false; updateColors();\" id=\"button_male\" class=\"button button3 button_table_cell\"><img src=\"img/male.png\" /><br />" + LANG('male') + "</a>"
-			+ "<a href=\"javascript: _female = !_female; _baby = false; updateColors();\" id=\"button_female\" class=\"button button3 button_table_cell\"><img src=\"img/female.png\" /><br />" + LANG('female') + "</a>"
-			+ "<a href=\"javascript: _baby = !_baby; _male = false; _female = false; updateColors();\" id=\"button_baby\" class=\"button button3 button_table_cell\"><img src=\"img/baby.png\" /><br />" + LANG('children_baby') + "</a>"
+		html += "<div class='table'>"
+			+ "<a href='javascript: _male = !_male; _baby = false; updateColors();' id='button_male' class='button button3 table_cell'><img src='img/male.png' /><br />" + LANG('male') + "</a>"
+			+ "<a href='javascript: _female = !_female; _baby = false; updateColors();' id='button_female' class='button button3 table_cell'><img src='img/female.png' /><br />" + LANG('female') + "</a>"
+			+ "<a href='javascript: _baby = !_baby; _male = false; _female = false; updateColors();' id='button_baby' class='button button3 table_cell'><img src='img/baby.png' /><br />" + LANG('children_baby') + "</a>"
 			+ "</div>";
 		
 		// show in and out fields
-		html += "<div class=\"table\">"
-			+ "<span class=\"button button3 button_table_cell biginput\">" + LANG('income') + "<br />"
-			+ "<input id=\"income\"  type=\"number\" onfocus=\"_income_selected = true; _outgo_selected = false; updateColors();\" onkeypress=\"if(event.keyCode == 13) addToStock();\" /></span>"
-			+ "<span class=\"button button3 button_table_cell biginput\">" + LANG('outgo') + "<br />"
-			+ "<input id=\"outgo\"  type=\"number\" onfocus=\"_income_selected = false; _outgo_selected = true; updateColors();\" onkeypress=\"if(event.keyCode == 13) addToStock();\" /></span>"
-			+ "<a href=\"javascript: addToStock();\" id=\"button_add\" class=\"button button3 button_table_cell biginput green\">"
+		html += "<div class='table'>"
+			+ "<span class='button button3 table_cell biginput'>" + LANG('income') + "<br />"
+			+ "<input id='income'  type='number' onfocus='_income_selected = true; _outgo_selected = false; updateColors();' onkeypress='if(event.keyCode == 13) addToStock();' /></span>"
+			+ "<span class='button button3 table_cell biginput'>" + LANG('outgo') + "<br />"
+			+ "<input id='outgo'  type='number' onfocus='_income_selected = false; _outgo_selected = true; updateColors();' onkeypress='if(event.keyCode == 13) addToStock();' /></span>"
+			+ "<a href='javascript: addToStock();' id='button_add' class='button button3 table_cell biginput green'>"
 			+ (!_palette ? LANG('add_loose_stock') : LANG('add_palette') + " " + _palette) + "</a>";
 			
 		html += "</div>";
 	}
 		
 	// add add-category form
-	html += "<div class=\"groupitem\"><span class=\"group_left\">"
-		+ LANG('category_name') + ": <input type=\"text\" id=\"addcategory\" /></span>" 
-		+ "<a href=\"javascript: addCategory(" + rootId + ");\" class=\"button\">" + LANG('add_category') + "</a></div>";
+	html += "<div class='groupitem'><span class='group_left'>"
+		+ LANG('category_name') + ": <input type='text' id='addcategory' /></span>" 
+		+ "<a href='javascript: addCategory(" + rootId + ");' class='button'>" + LANG('add_category') + "</a></div>";
 	
 	if( root != null ){	
 		// add category edit & delete button
-		html += "<div class=\"groupitem\"><span class=\"group_left\">"
-			+ LANG('category_name') + ": <input type=\"text\" id=\"categoryname\" value=\"" + root['name'] + "\" />"
-			+ (!hasChildCategory(root['id']) ? " " + LANG('demand') + ": <input type=\"text\" id=\"demand\" value=\"" + root['required'] + "\" />" : "" )
+		html += "<div class='groupitem'><span class='group_left'>"
+			+ LANG('category_name') + ": <input type='text' id='categoryname' value='" + root['name'] + "' />"
+			+ (!hasChildCategory(root['id']) ? " " + LANG('demand') + ": <input type='text' id='demand' value='" + root['required'] + "' />" : "" )
 			+ "</span>";
 		
-		html += "<a href=\"javascript: editCategory(" + root['id'] + ");\" class=\"button green\">" + LANG('edit') + "</a> "
-			+ "<a href=\"javascript: deleteCategory(" + root['id'] + ");\" class=\"button red\">"
-			+ LANG('delete_category') + " \"" + root['name'] + "\"</a>"
+		html += "<a href='javascript: editCategory(" + root['id'] + ");' class='button green'>" + LANG('edit') + "</a> "
+			+ "<a href='javascript: deleteCategory(" + root['id'] + ");' class='button red'>"
+			+ LANG('delete_category') + " '" + root['name'] + "'</a>"
 			+ "</div>";
 	}
 	

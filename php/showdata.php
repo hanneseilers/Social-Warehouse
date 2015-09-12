@@ -3,7 +3,7 @@
 	
 		$warehouseId = $_SESSION['warehouseinfo']['id'];
 		$callback = "";
-		$classes = "button button3 button_table_cell";
+		$classes = "button button3 table_cell";
 		
 		if( isset($_GET['mode']) ){			
 			if( $_GET['mode'] == "stock" ){				
@@ -18,9 +18,9 @@
 		}
 		
 		// print buttons
-		print "<a href=\"?mode=stock\" class=\"".$classes."\">".LANG('stock')."</a>";
-		print "<a href=\"?mode=locations\" class=\"".$classes."\">".LANG('locations')."</a>";
-		print "<a href=\"?mode=palettes\" class=\"".$classes."\">".LANG('palettes')."</a>";
+		print "<a href='?mode=stock' class='".$classes."'>".LANG('stock')."</a>";
+		print "<a href='?mode=locations' class='".$classes."'>".LANG('locations')."</a>";
+		print "<a href='?mode=palettes' class='".$classes."'>".LANG('palettes')."</a>";
 	
 	?>
 </div>

@@ -22,6 +22,10 @@ textarea{
 	border-spacing: 5px 0px;
 }
 
+.table_cell{
+	display: table-cell;
+}
+
 .errortext{
 	color: #ff0000;
 }
@@ -45,10 +49,6 @@ textarea{
 	vertical-align: middle;
 }
 
-.text_red{
-	color: #ff0000;
-}
-
 .text_bold{
 	font-weight: bold;
 }
@@ -64,10 +64,6 @@ textarea{
 	text-decoration: none;
 	color: #303030;
 	vertical-align: middle;
-}
-
-.button_table_cell{
-	display: table-cell;
 	text-align: center;
 }
 

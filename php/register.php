@@ -39,7 +39,7 @@
 			<td><textarea rows="5" id="warehousedescription"></textarea>
 		</tr>
 		<tr>
-			<td colspan="2" align="center"><a href="javascript: addWarehouse();" class="button block"><?php print LANG('create_warehouse'); ?></a></td>
+			<td colspan="2" align="center"><a href="javascript: addWarehouse();" class="button block"><?php print LANG('add_warehouse'); ?></a></td>
 		</tr>
 	</table>
 </div>

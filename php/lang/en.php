@@ -4,15 +4,14 @@ $LANG = [
 	'login' => "Login",
 	'logout' => "Logout",
 	'demand' => "Demand",
-	'edit' => "Edit",	
+	'edit' => "Edit",
+	'delete' => "Delete",
 	'country' => "Country",
 	'city' => "City",
-	'locations' => "Locations",
 	'password' => "Password",
 	'password_repeat' => "Repeat password",
 	'description' => "Description",
 	'optional' => "optional",
-	'create_warehouse' => "Create Warehouse",
 	'password_wrong' => "Password wrong!",
 	'password_missing' => "Password missing!",
 	'passwords_not_equal' => "Passwort aren't equal!",
@@ -21,6 +20,7 @@ $LANG = [
 	'children_baby' => "Children / Baby",
 	'income' => "Income",
 	'outgo' => "Outgo",
+		
 	'add_loose_stock' => "Add to loose stock",
 	'add_palette' => "Add to palette",
 		
@@ -34,8 +34,10 @@ $LANG = [
 	'warehouses' => "Warehouses",
 	'warehouse_demand' => "Warehouse Demand",
 	'new_warehouse' => "New Warehouse",
+	'add_warehouse' => "Add Warehouse",
 	'delete_warehouse' => "Delete Warehouse",
 		
+	'categories' => "Categories",
 	'category_name' => "Category name",
 	'category_name_missing' => "Enter category name!",
 	'category_name_error' => "Category is already there!",
@@ -44,6 +46,13 @@ $LANG = [
 	'delete_category_failed' => "Cannot delete category. Please delete sub-categories first!",
 	'edit_category' => "Edit Category",
 	
+	'locations' => "Locations",
+	'location_name' => "Location name",
+	'location_select_tip' => "Click location to select it.",
+	'new_location' => "New Location",
+	'add_location' => "Add Location",
+	'location_name_missing' => "Location name missing!",
+	'location_name_error' => "Location is alreay there!!",
 		
 ]
 

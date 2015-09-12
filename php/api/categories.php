@@ -13,7 +13,7 @@
 		}
 		
 		if( $_GET['function'] == "deleteCategory" && isset($_GET['id']) ){
-			if( db_deleteCategory($_GET['id']) )
+			if( db_deleteCategory($_SESSION['warehouseinfo']['id'], $_GET['id']) )
 				print $OK;
 			else
 				print $ERR;
