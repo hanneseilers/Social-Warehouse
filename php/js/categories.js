@@ -2,6 +2,10 @@
 _warehouseId = 0;
 _rootId = null;
 _categories = [];
+_palette = null
+
+_addCallback = null;
+_isLooseStorage = false;
 
 _male = false;
 _female = false;
@@ -57,18 +61,20 @@ function updateColors(){
 	}
 }
 
-function _loadCategories(addCallback=null){
+function _loadCategories(){
 	get( {'function': 'getCategoryInfos'}, function(data, status){
 		if( status == "success" ){
 			_categories = JSON.parse(data);
 		}
-		_showCategories(null, addCallback);
+		_showCategories();
 	} )
 }
 
-function showCategories(warehouseId, addCallback=null){
+function showCategories(warehouseId, addCallback=null, isLooseStorage=false){
 	setWarehouseId( warehouseId );
-	_loadCategories( addCallback );
+	_isLooseStorage = isLooseStorage;
+	_addCallback = addCallback;
+	_loadCategories();
 }
 
 function hasChildCategory(id){
@@ -149,7 +155,7 @@ function editCategory(id){
 	get( {'function': 'editCategory', 'id': id, 'name': name, 'parent': parent} );
 }
 
-function _showCategories(rootId=_rootId, addCallback=null){	
+function _showCategories(rootId=_rootId){	
 	// calculate class
 	vClass = 3;
 	if( _categories.length % 4 == 0 ){
@@ -167,13 +173,15 @@ function _showCategories(rootId=_rootId, addCallback=null){
 	root = getCategory(rootId);
 	if( root != null ){		
 		html += "<a href=\"javascript: _showCategories("
-			+ root['parent'] + ", " + addCallback + ");\" class=\"button centertext block\">" + getCategoryHierrachy(root['id']) + "</a>\n";
+			+ root['parent'] + ", " + _addCallback + ");\" class=\"button centertext block\">" + getCategoryHierrachy(root['id']) + "</a>\n";
 	}
 	
 	// check if to add income and outgo options
 	addIncomeOutgo = false;
-	if( addCallback && addCallback instanceof Function && root != null && !hasChildCategory(root['id']) ){
-		addIncomeOutgo = true;
+	if( _addCallback && _addCallback instanceof Function && root != null && !hasChildCategory(root['id']) ){
+		if( _isLooseStorage || _palette ){
+			addIncomeOutgo = true;
+		}
 	}
 	
 	// create sub categories
@@ -186,7 +194,7 @@ function _showCategories(rootId=_rootId, addCallback=null){
 			}
 			
 			// set link
-			href = "_showCategories(" + _categories[i]['id'] + ", " + addCallback + ");";
+			href = "_showCategories(" + _categories[i]['id'] + ", " + _addCallback + ");";
 			
 			// add button
 			html += "\t<a href=\"javascript: " + href + "\" class=\"button button"+ vClass
@@ -222,10 +230,11 @@ function _showCategories(rootId=_rootId, addCallback=null){
 		// show in and out fields
 		html += "<div class=\"table\">"
 			+ "<span class=\"button button3 button_table_cell biginput\">" + LANG('income') + "<br />"
-			+ "<input id=\"income\"  type=\"number\" onfocus=\"_income_selected = true; _outgo_selected = false; updateColors();\" onkeypress=\"if(event.keyCode == 13) " + addCallback.name + "();\" /></span>"
+			+ "<input id=\"income\"  type=\"number\" onfocus=\"_income_selected = true; _outgo_selected = false; updateColors();\" onkeypress=\"if(event.keyCode == 13) " + _addCallback.name + "();\" /></span>"
 			+ "<span class=\"button button3 button_table_cell biginput\">" + LANG('outgo') + "<br />"
-			+ "<input id=\"outgo\"  type=\"number\" onfocus=\"_income_selected = false; _outgo_selected = true; updateColors();\" onkeypress=\"if(event.keyCode == 13) " + addCallback.name + "();\" /></span>"
-			+ "<a href=\"javascript: " + addCallback.name + "();\" id=\"button_add\" class=\"button button3 button_table_cell biginput green\">" + LANG('add') + "</a>";
+			+ "<input id=\"outgo\"  type=\"number\" onfocus=\"_income_selected = false; _outgo_selected = true; updateColors();\" onkeypress=\"if(event.keyCode == 13) " + _addCallback.name + "();\" /></span>"
+			+ "<a href=\"javascript: " + _addCallback.name + "();\" id=\"button_add\" class=\"button button3 button_table_cell biginput green\">"
+			+ (_isLooseStorage ? LANG('add_loose_storage') : LANG('add_palette')) + "</a>";
 			
 		html += "</div>";
 	}

@@ -7,6 +7,7 @@ $LANG = [
 	'edit' => "Edit",	
 	'country' => "Country",
 	'city' => "City",
+	'locations' => "Locations",
 	'password' => "Password",
 	'password_repeat' => "Repeat password",
 	'description' => "Description",
@@ -20,7 +21,8 @@ $LANG = [
 	'children_baby' => "Children / Baby",
 	'income' => "Income",
 	'outgo' => "Outgo",
-	'add' => "Add",
+	'add_loose_storage' => "Add to loose storage",
+	'add_palette' => "Add to palette",
 		
 	'city_missing' => "City missing!",
 	'categories' => "Categories",

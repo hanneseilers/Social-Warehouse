@@ -15,14 +15,7 @@ CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`warehouses` (
   `country` TINYTEXT NOT NULL,
   `city` TINYTEXT NOT NULL,
   `password` MEDIUMTEXT NOT NULL,
-  `parent` INT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_warehouses_warehouses1_idx` (`parent` ASC),
-  CONSTRAINT `fk_warehouses_warehouses1`
-    FOREIGN KEY (`parent`)
-    REFERENCES `Social-Warehouse`.`warehouses` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 
@@ -69,11 +62,22 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `Social-Warehouse`.`locations`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`locations` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` TINYTEXT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `Social-Warehouse`.`storages`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`storages` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `category` INT NOT NULL,
+  `locations_id` INT NOT NULL,
   `palette` INT NULL,
   `in` BIGINT NOT NULL,
   `out` BIGINT NOT NULL,
@@ -84,6 +88,7 @@ CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`storages` (
   PRIMARY KEY (`id`),
   INDEX `fk_storages_categories1_idx` (`category` ASC),
   INDEX `fk_storages_palettes1_idx` (`palette` ASC),
+  INDEX `fk_storages_locations1_idx` (`locations_id` ASC),
   CONSTRAINT `fk_storages_categories1`
     FOREIGN KEY (`category`)
     REFERENCES `Social-Warehouse`.`categories` (`id`)
@@ -92,6 +97,11 @@ CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`storages` (
   CONSTRAINT `fk_storages_palettes1`
     FOREIGN KEY (`palette`)
     REFERENCES `Social-Warehouse`.`palettes` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_storages_locations1`
+    FOREIGN KEY (`locations_id`)
+    REFERENCES `Social-Warehouse`.`locations` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

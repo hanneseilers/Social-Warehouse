@@ -25,7 +25,7 @@ City: <input type="text" id="filtercity" onkeypress="filterCity();" />
 			print "<a href=\"?demand=".$vWarehouse['id']."\" class=\"button yellow\" id=\"warehousedemand".$vWarehouse['id']."\">".LANG('demand')."</a>";
 			print "<a href=\"javascript: login(".$vWarehouse['id'].");\" class=\"button green\" id=\"warehouselogin".$vWarehouse['id']."\">".LANG('login')."</a></div>";
 		}
-	
+		
 	?>
 </div>
 <div class="description_overlay" id="overlay">
