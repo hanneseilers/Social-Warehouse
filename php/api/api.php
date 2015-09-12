@@ -16,7 +16,11 @@
 	include( "warehouses.php" );
 	include( "locations.php" );
 	include( "palettes.php" );
+	include( "stock.php" );
 	
+	/*
+	 * Saves warehouse into php session.
+	 */
 	function _updateWarehouseInfo($id){
 		$_SESSION['warehouseinfo'] = db_getWarehouseInfo( $id )[0];
 	}

@@ -20,6 +20,7 @@ $LANG = [
 	'children_baby' => "Children / Baby",
 	'income' => "Income",
 	'outgo' => "Outgo",
+	'estimated' => "Estimated",
 		
 	'add_to_loose_stock' => "Add to loose stock",
 	'add_to_palette' => "Add to palette",

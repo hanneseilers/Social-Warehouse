@@ -30,5 +30,6 @@ include( "db_warehouses.php" );
 include( "db_categories.php" );
 include( "db_locations.php" );
 include( "db_palettes.php" );
+include( "db_stock.php" );
 
 ?>
