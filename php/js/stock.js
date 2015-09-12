@@ -22,7 +22,11 @@ function addToStock(category){
 			},
 			
 			function (data, status){
-				alert(status + "\n" + data);
+				if( status == "success" && data == "ok" ){
+					document.getElementById( 'income' ).value = "";
+					document.getElementById( 'income' ).value = "";
+					_showCategories( category );
+				}
 			});
 	
 }

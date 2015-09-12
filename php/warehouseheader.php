@@ -9,7 +9,7 @@
 		
 		print "<span class='group_left text_bold'>".LANG('warehouse').": ".$name."</span>";
 		print "<a href='javascript: changeWarehouseInfo();' class='button green'>".LANG('edit')."</a> ";
-		print "<a href='?demand=".$id."' class='button yellow'>".LANG('demand')."</a>";
+		print "<a href='?demand=".$id."' class='button yellow'>".LANG('stock_details')."</a>";
 		print "<a href='javascript: logout();' class='button red'>".LANG('logout')."</a>";
 		
 	?>

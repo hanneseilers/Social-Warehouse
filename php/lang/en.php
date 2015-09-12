@@ -21,13 +21,14 @@ $LANG = [
 	'income' => "Income",
 	'outgo' => "Outgo",
 	'estimated' => "Estimated",
+	'pieces' => "pcs.",
 		
 	'add_to_loose_stock' => "Add to loose stock",
 	'add_to_palette' => "Add to palette",
 		
 	'city_missing' => "City missing!",
 	'stock' => "Stock",
-	'palettes' => "Palettes",
+	'stock_details' => "Stock Details",
 	
 	'warehouse_name' => "Warehouse name",
 	'warehouse_name_error' => "Warehouse name already availabe!",

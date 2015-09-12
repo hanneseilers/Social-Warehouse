@@ -19,5 +19,9 @@
 		$sql = "UPDATE storages SET  income=income+".$income.", outgo=outgo+".$outgo." WHERE id=".$result[0]['id'];
 		return dbSQL($sql);
 	}
+	
+	function db_getStockInfo($category, $location, $palette){
+		
+	}
 
 ?>
