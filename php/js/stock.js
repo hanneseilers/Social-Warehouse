@@ -150,15 +150,20 @@ function _showCategories(rootId=_rootId){
 		vClass = 4;
 	}
 	
+	// get location data
+	vLocation = null;
+	if( _location ){
+		vLocation = getLocation( _location ); 
+	}
+	
 	// create html
-	html = "<h1 id='scrollTarget'>" + LANG('categories') + "</h1>";
+	html = "<h1 id='scrollTarget'>" + LANG('categories') + (vLocation ? ": " + vLocation['name'] : "" ) + "</h1>";
 	
 	// create root category
 	root = getCategory(rootId);
 	if( root != null ){		
 		html += "<a href='javascript: _showCategories("
 			+ root['parent'] + ");' class='button centertext block'>"
-			+ (_location ? _location + ": " : "" )
 			+ getCategoryHierrachy(root['id']) + "</a>\n";
 	}
 	

@@ -15,6 +15,7 @@
 	include( "categories.php" );
 	include( "warehouses.php" );
 	include( "locations.php" );
+	include( "palettes.php" );
 	
 	function _updateWarehouseInfo($id){
 		$_SESSION['warehouseinfo'] = db_getWarehouseInfo( $id )[0];

@@ -10,9 +10,9 @@
 <script src="js/jsfunctions.js"></script>
 <script src="js/lang.js"></script>
 <script src="js/base.js"></script>
-<script src="js/stock.js"></script>
-<script src="js/palettes.js"></script>
 <script src="js/locations.js"></script>
+<script src="js/palettes.js"></script>
+<script src="js/stock.js"></script>
 
 <meta charset="utf-8">
 </head>

@@ -36,6 +36,16 @@ function _showLocations(){
 	
 }
 
+function getLocation(id){
+	for( i=0; i < _locations.length; i++){
+		if( _locations[i]['id'] == id ){
+			return _locations[i];
+		}
+	}
+	
+	return null;
+}
+
 function editLocation(id){
 	name = document.getElementById( 'editlocation_' + id ).value.trim()
 	if( name.length > 0 ){
