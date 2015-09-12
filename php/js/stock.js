@@ -156,6 +156,12 @@ function _showCategories(rootId=_rootId){
 		vLocation = getLocation( _location ); 
 	}
 	
+	// get palette data
+	vPalette = null;
+	if( _palette ){
+		vPalette = getPalette( _palette ); 
+	}
+	
 	// create html
 	html = "<h1 id='scrollTarget'>" + LANG('categories') + (vLocation ? ": " + vLocation['name'] : "" ) + "</h1>";
 	
@@ -223,7 +229,7 @@ function _showCategories(rootId=_rootId){
 			+ "<span class='button button3 table_cell biginput'>" + LANG('outgo') + "<br />"
 			+ "<input id='outgo'  type='number' onfocus='_income_selected = false; _outgo_selected = true; updateColors();' onkeypress='if(event.keyCode == 13) addToStock();' /></span>"
 			+ "<a href='javascript: addToStock();' id='button_add' class='button button3 table_cell biginput green'>"
-			+ (!_palette ? LANG('add_loose_stock') : LANG('add_palette') + " " + _palette) + "</a>";
+			+ (!vPalette ? LANG('add_to_loose_stock') : LANG('add_to_palette') + "<br />" + vPalette['name']) + "</a>";
 			
 		html += "</div>";
 	}

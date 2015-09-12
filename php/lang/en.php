@@ -21,8 +21,8 @@ $LANG = [
 	'income' => "Income",
 	'outgo' => "Outgo",
 		
-	'add_loose_stock' => "Add to loose stock",
-	'add_palette' => "Add to palette",
+	'add_to_loose_stock' => "Add to loose stock",
+	'add_to_palette' => "Add to palette",
 		
 	'city_missing' => "City missing!",
 	'stock' => "Stock",
@@ -53,6 +53,14 @@ $LANG = [
 	'add_location' => "Add Location",
 	'location_name_missing' => "Location name missing!",
 	'location_name_error' => "Location is alreay there!!",
+		
+	'palettes' => "Palettes",
+	'palette_name' => "Palette name",
+	'palette_select_tip' => "Click palette to select it.",
+	'new_palette' => "New Palette",
+	'add_palette' => "Add Palette",
+	'palette_name_missing' => "Palette name missing!",
+	'palette_name_error' => "Palette is alreay there!!",
 		
 ]
 

@@ -3,6 +3,7 @@ _rootId = null;
 _categories = [];
 _locations = [];
 _location = null;
+_palettes = [];
 _palette = null
 
 function setWarehouseId(id){
@@ -35,6 +36,20 @@ function _loadLocations(callback, arg=null){
 	get( {'function': 'getLocations'}, function(data, status){
 		if( status == "success" ){
 			_locations = JSON.parse(data);
+		}
+		
+		if( arg ){
+			callback(arg);
+		} else {
+			callback()
+		}
+	} );
+}
+
+function _loadPalettes(callback, arg=null){
+	get( {'function': 'getPalettes'}, function(data, status){
+		if( status == "success" ){
+			_palettes = JSON.parse(data);
 		}
 		
 		if( arg ){

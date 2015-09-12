@@ -1,7 +1,7 @@
 <?php
 
 	function db_getPalettes($warehouseId){
-		$sql = "SELECT * FROM palettes WHERE warehouse=".$warehouseId;
+		$sql = "SELECT * FROM palettes WHERE warehouse=".$warehouseId." ORDER BY name ASC";
 		return dbSQL($sql);
 	}
 	
