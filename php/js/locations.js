@@ -1,4 +1,11 @@
 function showLocations($warehouseId){
 	setWarehouseId($warehouseId);
-//	get( {'function': ''} )
+	_loadLocations( _showLocations );
+}
+
+function _showLocations(){
+	
+	$html = "";
+	
+	
 }

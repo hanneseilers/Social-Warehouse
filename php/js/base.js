@@ -5,9 +5,6 @@ _locations = [];
 _location = null;
 _palette = null
 
-_addCallback = null;
-_isLooseStock = false;
-
 function setWarehouseId(id){
 	_warehouseId = id;
 	document.getElementById( 'loading' ).style.display = 'block';
@@ -20,11 +17,30 @@ function showHtml(html){
 	document.getElementById( 'datacontent' ).innerHTML = html;
 }
 
-function _loadCategories(){
-	get( {'function': 'getCategoryInfos'}, function(data, status){
+function _loadCategories(callback, arg=null){
+	get( {'function': 'getCategories'}, function(data, status){
 		if( status == "success" ){
 			_categories = JSON.parse(data);
 		}
-		_showCategories();
+		
+		if( arg ){
+			callback(arg);
+		} else {
+			callback()
+		}
+	} );
+}
+
+function _loadLocations(callback, arg=null){
+	get( {'function': 'getLocations'}, function(data, status){
+		if( status == "success" ){
+			_locations = JSON.parse(data);
+		}
+		
+		if( arg ){
+			callback(arg);
+		} else {
+			callback()
+		}
 	} );
 }

@@ -43,11 +43,9 @@ function updateColors(){
 function addToStock(){
 }
 
-function showStock(warehouseId, addCallback=null, isLooseStock=false){
+function showStock(warehouseId){
 	setWarehouseId( warehouseId );
-	_isLooseStock = isLooseStock;
-	_addCallback = addCallback;
-	_loadCategories();
+	_loadCategories( _showCategories );
 }
 
 function hasChildCategory(id){
@@ -125,7 +123,20 @@ function deleteCategory(id){
 }
 
 function editCategory(id){
-	get( {'function': 'editCategory', 'id': id, 'name': name, 'parent': parent} );
+	name = document.getElementById( 'categoryname' ).value.trim();
+	
+	demand = 0;
+	if( document.getElementById( 'demand' ) )
+		demand = document.getElementById( 'demand' ).value;
+	
+	if( demand.length == 0 ){
+		demand = 0;
+	}
+	
+	get( 	{'function': 'editCategory', 'id': id, 'name': base64_encode(name), 'demand': demand},
+			function(data, status){
+		_loadCategories( _showCategories, id );
+	});
 }
 
 function _showCategories(rootId=_rootId){	
@@ -146,17 +157,15 @@ function _showCategories(rootId=_rootId){
 	root = getCategory(rootId);
 	if( root != null ){		
 		html += "<a href=\"javascript: _showCategories("
-			+ root['parent'] + ", " + _addCallback + ");\" class=\"button centertext block\">"
+			+ root['parent'] + ");\" class=\"button centertext block\">"
 			+ (_location ? _location + ": " : "" )
 			+ getCategoryHierrachy(root['id']) + "</a>\n";
 	}
 	
-	// check if to add income and outgo options
+	// check if to add income and oualert( status + "\n" + data );tgo options
 	addIncomeOutgo = false;
-	if( _addCallback && _addCallback instanceof Function && root != null && !hasChildCategory(root['id']) ){
-		if( _isLooseStock || _palette ){
-			addIncomeOutgo = true;
-		}
+	if( root != null && !hasChildCategory(root['id']) ){
+		addIncomeOutgo = true;
 	}
 	
 	// create sub categories
@@ -169,7 +178,7 @@ function _showCategories(rootId=_rootId){
 			}
 			
 			// set link
-			href = "_showCategories(" + _categories[i]['id'] + ", " + _addCallback + ");";
+			href = "_showCategories(" + _categories[i]['id'] + ");";
 			
 			// add button
 			html += "\t<a href=\"javascript: " + href + "\" class=\"button button"+ vClass
@@ -205,11 +214,11 @@ function _showCategories(rootId=_rootId){
 		// show in and out fields
 		html += "<div class=\"table\">"
 			+ "<span class=\"button button3 button_table_cell biginput\">" + LANG('income') + "<br />"
-			+ "<input id=\"income\"  type=\"number\" onfocus=\"_income_selected = true; _outgo_selected = false; updateColors();\" onkeypress=\"if(event.keyCode == 13) " + _addCallback.name + "();\" /></span>"
+			+ "<input id=\"income\"  type=\"number\" onfocus=\"_income_selected = true; _outgo_selected = false; updateColors();\" onkeypress=\"if(event.keyCode == 13) addToStock();\" /></span>"
 			+ "<span class=\"button button3 button_table_cell biginput\">" + LANG('outgo') + "<br />"
-			+ "<input id=\"outgo\"  type=\"number\" onfocus=\"_income_selected = false; _outgo_selected = true; updateColors();\" onkeypress=\"if(event.keyCode == 13) " + _addCallback.name + "();\" /></span>"
-			+ "<a href=\"javascript: " + _addCallback.name + "();\" id=\"button_add\" class=\"button button3 button_table_cell biginput green\">"
-			+ (_isLooseStock ? LANG('add_loose_stock') : LANG('add_palette') + " " + _palette) + "</a>";
+			+ "<input id=\"outgo\"  type=\"number\" onfocus=\"_income_selected = false; _outgo_selected = true; updateColors();\" onkeypress=\"if(event.keyCode == 13) addToStock();\" /></span>"
+			+ "<a href=\"javascript: addToStock();\" id=\"button_add\" class=\"button button3 button_table_cell biginput green\">"
+			+ (!_palette ? LANG('add_loose_stock') : LANG('add_palette') + " " + _palette) + "</a>";
 			
 		html += "</div>";
 	}
@@ -223,7 +232,7 @@ function _showCategories(rootId=_rootId){
 		// add category edit & delete button
 		html += "<div class=\"groupitem\"><span class=\"group_left\">"
 			+ LANG('category_name') + ": <input type=\"text\" id=\"categoryname\" value=\"" + root['name'] + "\" />"
-			+ (!hasChildCategory(root['id']) ? " " + LANG('demand') + ": <input type=\"text\" id=\"demand\" />" : "" )
+			+ (!hasChildCategory(root['id']) ? " " + LANG('demand') + ": <input type=\"text\" id=\"demand\" value=\"" + root['required'] + "\" />" : "" )
 			+ "</span>";
 		
 		html += "<a href=\"javascript: editCategory(" + root['id'] + ");\" class=\"button green\">" + LANG('edit') + "</a> "

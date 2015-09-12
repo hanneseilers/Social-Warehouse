@@ -19,8 +19,15 @@
 				print $ERR;
 		}
 		
-		if( $_GET['function'] == "getCategoryInfos" ){
+		if( $_GET['function'] == "getCategories" ){
 			print json_encode( db_getCategories($_SESSION['warehouseinfo']['id']) );
+		}
+		
+		if( $_GET['function'] == "editCategory" && isset($_GET['id']) && isset($_GET['name']) && isset($_GET['demand']) ){
+			if( db_editCategory($_GET['id'], base64_decode($_GET['name']), $_GET['demand']) )
+				print $OK;
+			else
+				print $ERR;
 		}
 		
 	}
