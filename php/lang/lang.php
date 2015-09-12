@@ -37,3 +37,10 @@ function LANG($key){
 	
 	return "err";
 }
+
+function HELP_FILE(){
+	if( file_exists( "help/".$local_language) )
+		return "help/".$local_language;
+	
+	return "help/".$default_language;
+}
