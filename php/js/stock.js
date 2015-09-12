@@ -4,6 +4,9 @@ _baby = false;
 _income_selected = false;
 _outgo_selected = false;
 
+function addToStock(){
+}
+
 function updateColors(){
 	// get colors
 	defColor = getStyleRuleValue( 'background-color', '.button' );
@@ -38,9 +41,6 @@ function updateColors(){
 		document.getElementById( 'outgo' ).focus();
 		document.getElementById( 'outgo' ).parentElement.style.backgroundColor = yellow;
 	}
-}
-
-function addToStock(){
 }
 
 function showStock(warehouseId){

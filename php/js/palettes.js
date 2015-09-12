@@ -12,8 +12,8 @@ function _showPalettes(){
 		html += "\n<div class='groupitem " + (_palette == _palettes[i]['id'] ? "yellow" : "") + "'>"
 			+ "<span class='group_left' onclick='selectPalette(" + _palettes[i]['id'] + ")'>"
 			+ _palettes[i]['name'] + "</span>"
-			+ "<span class='inline_text table_cell'>" + LANG('palette_name') + ": "
-			+ "<input type='text' id='editpalette_" + _palettes[i]['id'] + "' value='" + _palettes[i]['name'] + "' /></span>"
+			+ "<span class='inline_text hidetext'>" + LANG('palette_name') + ": "
+			+ "<input type='text' id='editpalette_" + _palettes[i]['id'] + "' /></span>"
 			+ " <a href='javascript: editPalette(" + _palettes[i]['id'] + ")' class='button green'>" + LANG('edit') + "</a>"
 			+ " <a href='javascript: deletePalette(" + _palettes[i]['id'] + ")' class='button red'>" + LANG('delete') + "</a>"
 			+ "</div>";
@@ -46,13 +46,19 @@ function getPalette(id){
 
 function editPalette(id){
 	name = document.getElementById( 'editpalette_' + id ).value.trim()
+	vPalette = getPalette(id);
+	
 	if( name.length > 0 ){
 		get( 	{'function': 'editPalette', 'id': id, 'name': base64_encode(name)},
 				function(data, status){
 					if( status == "success" && data == "ok" ){
 						_loadPalettes( _showPalettes );
+						document.getElementById( 'editpalette_' + id ).parentElement.style.display = "none";
 					}
 		});
+	} else if( vPalette ) {
+		document.getElementById( 'editpalette_' + id ).value = vPalette['name'];
+		document.getElementById( 'editpalette_' + id ).parentElement.style.display = "table-cell";
 	}
 }
 

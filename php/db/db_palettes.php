@@ -21,7 +21,12 @@
 	}
 	
 	function db_editPalette($warehouseId, $id, $name){
-		$sql = "UPDATE palette SET name='".$name."' WHERE warehouse=".$warehouseId." AND id=".$id;
-		return dbSQL($sql);
+		$sql = "SELECT * FROM palettes WHERE warehouse=".$warehouseId." AND name='".$name."'";
+		if( count(dbSQL($sql)) == 0 ){
+			$sql = "UPDATE palettes SET name='".$name."' WHERE warehouse=".$warehouseId." AND id=".$id;
+			return dbSQL($sql);
+		}
+		
+		return false;
 	}
 ?>
