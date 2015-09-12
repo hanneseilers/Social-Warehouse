@@ -1,3 +1,7 @@
+get = function (data, callback){
+	$.get( "api/api.php", data, callback );
+}
+
 function login(id){
 	
 	var vPasswordInput = document.getElementById( 'warehousepw' + id );	
@@ -21,13 +25,13 @@ function login(id){
 		
 		// show wait
 		document.getElementById( 'warehouselogin' + id ).style.display = "none";
-		document.getElementById( 'warehousereq' + id ).style.display = "none";
+		document.getElementById( 'warehousedemand' + id ).style.display = "none";
 		document.getElementById( 'warehouseload' + id ).style.display = "table-cell";
 		vPasswordInput.parentElement.style.display = 'none';
 		
 		// check if password ok
 		var vPassword = MD5( vPasswordInput.value );
-		$.get( "api/api.php", {'function': 'checkLogin', 'warehouse': id, 'pw': vPassword}, login_result );
+		get( {'function': 'checkLogin', 'warehouse': id, 'pw': vPassword}, login_result );
 		
 	}
 }
@@ -41,24 +45,22 @@ function login_result(data, status, xhr){
 		document.getElementById( 'warehouseloginfailed' + id ).style.display = "block";
 		document.getElementById( 'warehousepw' + id ).parentElement.style.display = "table-cell";
 		document.getElementById( 'warehouselogin' + id ).style.display = "table-cell";
+		document.getElementById( 'warehousedemand' + id ).style.display = "table-cell";
 		document.getElementById( 'warehouseload' + id ).style.display = "none";
 	}
 }
 
 function logout(){
-	$.get( 	"api/api.php",
-			{'function': 'logout'},
-			function(){location.reload();} 
-		);
+	get( {'function': 'logout'},	function(){location.reload();} );
 }
 
 function addWarehouse(){
-	$name = document.getElementById( 'warehousename' ).value.trim();
-	$password = document.getElementById( 'password' ).value.trim();
-	$password2 = document.getElementById( 'password-repeat' ).value.trim();
-	$description = document.getElementById( 'warehousedescription' ).value.trim();
-	$country = document.getElementById( 'country' ).value.trim();
-	$city = document.getElementById( 'city' ).value.trim();
+	name = document.getElementById( 'warehousename' ).value.trim();
+	password = document.getElementById( 'password' ).value.trim();
+	password2 = document.getElementById( 'password-repeat' ).value.trim();
+	description = document.getElementById( 'warehousedescription' ).value.trim();
+	country = document.getElementById( 'country' ).value.trim();
+	city = document.getElementById( 'city' ).value.trim();
 
 	// hide errors
 	document.getElementById( 'warehousewrong' ).style.display = "none";
@@ -67,27 +69,26 @@ function addWarehouse(){
 	document.getElementById( 'citymissing' ).style.display = "none";
 	
 	// check password
-	if( $password.length == 0){
+	if( password.length == 0){
 		document.getElementById( 'passwordmissing' ).style.display = "block";
-	} else if( $password != $password2 ){
+	} else if( password != password2 ){
 		document.getElementById( 'passwordwrong' ).style.display = "block";
 	}
 	// check city
-	else if( $city.length == 0 ) {
+	else if( city.length == 0 ) {
 		document.getElementById( 'citymissing' ).style.display = "block";
 	}
 	
 		
 	// try to create new warehouse
 	else {
-		$password = MD5($password);
-		$.get( 	"api/api.php",
-				{	'function': 'addWarehouse',
-					'name': base64_encode($name),
-					'desc': base64_encode($description),
-					'pw': $password,
-					'country': base64_encode($country),
-					'city': base64_encode($city)
+		password = MD5(password);
+		get( 	{	'function': 'addWarehouse',
+					'name': base64_encode(name),
+					'desc': base64_encode(description),
+					'pw': password,
+					'country': base64_encode(country),
+					'city': base64_encode(city)
 				},
 				function(data, status){
 					data = data.split(";");
@@ -101,43 +102,42 @@ function addWarehouse(){
 }
 
 function deleteWarehouse(){
-	$.get( "api/api.php", {'function': 'deleteWarehouse'}, function(){ location.reload(); } );
+	get( {'function': 'deleteWarehouse'}, function(){ location.reload(); } );
 }
 
 function changeWarehouseInfo(){
 	
-	$tableEdit = document.getElementById( 'warehouseeditdata' );
+	tableEdit = document.getElementById( 'warehouseeditdata' );
 	
 	// hide errors
 	document.getElementById( 'passwordwrong' ).style.display = "none";
 	document.getElementById( 'citymissing' ).style.display = "none";
 	
-	if( $tableEdit.style.display != "block" ){
-		$tableEdit.style.display = "block";
+	if( tableEdit.style.display != "block" ){
+		tableEdit.style.display = "block";
 	} else {	
-		$name = document.getElementById( 'warehousenamenew' ).value.trim();
-		$password = document.getElementById( 'password' ).value.trim();
-		$password2 = document.getElementById( 'password-repeat' ).value.trim();
-		$description = document.getElementById( 'warehousedescription' ).value.trim();
-		$country = document.getElementById( 'country' ).value.trim();
-		$city = document.getElementById( 'city' ).value.trim();
+		name = document.getElementById( 'warehousenamenew' ).value.trim();
+		password = document.getElementById( 'password' ).value.trim();
+		password2 = document.getElementById( 'password-repeat' ).value.trim();
+		description = document.getElementById( 'warehousedescription' ).value.trim();
+		country = document.getElementById( 'country' ).value.trim();
+		city = document.getElementById( 'city' ).value.trim();
 		
-		if( $password != $password2 ){
+		if( password != password2 ){
 			document.getElementById( 'passwordwrong' ).style.display = "block";
-		} else if( $city.length == 0 ){
+		} else if( city.length == 0 ){
 			document.getElementById( 'citymissing' ).style.display = "block";
 		} else {
-			if( $password.length > 0 )
-				$password = MD5($password);
+			if( password.length > 0 )
+				password = MD5(password);
 				
-			$.get( 	"api/api.php",
-					{
+			get( 	{
 						'function': 'changeWarehouseInfo',
-						'name': base64_encode($name),
-						'desc': base64_encode($description),
-						'pw': $password,
-						'country': base64_encode($country),
-						'city': base64_encode($city)
+						'name': base64_encode(name),
+						'desc': base64_encode(description),
+						'pw': password,
+						'country': base64_encode(country),
+						'city': base64_encode(city)
 					},
 					function(data, success){
 						location.reload();
@@ -146,24 +146,23 @@ function changeWarehouseInfo(){
 	}
 }
 
-function showWarehouseDescription($id){
+function showWarehouseDescription(id){
 	// show loading
-	document.getElementById( 'warehousedescriptiontext' ).style.display = "none";
-	document.getElementById( 'descriptionloading' ).style.display = "block";
-	document.getElementById( 'warehousedescriptionoverlay' ).style.display = "block";
+	document.getElementById( 'overlay_text' ).style.display = "none";
+	document.getElementById( 'overlay_loading' ).style.display = "block";
+	document.getElementById( 'overlay' ).style.display = "block";
 	
 	// get description
-	$.get( 	"api/api.php",
-			{'function': 'getWarehouseDescription', 'warehouse': $id},
+	get( 	{'function': 'getWarehouseDescription', 'warehouse': id},
 			function(data, status){
 				data = data.split(";");
 				if( status == "success" && data.length > 0 && data[0] == "ok" )
-					document.getElementById( 'warehousedescriptiontext' ).innerHTML = data[1];
+					document.getElementById( 'overlay_text' ).innerHTML = data[1];
 				else
-					document.getElementById( 'warehousedescriptiontext' ).innerHTML = "no description found";
+					document.getElementById( 'overlay_text' ).innerHTML = "no description found";
 				
-				document.getElementById( 'warehousedescriptiontext' ).style.display = "block";
-				document.getElementById( 'descriptionloading' ).style.display = "none";
+				document.getElementById( 'overlay_text' ).style.display = "block";
+				document.getElementById( 'overlay_loading' ).style.display = "none";
 			});
 	
 }
@@ -189,18 +188,33 @@ function moveWarehouseDescription(event){
           (doc && doc.clientTop  || body && body.clientTop  || 0 );
     }
 
-    document.getElementById( 'warehousedescriptionoverlay' ).style.top = event.pageY;
-    document.getElementById( 'warehousedescriptionoverlay' ).style.left = event.pageX;
+    document.getElementById( 'overlay' ).style.top = event.pageY;
+    document.getElementById( 'overlay' ).style.left = event.pageX;
 }
 
 function hideWarehouseDescription(){
-	document.getElementById( 'warehousedescriptionoverlay' ).style.display = "none";
+	document.getElementById( 'overlay' ).style.display = "none";
 }
 
 function filterCountry(){
-	$country = document.getElementById( 'filtercountry' ).value;
+	country = document.getElementById( 'filtercountry' ).value;
 }
 
 function filterCity(){
-	$city = document.getElementById( 'filtercity' ).value;
+	city = document.getElementById( 'filtercity' ).value;
+}
+
+function getStyleRuleValue(style, selector, sheet) {
+    var sheets = typeof sheet !== 'undefined' ? [sheet] : document.styleSheets;
+    for (var i = 0, l = sheets.length; i < l; i++) {
+        var sheet = sheets[i];
+        if( !sheet.cssRules ) { continue; }
+        for (var j = 0, k = sheet.cssRules.length; j < k; j++) {
+            var rule = sheet.cssRules[j];
+            if (rule.selectorText && rule.selectorText.split(',').indexOf(selector) !== -1) {
+                return rule.style[style];
+            }
+        }
+    }
+    return null;
 }

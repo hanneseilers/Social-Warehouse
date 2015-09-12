@@ -30,22 +30,49 @@ textarea{
 	display: none;
 }
 
+.centertext{
+	text-align: center;
+}
+
+.righttext{
+	text-align: right;
+}
+
+.inline_text{
+	padding-right: 10px;
+	padding-left: 10px;
+	white-space: nowrap;
+	vertical-align: middle;
+}
+
+.text_red{
+	color: #ff0000;
+}
+
+.text_bold{
+	font-weight: bold;
+}
+
+.block{
+	display: block;
+}
+
 .button{
 	padding: 10px;
 	border-radius: 5px;
 	background-color: #a6a6a6;
 	text-decoration: none;
 	color: #303030;
-}
-
-.button_block{
-	display: block;
-	height: 100%;
+	vertical-align: middle;
 }
 
 .button_table_cell{
 	display: table-cell;
 	text-align: center;
+}
+
+.button img{
+	vertical-align: middle;
 }
 
 .button3{
@@ -66,13 +93,54 @@ textarea{
 	font-weight: bold;
 }
 
+.biginput{
+	font-size: 20pt;
+	font-weight: bold;
+}
+
+.biginput input{
+	font-size: 40pt;
+	width: 160pt;
+	text-align: right;
+}
+
+.groupitem{
+	display: table;
+	width: 100%;
+	border-spacing: 5px 0px;
+	margin-bottom: 0.5%;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #303030;	
+}
+
+.groupitem img{
+	vertical-align: middle;
+}
+
+.groupitem .button{
+	display: table-cell;
+	white-space: nowrap;
+}
+
+.group_left{
+	display: table-cell;
+	width: 100%;
+	vertical-align: middle;
+}
+
+.hspacer{
+	width: 100%;
+	margin-top: 10px;
+}
+
 .mainframe{
 	background-color: #ffffff;
 	padding: 1%;
 	width: 98%;
 }
 
-.mainframe div:not(.table):not(.warehousedescription){
+.mainframe div:not(.warehousedescription){
 	width: calc(100% - 20px);
 	padding-left: 10px;
 	padding-right: 10px;
@@ -122,32 +190,7 @@ textarea{
 	text-decoration: underline;
 }
 
-.warehouseslist{
-	overflow: auto;
-	max-height: 50%;
-}
-
-.warehouseitem{
-	display: table;
-	width: 100%;
-	border-spacing: 5px 0px;
-	margin-bottom: 0.5%;
-	border-style: solid;
-	border-width: 1px;
-	border-color: #303030;	
-}
-
-.warehouseitem img{
-	vertical-align: middle;
-}
-
-.warehousename{
-	display: table-cell;
-	width: 100%;
-	font-weight: bold;
-}
-
-.warehousedescription{
+.description_overlay{
 	display: none;
 	position: absolute;
 	top: 0px;
@@ -166,44 +209,13 @@ textarea{
 	background-color: #ffffff;
 }
 
-.loginpw{
+.warehouseslist{
+	overflow: auto;
+	max-height: 50%;
+}
+
+.loadinggif{
 	display: none;
-	padding-right: 10px;
-	padding-left: 10px;
-	white-space: nowrap;
-}
-
-.loginloading{
-	display: none;
-}
-
-.loginfailed{
-	display: none;
-	padding-right: 10px;
-	padding-left: 10px;
-	color: #ff0000;
-	white-space: nowrap;
-}
-
-.warehouseinfo{
-	width: 100%;
-	margin-bottom: 0.5%;
-	border-style: solid;
-	border-width: 1px;
-	border-color: #303030;
-}
-
-.warehouseinfo span{
-	display: table-cell;
-	white-space: nowrap;
-}
-
-.warehouseinfo table.edit{
-	display: none;
-}
-
-.warehouseedit{
-	display: block;
 }
 
 .register input{
@@ -232,4 +244,8 @@ textarea{
 
 .blue{
 	background-color: #8686ff;
+}
+
+.orange{
+	background-color: #ffb95e;
 }

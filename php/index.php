@@ -4,10 +4,14 @@
 
 <link type="text/css" rel="stylesheet" href="style.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.scrollto/2.1.0/jquery.scrollTo.min.js"></script> <!--  Source: https://github.com/flesler/jquery.scrollTo -->
 <script src="js/md5.js"></script>
 <script src="js/base64.js"></script>
 <script src="js/jsfunctions.js"></script>
+<script src="js/lang.js"></script>
 <script src="js/categories.js"></script>
+<script src="js/stock.js"></script>
+<script src="js/palettes.js"></script>
 
 <meta charset="utf-8">
 </head>
@@ -18,25 +22,12 @@
 	<?php
 		session_start();
 		include( "db/db.php" );
-		
-		// get language
-		$default_language = "lang/en.php";
-		if( !empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) ){
-			$local_language = explode( ",", $_SERVER['HTTP_ACCEPT_LANGUAGE'] );
-			if( count($local_language) > 0 )
-				$local_language = $local_language[0];
-			$local_language = "lang/".$local_language.".php";
-		}
-		
-		// load language file
-		if( file_exists($local_language) )
-			include( $local_language );
-		else
-			include( $default_language );
 	
+		// include multilanguage support
+		include( "lang/lang.php" );
+		
 		// include content
-		include( "countries/countries.php" );
-	
+		include( "countries/countries.php" );	
 		include( "header.php" );
 		
 		if( isset($_GET['demand']) ){

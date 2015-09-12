@@ -1,4 +1,4 @@
-<h1>Warehouses</h1>
+<h1><?php print LANG('warehouses'); ?></h1>
 <!--
 Country: <select id="filtercountry" onchange="filterCountry();">
 	<option>-All-</option>
@@ -14,21 +14,21 @@ City: <input type="text" id="filtercity" onkeypress="filterCity();" />
 		
 		// list warehouses
 		foreach( db_getWarehouses() as $vWarehouse ){
-			print "<div class=\"warehouseitem\">";
-			print "<span class=\"warehousename\" onmousemove=\"moveWarehouseDescription(event);\" onmouseover=\"showWarehouseDescription(".$vWarehouse['id'].");\", onmouseout=\"hideWarehouseDescription();\">";
+			print "<div class=\"groupitem\">";
+			print "<span class=\"group_left text_bold\" onmousemove=\"moveWarehouseDescription(event);\" onmouseover=\"showWarehouseDescription(".$vWarehouse['id'].");\", onmouseout=\"hideWarehouseDescription();\">";
 			print "<span id=\"country_".$vWarehouse['country']."\"><img src=\"countries/flags/".getCountryCode("countries/countries", $vWarehouse['country']).".png\" /></span> ";
 			print "<span id=\"city_".$vWarehouse['city']."\">".$vWarehouse['city']."</span> : ";
 			print $vWarehouse['name']."</span>";
-			print "<span class=\"loginfailed\" id=\"warehouseloginfailed".$vWarehouse['id']."\">Passwort falsch!</span>";
-			print "<span class=\"loginpw\">Password: <input type=\"password\" id=\"warehousepw".$vWarehouse['id']."\" onkeypress=\"if(event.keyCode == 13) login(".$vWarehouse['id'].");\" /></span>";
-			print "<img src=\"img/loading.gif\" class=\"loginloading\" id=\"warehouseload".$vWarehouse['id']."\" />";
-			print "<span class=\"edit\"><a href=\"?demand=".$vWarehouse['id']."\" class=\"button yellow button_table_cell\" id=\"warehousereq".$vWarehouse['id']."\">Demand</a>";
-			print "<a href=\"javascript: login(".$vWarehouse['id'].");\" class=\"button green button_table_cell\" id=\"warehouselogin".$vWarehouse['id']."\">Login</a></span></div>";
+			print "<span class=\"inline_text hidetext text_red\" id=\"warehouseloginfailed".$vWarehouse['id']."\">".LANG('password_wrong')."</span>";
+			print "<span class=\"inline_text hidetext\">".LANG('password').": <input type=\"password\" id=\"warehousepw".$vWarehouse['id']."\" onkeypress=\"if(event.keyCode == 13) login(".$vWarehouse['id'].");\" /></span>";
+			print "<img src=\"img/loading.gif\" class=\"loadinggif\" id=\"warehouseload".$vWarehouse['id']."\" />";
+			print "<a href=\"?demand=".$vWarehouse['id']."\" class=\"button yellow\" id=\"warehousedemand".$vWarehouse['id']."\">".LANG('demand')."</a>";
+			print "<a href=\"javascript: login(".$vWarehouse['id'].");\" class=\"button green\" id=\"warehouselogin".$vWarehouse['id']."\">".LANG('login')."</a></div>";
 		}
 	
 	?>
 </div>
-<div class="warehousedescription" id="warehousedescriptionoverlay">
-	<img src="img/loading.gif" id="descriptionloading" />
-	<span id="warehousedescriptiontext" class="hidetext">test</span>
+<div class="description_overlay" id="overlay">
+	<img src="img/loading.gif" id="overlay_loading" />
+	<span class="hidetext" id="overlay_text"></span>
 </div>

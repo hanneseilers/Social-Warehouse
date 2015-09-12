@@ -1,13 +1,13 @@
 <div class="register">
-	<h1>New Warehouse</h1>
+	<h1><?php print LANG('new_warehouse'); ?></h1>
 	<table>
 		<tr>
-			<td>Warehouse name:</td>
+			<td><?php print LANG('warehouse_name'); ?>:</td>
 			<td><input type="text" id="warehousename" /></td>
-			<td id="warehousewrong" class="errortext hidetext">Warehousename already available</td>
+			<td id="warehousewrong" class="errortext hidetext"><?php print LANG('warehouse_name_error'); ?></td>
 		</tr>
 		<tr>
-			<td>Country:</td>
+			<td><?php print LANG('country'); ?>:</td>
 			<td>
 				<select id="country">
 					<?php
@@ -17,29 +17,29 @@
 			</td>
 		</tr>
 		<tr>
-			<td>City:</td>
+			<td><?php print LANG('city'); ?>:</td>
 			<td><input type="text" id="city" /></td>
-			<td id="citymissing" class="errortext hidetext">City is missing!</td>
+			<td id="citymissing" class="errortext hidetext"><?php print LANG('city_missing'); ?></td>
 		</tr>
 		<tr>
 			<td><br /></td>
 		</tr>
 		<tr>
-			<td>Password:</td>
+			<td><?php print LANG('password'); ?>:</td>
 			<td><input type="password" id="password" /></td>
-			<td id="passwordwrong" class="errortext hidetext">Passwords aren't the same!</td>
-			<td id="passwordmissing" class="errortext hidetext">Password missing!</td>
+			<td id="passwordwrong" class="errortext hidetext"><?php print LANG('passwords_not_equal'); ?></td>
+			<td id="passwordmissing" class="errortext hidetext"><?php print LANG('password_missing'); ?></td>
 		</tr>
 		<tr>
-			<td>Repeat password:</td>
+			<td><?php print LANG('password_repeat'); ?>:</td>
 			<td><input type="password" id="password-repeat" /></td>
 		</tr>
 		<tr>
-			<td>Description (optional):</td>
+			<td><?php print LANG('description'); ?> (<?php print LANG('optional'); ?>):</td>
 			<td><textarea rows="5" id="warehousedescription"></textarea>
 		</tr>
 		<tr>
-			<td colspan="2" align="center"><a href="javascript: addWarehouse();" class="button button_block">Create Warehouse</a></td>
+			<td colspan="2" align="center"><a href="javascript: addWarehouse();" class="button block"><?php print LANG('create_warehouse'); ?></a></td>
 		</tr>
 	</table>
 </div>

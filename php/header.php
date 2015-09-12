@@ -16,7 +16,7 @@
 		// show current catgeory or demand
 		if( isset($_GET['demand']) ){
 			$vWarehouse = db_getWarehouseInfo( $_GET['demand'] )[0];
-			print " > <a href=\"\">Warehouse Demand: ".$vWarehouse['name']."</a>";
+			print " > <a href=\"\">".LANG('warehouse_demand').": ".$vWarehouse['name']."</a>";
 		}
 		else {
 			print " <span id=\"breadcrumb_js\"></span>";
