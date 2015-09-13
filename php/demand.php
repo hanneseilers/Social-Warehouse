@@ -58,7 +58,7 @@
 					// calculate demand
 					$demand = 0.0;
 					if( $category['required'] > 0 )
-						$demand = $stock['total'] / $category['required'];
+						$demand = 1.0 - ($stock['total'] / $category['required']);
 					
 					// select images
 					$img1 = "gray";
