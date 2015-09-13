@@ -11,14 +11,25 @@
 	}
 	
 	function db_deleteCategory($warehouseId, $id){
+		
 		$sql = "SELECT catR.id FROM categories AS catL JOIN categories AS catR ON catR.parent=catL.id WHERE catL.id=".$id." AND catL.warehouse=".$warehouseId;
 		$childs = dbSQL($sql);
 		
 		// try to delete childs
 		foreach( $childs as $child ){
+			
+			// delete storages
+			$sql = "DELETE FROM storages WHERE category=".$child['id'];
+			dbSQL($sql);
+			
+			// delete category
 			$sql = "DELETE FROM categories WHERE id=".$child['id']." AND warehouse=".$warehouseId;
 			dbSQL($sql);
 		}
+		
+		// delete storages
+		$sql = "DELETE FROM storages WHERE category=".$id;
+		dbSQL($sql);
 		
 		// try to delete parent
 		$sql = "DELETE FROM categories WHERE id=".$id;

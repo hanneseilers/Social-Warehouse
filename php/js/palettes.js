@@ -22,7 +22,7 @@ function _showPalettes(){
 	// show form to add palette
 	html += "<h1>" + LANG('add_palette') + ":</h1>\n"
 		+ "<div class='groupitem'><span class='group_left'>"
-		+ LANG('palette_name') + ": <input type='text' id='addPalette' /></span>"
+		+ LANG('palette_name') + ": <input type='text' id='addPalette' onkeypress='if(event.keyCode == 13) addPalette()'; /></span>"
 		+ "<span class='inline_text errortext hidetext' id='palette_name_missing'>" + LANG('palette_name_missing') + "</span>"
 		+ "<span class='inline_text errortext hidetext' id='palette_name_error'>" + LANG('palette_name_error') + "</span>"
 		+ "<a href='javascript: addPalette()' class='button'>" + LANG('add_palette') + "</a>" 

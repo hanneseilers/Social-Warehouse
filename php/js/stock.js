@@ -140,7 +140,7 @@ function addCategory(parent){
 			get( {'function': 'addCategory', 'name': base64_encode(name), 'parent': parent}, function(data, status){
 				if( status == "success" && data == "ok" ){
 					_rootId = parent;
-					_loadCategories( _showCategories );
+					_loadCategories( _showCategories, parent );
 				} else {
 					alert( LANG('category_name_error') )
 				}
@@ -183,7 +183,7 @@ function editCategory(id){
 }
 
 function _showCategories(rootId){
-	if( typeof rootId == undefined || rootId == null ){
+	if( typeof rootId == undefined ){
 		rootId = _rootId;
 	}
 	
@@ -298,7 +298,7 @@ function _showCategories(rootId){
 		
 	// add add-category form
 	html += "<div class='groupitem'><span class='group_left'>"
-		+ LANG('category_name') + ": <input type='text' id='addcategory' /></span>" 
+		+ LANG('category_name') + ": <input type='text' id='addcategory' onkeypress='if(event.keyCode == 13) addCategory(" + rootId + ");' /></span>" 
 		+ "<a href='javascript: addCategory(" + rootId + ");' class='button'>" + LANG('add_category') + "</a></div>";
 	
 	if( root != null ){	
