@@ -77,7 +77,7 @@ function updateColors(){
 
 function showStock(warehouseId){
 	setWarehouseId( warehouseId );
-	_loadCategories( _showCategories );
+	_loadCategories( _showCategories, null );
 }
 
 function hasChildCategory(id){

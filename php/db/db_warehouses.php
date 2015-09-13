@@ -47,6 +47,34 @@ function db_addWarehouse($name, $description, $password, $country, $city){
 }
 
 function db_deleteWarehouse($id){
+	$sql = "SELECT storages.id FROM categories INNER JOIN storages ON storages.category=categories.id AND categories.warehouse=".$id;
+	$result = dbSQL($sql);
+	
+	// delete stoarges
+	foreach( $result as $storage ){
+		$sql = "DELETE FROM storages WHERE id=".$storage['id'];
+		dbSQL($sql);
+	}
+	
+	// delete categories
+	$sql = "SELECT * FROM categories WHERE warehouse=".$id." ORDER BY id DESC";
+	$result = dbSQL($sql);
+
+	foreach( $result as $category ){
+		$sql = "DELETE FROM categories WHERE id=".$category['id'];
+		dbSQL($sql);
+	}
+	
+	// delete location
+	$sql = "DELETE FROM locations WHERE warehouse=".$id;
+	print $sql."<br />";
+	dbSQL($sql);
+	
+	// delete palettes
+	$sql = "DELETE FROM palettes WHERE warehouse=".$id;
+	dbSQL($sql);
+	
+	// delete warehouse
 	$sql = "DELETE FROM warehouses WHERE id=".$id;
 	return dbSQL($sql);
 }
