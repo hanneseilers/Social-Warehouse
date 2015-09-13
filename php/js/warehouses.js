@@ -49,13 +49,15 @@ function deleteWarehouse(){
 	get( {'function': 'deleteWarehouse'}, function(){ location.reload(); } );
 }
 
-function changeWarehouseInfo(){
+function editWarehouse(){
 	
 	tableEdit = document.getElementById( 'warehouseeditdata' );
 	
 	// hide errors
 	document.getElementById( 'passwordwrong' ).style.display = "none";
 	document.getElementById( 'citymissing' ).style.display = "none";
+	document.getElementById( 'warehouse_name_missing' ).style.display = "none";
+	document.getElementById( 'warehouse_name_error' ).style.display = "none";
 	
 	if( tableEdit.style.display != "block" ){
 		tableEdit.style.display = "block";
@@ -72,20 +74,30 @@ function changeWarehouseInfo(){
 		} else if( city.length == 0 ){
 			document.getElementById( 'citymissing' ).style.display = "block";
 		} else {
+			
 			if( password.length > 0 )
 				password = MD5(password);
-				
-			get( 	{
-						'function': 'changeWarehouseInfo',
-						'name': base64_encode(name),
-						'desc': base64_encode(description),
-						'pw': password,
-						'country': base64_encode(country),
-						'city': base64_encode(city)
-					},
-					function(data, success){
-						location.reload();
-					} );
+			
+			if( name.length > 0 ){
+				get( 	{
+							'function': 'editWarehouse',
+							'name': base64_encode(name),
+							'desc': base64_encode(description),
+							'pw': password,
+							'country': base64_encode(country),
+							'city': base64_encode(city)
+						},
+						function(data, status){
+							if( status == "success" && data == "ok" ){
+								location.reload();
+							} else {
+								document.getElementById( 'warehouse_name_error' ).style.display = "table-cell";
+							}
+						} );
+			} else {
+				document.getElementById( 'warehouse_name_missing' ).style.display = "table-cell";
+			}
+			
 		}
 	}
 }

@@ -18,12 +18,19 @@ function db_getWarehouseInfo($id){
 	return dbSQL($sql);
 }
 
-function db_changeWarehouseInfo($id, $name, $description, $password, $country, $city){
-	if( strlen($password) > 0 )
-		$sql = "UPDATE warehouses SET name='".$name."', description='".$description."', password='".$password."', country='".$country."', city='".$city."' WHERE id=".$id;
-	else
-		$sql = "UPDATE warehouses SET name='".$name."', description='".$description."', country='".$country."', city='".$city."' WHERE id=".$id;
-	return dbSQL($sql);
+function db_editWarehouse($id, $name, $description, $password, $country, $city){
+	$sql = "SELECT * FROM warehouses WHERE name='".$name."' AND country='".$country."' AND city='".$city."'";
+	if( count(dbSQL($sql)) == 0 ){
+		
+		if( strlen($password) > 0 )
+			$sql = "UPDATE warehouses SET name='".$name."', description='".$description."', password='".$password."', country='".$country."', city='".$city."' WHERE id=".$id;
+		else
+			$sql = "UPDATE warehouses SET name='".$name."', description='".$description."', country='".$country."', city='".$city."' WHERE id=".$id;
+		return dbSQL($sql);
+		
+	}
+	
+	return false;
 }
 
 function db_addWarehouse($name, $description, $password, $country, $city){

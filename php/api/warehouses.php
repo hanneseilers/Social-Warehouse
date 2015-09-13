@@ -37,8 +37,8 @@ if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "deleteWarehouse" 
  * city = warehouse city
  * @return = <status>
  */
-if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "changeWarehouseInfo" ){
-	if( db_changeWarehouseInfo($_SESSION['warehouseinfo']['id'], base64_decode($_GET['name']), base64_decode($_GET['desc']), $_GET['pw'], base64_decode($_GET['country']), base64_decode($_GET['city'])) ){
+if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "editWarehouse" ){
+	if( db_editWarehouse($_SESSION['warehouseinfo']['id'], base64_decode($_GET['name']), base64_decode($_GET['desc']), $_GET['pw'], base64_decode($_GET['country']), base64_decode($_GET['city'])) ){
 		_updateWarehouseInfo( $_SESSION['warehouseinfo']['id'] );
 		print $OK;
 	} else {

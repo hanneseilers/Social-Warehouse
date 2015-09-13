@@ -32,6 +32,7 @@ $LANG = [
 	'stock_details' => "Stock Details",
 	
 	'warehouse_name' => "Warehouse name",
+	'warehouse_name_missing' => "Warehouse name missing!",
 	'warehouse_name_error' => "Warehouse name already availabe!",
 	'warehouse' => "Warehouse",
 	'warehouses' => "Warehouses",
