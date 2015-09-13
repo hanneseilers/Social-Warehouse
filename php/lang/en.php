@@ -33,7 +33,7 @@ $LANG = [
 	
 	'warehouse_name' => "Warehouse name",
 	'warehouse_name_missing' => "Warehouse name missing!",
-	'warehouse_name_error' => "Warehouse name already availabe!",
+	'warehouse_name_error' => "Warehouse already exists!",
 	'warehouse' => "Warehouse",
 	'warehouses' => "Warehouses",
 	'warehouse_demand' => "Warehouse Demand",

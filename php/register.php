@@ -5,6 +5,7 @@
 			<td><?php print LANG('warehouse_name'); ?>:</td>
 			<td><input type="text" id="warehousename" /></td>
 			<td id="warehousewrong" class="errortext hidetext"><?php print LANG('warehouse_name_error'); ?></td>
+			<td id="warehousemissing" class="errortext hidetext"><?php print LANG('warehouse_name_missing'); ?></td>
 		</tr>
 		<tr>
 			<td><?php print LANG('country'); ?>:</td>

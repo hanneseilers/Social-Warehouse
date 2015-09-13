@@ -8,6 +8,7 @@ function addWarehouse(){
 
 	// hide errors
 	document.getElementById( 'warehousewrong' ).style.display = "none";
+	document.getElementById( 'warehousemissing' ).style.display = "none";
 	document.getElementById( 'passwordmissing' ).style.display = "none";
 	document.getElementById( 'passwordwrong' ).style.display = "none";
 	document.getElementById( 'citymissing' ).style.display = "none";
@@ -25,7 +26,7 @@ function addWarehouse(){
 	
 		
 	// try to create new warehouse
-	else {
+	else if( name.length > 0 ){
 		password = MD5(password);
 		get( 	{	'function': 'addWarehouse',
 					'name': base64_encode(name),
@@ -41,6 +42,8 @@ function addWarehouse(){
 					else
 						document.getElementById( 'warehousewrong' ).style.display = "block";
 				});
+	} else {
+		document.getElementById( 'warehousemissing' ).style.display = "block";
 	}
 	
 }

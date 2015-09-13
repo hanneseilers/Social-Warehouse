@@ -34,7 +34,7 @@ function db_editWarehouse($id, $name, $description, $password, $country, $city){
 }
 
 function db_addWarehouse($name, $description, $password, $country, $city){
-	$sql = "SELECT * FROM warehouses WHERE name='".$name."'";
+	$sql = "SELECT * FROM warehouses WHERE name='".$name."' AND country='".$country."' AND city='".$city."'";
 	if( count(dbSQL($sql)) == 0 ){
 		$sql = "INSERT INTO warehouses (name, description, password, country, city) VALUES ('".$name."', '".$description."', '".$password."', '".$country."', '".$city."')";
 		if( dbSQL($sql) ){
