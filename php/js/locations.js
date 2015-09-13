@@ -13,6 +13,7 @@ function _showLocations(){
 		html += "\n<div class='groupitem " + (_location == _locations[i]['id'] ? "yellow" : "") + "'>"
 			+ "<span class='group_left' onclick='selectLocation(" + _locations[i]['id'] + ")'>"
 			+ _locations[i]['name'] + "</span>"
+			+ "<span class='inline_text hidetext errortext' id='location_name_error_" + _locations[i]['id'] + "'>" + LANG('location_name_error') + "</span>"
 			+ "<span class='inline_text hidetext'>" + LANG('location_name') + ": "
 			+ "<input type='text' id='editlocation_" + _locations[i]['id'] + "' /></span>"
 			+ " <a href='javascript: editLocation(" + _locations[i]['id'] + ")' class='button green'>" + LANG('edit') + "</a>"
@@ -50,12 +51,16 @@ function editLocation(id){
 	name = document.getElementById( 'editlocation_' + id ).value.trim()
 	vLocation = getLocation(id);
 	
+	document.getElementById( 'location_name_error_' + id ).style.display = "none";
+	
 	if( name.length > 0 ){
 		get( 	{'function': 'editLocation', 'id': id, 'name': base64_encode(name)},
 				function(data, status){
 					if( status == "success" && data == "ok" ){
 						_loadLocations( _showLocations );
 						document.getElementById( 'editlocation_' + id ).parentElement.style.display = "none";
+					} else {
+						document.getElementById( 'location_name_error_' + id ).style.display = "table-cell";
 					}
 		});
 	} else if( vLocation ) {

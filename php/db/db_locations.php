@@ -6,8 +6,13 @@
 	}
 	
 	function db_editLocation($id, $name){
-		$sql = "UPDATE locations SET name='".$name."' WHERE id=".$id;
-		return dbSQL($sql);
+		$sql = "SELECT * FROM locations WHERE name='".$name."'";
+		if( count(dbSQL($sql)) == 0 ){
+			$sql = "UPDATE locations SET name='".$name."' WHERE id=".$id;
+			return dbSQL($sql);
+		}
+		
+		return false;
 	}
 	
 	function db_addLocation($warehouseId, $name){
