@@ -13,6 +13,7 @@ $LANG = [
 	'password' => "Password",
 	'password_repeat' => "Repeat password",
 	'description' => "Description",
+	'required' => "required",
 	'optional' => "optional",
 	'password_wrong' => "Password wrong!",
 	'password_missing' => "Password missing!",

@@ -40,6 +40,11 @@
 		return dbSQL($sql);
 	}
 	
+	function db_getCategoryStockInfo($category){
+		$sql = "SELECT SUM(income) AS income_total, SUM(outgo) AS outgo_total, SUM(income)-SUM(outgo) AS total FROM storages WHERE category=".$category;
+		return dbSQL($sql);
+	}
+	
 	function db_getPlaetteStockInfo($palette){
 		$sql = "SELECT category, SUM(income) AS income_total, SUM(outgo) AS outgo_total, SUM(income)-SUM(outgo) AS total FROM storages WHERE palette=".$palette." GROUP BY category";
 		return dbSQL($sql);

@@ -13,6 +13,7 @@
 <script src="js/base64.js"></script>
 <script src="js/lang.js"></script>
 <script src="js/base.js"></script>
+<script src="js/demand.js"></script>
 <script src="js/warehouses.js"></script>
 <script src="js/locations.js"></script>
 <script src="js/palettes.js"></script>

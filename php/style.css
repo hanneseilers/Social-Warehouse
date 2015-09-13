@@ -26,6 +26,11 @@ textarea{
 	display: table-cell;
 }
 
+.td_max{
+	width: 100%;
+	padding: 5px;
+}
+
 .errortext{
 	color: #ff0000;
 }
@@ -75,6 +80,10 @@ textarea{
 	color: #303030;
 	vertical-align: middle;
 	text-align: center;
+}
+
+.smallbutton{
+	padding: 5px;
 }
 
 .button img{
@@ -233,6 +242,10 @@ textarea{
 
 .lightgray{
 	background-color: #d6d6d6;
+}
+
+.highlight{
+	background-color: #f5f5f5;
 }
 
 .red{
