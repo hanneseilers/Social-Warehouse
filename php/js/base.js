@@ -19,7 +19,11 @@ function showHtml(html){
 }
 
 function _loadCategories(callback, arg=null){
-	get( {'function': 'getCategories'}, function(data, status){
+	get( {	'function': 'getCategories',
+			'location': (_location ? _location : "NULL"),
+			'palette': (_palette ? _palette : "NULL"),
+			},
+			function(data, status){
 		if( status == "success" ){
 			_categories = JSON.parse(data);
 		}

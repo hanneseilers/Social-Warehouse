@@ -21,7 +21,10 @@
 	}
 	
 	function db_getStockInfo($category, $location, $palette){
-		
+		$sql = "SELECT SUM(income) AS income_total, SUM(outgo) AS outgo_total, SUM(income)-SUM(outgo) AS total FROM storages WHERE category=".$category
+			." AND location".($location == "NULL" ? " IS NULL" : "=".$location)
+			." AND palette".($palette == "NULL" ? " IS NULL" : "=".$palette)."";
+		return dbSQL($sql);
 	}
 
 ?>

@@ -53,6 +53,11 @@ textarea{
 	font-weight: bold;
 }
 
+.tinytext{
+	font-weight: normal;
+	font-size: 10pt;
+}
+
 .block{
 	display: block;
 }

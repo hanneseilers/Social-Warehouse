@@ -25,7 +25,7 @@ function addToStock(category){
 				if( status == "success" && data == "ok" ){
 					document.getElementById( 'income' ).value = "";
 					document.getElementById( 'income' ).value = "";
-					_showCategories( category );
+					_loadCategories( _showCategories, category );
 				}
 			});
 	
@@ -81,7 +81,7 @@ function showStock(warehouseId){
 }
 
 function hasChildCategory(id){
-	for( i=0; i < _categories.length; i++ ){
+	for( var i=0; i < _categories.length; i++ ){
 		if( _categories[i]['parent'] == id ){
 			return true;
 		}
@@ -90,20 +90,31 @@ function hasChildCategory(id){
 	return false;
 }
 
-function getCategory(id, list=null){
-	if( list == null ){
-		list = _categories;
-	}
+function getCategory(id){
 	
 	if( id != null ){
-		for( i=0; i < list.length; i++ ){
-			if( list[i]['id'] == id ){
-				return list[i];
+		for( var i=0; i < _categories.length; i++ ){
+			if( _categories[i]['id'] == id ){
+				return _categories[i];
 			}
 		}
 	}
 	
 	return null;
+}
+
+function getSubCategories(id){
+	categories = [];
+	
+	if( id != null ){
+		for( i=0; i < _categories.length; i++ ){
+			if( _categories[i]['parent'] == id ){
+				categories.push( _categories[i] );
+			}
+		}
+	}
+	
+	return categories;
 }
 
 function getCategoryHierrachy(id){
@@ -195,14 +206,23 @@ function _showCategories(rootId=_rootId){
 	}
 	
 	// create html
-	html = "<h1 id='scrollTarget'>" + LANG('categories') + (vLocation ? ": " + vLocation['name'] : "" ) + "</h1>";
+	html = "<h1 id='scrollTarget'>" + LANG('categories')
+		+ (vLocation ? ": " + vLocation['name'] : "" )
+		+ (vPalette ? " #" + vPalette['name'] : "" )
+		+ "</h1>";
 	
 	// create root category
 	root = getCategory(rootId);
-	if( root != null ){		
+	if( root != null ){	
+		// get stock info including all sub categories
+		stock = getRecursiveStockInfo( root['id'] );
+		
+		// create html
 		html += "<a href='javascript: _showCategories("
 			+ root['parent'] + ");' class='button centertext block'>"
-			+ getCategoryHierrachy(root['id']) + "</a>\n";
+			+ getCategoryHierrachy(root['id'])
+			+ " (" + stock['total'] + LANG('pieces_short') + ")"
+			+ "</a>\n";
 	}
 	
 	// check if to add income and oualert( status + "\n" + data );tgo options
@@ -213,7 +233,7 @@ function _showCategories(rootId=_rootId){
 	
 	// create sub categories
 	row =0
-	for( i=0; i < _categories.length; i++ ){		
+	for( var i=0; i < _categories.length; i++ ){		
 		if( _categories[i]['parent'] == rootId ){
 			// check if to open row
 			if( row == 0 ){
@@ -223,10 +243,15 @@ function _showCategories(rootId=_rootId){
 			// set link
 			href = "_showCategories(" + _categories[i]['id'] + ");";
 			
+			// get stock info including all sub categories
+			stock = getRecursiveStockInfo( _categories[i]['id'] );
+			
 			// add button
 			html += "\t<a href='javascript: " + href + "' class='button button"+ vClass
 					+ " table_cell blue bigbutton'>"
-					+ _categories[i]['name'] + "</a>\n";
+					+ _categories[i]['name'] + "<br /><span class='tinytext'>"
+					+ stock['total'] + LANG('pieces_short')
+					+ "</span></a>\n";
 			row++;
 			
 			// check if to cloes row

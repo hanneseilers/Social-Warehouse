@@ -13,6 +13,7 @@
 <script src="js/locations.js"></script>
 <script src="js/palettes.js"></script>
 <script src="js/stock.js"></script>
+<script src="js/statistics.js"></script>
 
 <meta charset="utf-8">
 </head>

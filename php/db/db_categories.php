@@ -25,9 +25,17 @@
  		return dbSQL($sql);
 	}
 
-	function db_getCategories($warehouseId){
+	function db_getCategories($warehouseId, $location, $palette){
 		$sql = "SELECT * FROM categories WHERE warehouse=".$warehouseId. " ORDER BY name ASC";
-		return dbSQL($sql);
+		$result = dbSQL($sql);
+		
+		// add information about current stock
+		for( $i=0; $i < count($result); $i++ ){
+			$stockinfo = db_getStockInfo( $result[$i]['id'], $location, $palette );
+			$result[$i]['stockinfo'] = $stockinfo[0];
+		}
+		
+		return $result;
 	}
 	
 	function db_editCategory($id, $name, $required){
