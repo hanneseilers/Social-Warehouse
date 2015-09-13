@@ -132,7 +132,7 @@ function getCategoryHierrachy(id){
 }
 
 
-function addCategory(parent=null){
+function addCategory(parent){
 	if( _warehouseId > 0 ){
 		
 		name = document.getElementById( 'addcategory' ).value;
@@ -140,7 +140,7 @@ function addCategory(parent=null){
 			get( {'function': 'addCategory', 'name': base64_encode(name), 'parent': parent}, function(data, status){
 				if( status == "success" && data == "ok" ){
 					_rootId = parent;
-					_loadCategories();
+					_loadCategories( _showCategories );
 				} else {
 					alert( LANG('category_name_error') )
 				}
@@ -161,7 +161,7 @@ function deleteCategory(id){
 					alert( LANG('delete_category_failed') );
 					_rootId = id;
 				}
-				_loadCategories();
+				_loadCategories( _showCategories );
 	});
 }
 
@@ -182,7 +182,11 @@ function editCategory(id){
 	});
 }
 
-function _showCategories(rootId=_rootId){	
+function _showCategories(rootId){
+	if( typeof rootId == undefined || rootId == null ){
+		rootId = _rootId;
+	}
+	
 	// calculate class
 	vClass = 3;
 	if( _categories.length % 4 == 0 ){
@@ -298,7 +302,7 @@ function _showCategories(rootId=_rootId){
 		+ "<a href='javascript: addCategory(" + rootId + ");' class='button'>" + LANG('add_category') + "</a></div>";
 	
 	if( root != null ){	
-		// add category edit & delete button
+		// add category edit & delete form
 		html += "<div class='groupitem'><span class='group_left'>"
 			+ LANG('category_name') + ": <input type='text' id='categoryname' value='" + root['name'] + "' />"
 			+ (!hasChildCategory(root['id']) ? " " + LANG('demand') + ": <input type='text' id='demand' value='" + root['required'] + "' />" : "" )

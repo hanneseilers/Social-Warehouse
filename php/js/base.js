@@ -18,7 +18,7 @@ function showHtml(html){
 	document.getElementById( 'datacontent' ).innerHTML = html;
 }
 
-function _loadCategories(callback, arg=null){
+function _loadCategories(callback, arg){	
 	get( {	'function': 'getCategories',
 			'location': (_location ? _location : "NULL"),
 			'palette': (_palette ? _palette : "NULL"),
@@ -28,38 +28,44 @@ function _loadCategories(callback, arg=null){
 			_categories = JSON.parse(data);
 		}
 		
-		if( arg ){
-			callback(arg);
-		} else {
-			callback()
+		if( callback ){
+			if( arg ){
+				callback(arg);
+			} else {
+				callback()
+			}
 		}
 	} );
 }
 
-function _loadLocations(callback, arg=null){
+function _loadLocations(callback, arg){
 	get( {'function': 'getLocations'}, function(data, status){
 		if( status == "success" ){
 			_locations = JSON.parse(data);
 		}
 		
-		if( arg ){
-			callback(arg);
-		} else {
-			callback()
+		if( callback ){
+			if( arg ){
+				callback(arg);
+			} else {
+				callback()
+			}
 		}
 	} );
 }
 
-function _loadPalettes(callback, arg=null){
+function _loadPalettes(callback, arg){
 	get( {'function': 'getPalettes'}, function(data, status){
 		if( status == "success" ){
 			_palettes = JSON.parse(data);
 		}
 		
-		if( arg ){
-			callback(arg);
-		} else {
-			callback()
+		if( callback ){
+			if( arg ){
+				callback(arg);
+			} else {
+				callback()
+			}
 		}
 	} );
 }
