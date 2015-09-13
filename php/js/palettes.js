@@ -4,6 +4,10 @@ function showPalettes(warehouseId){
 }
 
 function showPalettes_2(){
+	_loadLocations( showPalettes_3 );
+}
+
+function showPalettes_3(){
 	_loadPalettes( _showPalettes );
 }
 
@@ -26,7 +30,7 @@ function _showPalettes(){
 			+ "</div>";
 		
 		// load stock info
-		_loadPaletteStockInfo(_palettes[i]['id']);
+		_loadPaletteStockInfo( _palettes[i]['id'] );
 	}
 	
 	// show form to add palette

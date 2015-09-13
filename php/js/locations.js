@@ -1,5 +1,9 @@
 function showLocations($warehouseId){
 	setWarehouseId($warehouseId);
+	_loadCategories( showLocations_2 );
+}
+
+function showLocations_2(){
 	_loadLocations( _showLocations );
 }
 
@@ -10,15 +14,20 @@ function _showLocations(){
 	
 	// show locations
 	for( i=0; i < _locations.length; i++ ){
-		html += "\n<div class='groupitem " + (_location == _locations[i]['id'] ? "yellow" : "") + "'>"
+		html += "\n<div class='groupitem " + (_location == _locations[i]['id'] ? "yellow" : "") + "'><div class='table'>"
 			+ "<span class='group_left' onclick='selectLocation(" + _locations[i]['id'] + ")'>"
 			+ _locations[i]['name'] + "</span>"
 			+ "<span class='inline_text hidetext errortext' id='location_name_error_" + _locations[i]['id'] + "'>" + LANG('location_name_error') + "</span>"
 			+ "<span class='inline_text hidetext'>" + LANG('location_name') + ": "
 			+ "<input type='text' id='editlocation_" + _locations[i]['id'] + "' /></span>"
 			+ " <a href='javascript: editLocation(" + _locations[i]['id'] + ")' class='button green'>" + LANG('edit') + "</a>"
+			+ " <a href='javascript: showLocationStock(" + _locations[i]['id'] + ")' class='button orange'>" + LANG('details') + "</a>"
 			+ " <a href='javascript: deleteLocation(" + _locations[i]['id'] + ")' class='button red'>" + LANG('delete') + "</a>"
+			+ "</div><div class='hidetext'><span class='table_cell' id='location_stock_" + _locations[i]['id'] + "' class='tinytext'></span></div>"
 			+ "</div>";
+		
+		// load stock info
+		_loadLocationStockInfo( _locations[i]['id'] );
 	}
 	
 	// show form to add location
@@ -100,4 +109,30 @@ function addLocation(){
 
 function deleteLocation(id){
 	get( {'function': 'deleteLocation', 'id': id}, function(){ _loadLocations( _showLocations ); });
+}
+
+function _loadLocationStockInfo(location){
+	get( {'function': 'getLocationStockInfo', 'location': location},
+			function(data, status){
+				while( !document.getElementById( 'location_stock_' + location ) );
+				document.getElementById( 'location_stock_' + location ).innerHTML = "";
+			
+				if( status == "success" ){
+					stock = JSON.parse(data);
+					for( var i=0; i < stock.length; i++ ) {
+						hierarchy = getCategoryHierrachy( stock[i]['category'] )
+						document.getElementById( 'location_stock_' + location ).innerHTML =
+							document.getElementById( 'location_stock_' + location ).innerHTML + (i != 0 ? "<br />" : "")
+							+ hierarchy + " (" + stock[i]['total'] + LANG('pieces_short') + ")";
+					}				
+				}
+			} );
+}
+
+function showLocationStock(palette){
+	if( document.getElementById( 'location_stock_' + palette ).parentElement.style.display != "block" ){
+		document.getElementById( 'location_stock_' + palette ).parentElement.style.display = "block";
+	} else {
+		document.getElementById( 'location_stock_' + palette ).parentElement.style.display = "none"; 
+	}
 }

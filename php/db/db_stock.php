@@ -44,5 +44,10 @@
 		$sql = "SELECT category, SUM(income) AS income_total, SUM(outgo) AS outgo_total, SUM(income)-SUM(outgo) AS total FROM storages WHERE palette=".$palette." GROUP BY category";
 		return dbSQL($sql);
 	}
+	
+	function db_getLocationStockInfo($location){
+		$sql = "SELECT category, SUM(income) AS income_total, SUM(outgo) AS outgo_total, SUM(income)-SUM(outgo) AS total FROM storages WHERE location=".$location." GROUP BY category";
+		return dbSQL($sql);
+	}
 
 ?>

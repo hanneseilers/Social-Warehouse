@@ -32,5 +32,9 @@
 			print json_encode( db_getPlaetteStockInfo($_GET['palette']) );
 		}
 		
+		if( $_GET['function'] == "getLocationStockInfo" && isset($_GET['location']) ){
+			print json_encode( db_getLocationStockInfo($_GET['location']) );
+		}
+		
 	}
 ?>
