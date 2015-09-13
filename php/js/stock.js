@@ -287,9 +287,9 @@ function _showCategories(rootId){
 		// show in and out fields
 		html += "<div class='table'>"
 			+ "<span class='button button3 table_cell biginput'>" + LANG('income') + "<br />"
-			+ "<input id='income'  type='number' onfocus='_income_selected = true; _outgo_selected = false; updateColors();' onkeypress='if(event.keyCode == 13) addToStock();' /></span>"
+			+ "<input id='income'  type='number' onfocus='_income_selected = true; _outgo_selected = false; updateColors();' onkeypress='if(event.keyCode == 13) addToStock(" + root['id'] + ");' /></span>"
 			+ "<span class='button button3 table_cell biginput'>" + LANG('outgo') + "<br />"
-			+ "<input id='outgo'  type='number' onfocus='_income_selected = false; _outgo_selected = true; updateColors();' onkeypress='if(event.keyCode == 13) addToStock();' /></span>"
+			+ "<input id='outgo'  type='number' onfocus='_income_selected = false; _outgo_selected = true; updateColors();' onkeypress='if(event.keyCode == 13) addToStock(" + root['id'] + ");' /></span>"
 			+ "<a href='javascript: addToStock(" + root['id'] + ");' id='button_add' class='button button3 table_cell biginput green'>"
 			+ (!vPalette ? LANG('add_to_loose_stock') : LANG('add_to_palette') + "<br />" + vPalette['name']) + "</a>";
 			
