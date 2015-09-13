@@ -1,11 +1,15 @@
 <h1>
-	Warehouse Demand
 	<?php	
 		if( isset($_GET['demand']) ){
 			$vWarehouse = db_getWarehouseInfo( $_GET['demand'] )[0];
-			print ": ".$vWarehouse['name'];
+			print LANG('warehouse_demand')." : ".$vWarehouse['name'];
 		}
 	?>
 </h1>
-<div class="requirements">
+<div class="demands">
+	<?php 
+		if( isset($_GET['demand']) ){
+			
+		}
+	?>
 </div>

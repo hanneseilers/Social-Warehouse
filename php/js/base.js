@@ -77,21 +77,20 @@ function showHtml(html){
 function _loadCategories(callback, arg){
 	get( {	'function': 'getCategories',
 			'location': (_location ? _location : "NULL"),
-			'palette': (_palette ? _palette : "NULL"),
-			},
+			'palette': (_palette ? _palette : "NULL")},
 			function(data, status){
-		if( status == "success" ){
-			_categories = JSON.parse(data);
-		}
-		
-		if( callback ){
-			if( arg ){
-				callback(arg);
-			} else {
-				callback()
-			}
-		}
-	} );
+				if( status == "success" ){
+					_categories = JSON.parse(data);
+				}
+				
+				if( callback ){
+					if( arg ){
+						callback(arg);
+					} else {
+						callback()
+					}
+				}
+			} );
 }
 
 function _loadLocations(callback, arg){
