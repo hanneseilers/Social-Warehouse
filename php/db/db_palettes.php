@@ -57,6 +57,14 @@
 		return false;
 	}
 	
+	function db_movePalette($palette, $location){
+		$sql = "UPDATE storages SET location=".($location == "NULL" ? "NULL" : $location)." WHERE palette=".$palette;
+		$return = dbSQL($sql);
+		print $sql;
+		db_validatePaletteLocations();
+		return $return;
+	}
+	
 	function db_getPaletteStorages($palette){
 		$sql = "SELECT * FROM storages WHERE palette=".$palette." AND location IS NOT NULL";
 		return dbSQL($sql);

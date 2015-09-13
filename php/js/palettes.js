@@ -15,8 +15,11 @@ function _showPalettes(){
 	html = "<h1 id='scrollTarget'>" + LANG('palettes') + ":</h1>";
 	html += LANG('palette_select_tip');
 	
+	// get set location info
+	gLocation = getLocation( _location );
+	
 	// show palettes
-	for( i=0; i < _palettes.length; i++ ){
+	for( var i=0; i < _palettes.length; i++ ){
 		// get location
 		vLocation = getLocation( _palettes[i]['location'] );
 		
@@ -28,8 +31,12 @@ function _showPalettes(){
 			+ "<input type='text' id='editpalette_" + _palettes[i]['id'] + "' /></span>"
 			+ " <a href='javascript: editPalette(" + _palettes[i]['id'] + ")' class='button green'>" + LANG('edit') + "</a>"
 			+ " <a href='javascript: showPaletteStock(" + _palettes[i]['id'] + ")' class='button orange'>" + LANG('details') + "</a>"
-			+ " <a href='javascript: deletePalette(" + _palettes[i]['id'] + ")' class='button red'>" + LANG('delete') + "</a>"
-			+ "</div><div class='hidetext'><span class='table_cell' id='palette_stock_" + _palettes[i]['id'] + "' class='tinytext'></span></div>"
+			+ " <a href='javascript: deletePalette(" + _palettes[i]['id'] + ")' class='button red'>" + LANG('delete') + "</a></div>"
+			+ "<div class='hidetext'>"
+			+ "<span class='table_cell' id='palette_stock_" + _palettes[i]['id'] + "' class='tinytext'></span></div>"
+			+ "<div class='hidetext' id='palette_move_" + _palettes[i]['id'] + "'><a href='javascript: movePalette(" + _palettes[i]['id'] + ")' class='button'>"
+			+ (gLocation ? LANG('move_palette') + " " + gLocation['name'] : LANG('palette_location_remove') )
+			+ "</a></div>"
 			+ "</div>";
 		
 		// load stock info
@@ -114,6 +121,13 @@ function deletePalette(id){
 	get( {'function': 'deletePalette', 'id': id}, function(){ _loadPalettes( _showPalettes ); });
 }
 
+function movePalette(palette){
+	get( {'function': 'movePalette', 'palette': palette, 'location': (_location ? _location : "NULL")},
+			function(data, status){
+				showPalettes( _warehouseId );
+			});
+}
+
 function _loadPaletteStockInfo(palette){
 	get( {'function': 'getPaletteStockInfo', 'palette': palette},
 			function(data, status){
@@ -135,7 +149,9 @@ function _loadPaletteStockInfo(palette){
 function showPaletteStock(palette){
 	if( document.getElementById( 'palette_stock_' + palette ).parentElement.style.display != "block" ){
 		document.getElementById( 'palette_stock_' + palette ).parentElement.style.display = "block";
+		document.getElementById( 'palette_move_' + palette ).style.display = "block";
 	} else {
-		document.getElementById( 'palette_stock_' + palette ).parentElement.style.display = "none"; 
+		document.getElementById( 'palette_stock_' + palette ).parentElement.style.display = "none";
+		document.getElementById( 'palette_move_' + palette ).style.display = "none";
 	}
 }

@@ -65,6 +65,8 @@ $LANG = [
 	'palette_select_tip' => "Click palette to select it.",
 	'new_palette' => "New Palette",
 	'add_palette' => "Add Palette",
+	'move_palette' => "Move palette to",
+	'palette_location_remove' => "Remove Location",
 	'palette_name_missing' => "Palette name missing!",
 	'palette_name_error' => "Palette is alreay there!!",
 		

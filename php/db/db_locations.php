@@ -32,7 +32,7 @@
 			$sql = "DELETE FROM storages WHERE location=".$id;
 			dbSQL($sql);
 			
-			// delete palette
+			// delete location
 			$sql = "DELETE FROM locations WHERE warehouse=".$warehouseId." AND id=".$id;
 			return dbSQL($sql);
 		}

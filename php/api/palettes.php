@@ -26,6 +26,13 @@
 		if( $_GET['function'] == "getPalettes"  ){
 			print json_encode( db_getPalettes($_SESSION['warehouseinfo']['id']) );
 		}
+		
+		if( $_GET['function'] == "movePalette" && isset($_GET['palette']) && isset($_GET['location'])  ){
+			if( db_movePalette($_GET['palette'], $_GET['location']) )
+				print $OK;
+			else
+				print $ERR;
+		}
 			
 	}
 
