@@ -6,6 +6,7 @@ $LANG = [
 	'demand' => "Demand",
 	'edit' => "Edit",
 	'delete' => "Delete",
+	'help' => "Help",
 	'country' => "Country",
 	'city' => "City",
 	'password' => "Password",
