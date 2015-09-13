@@ -1,6 +1,10 @@
 <html>
-<head>
+<head rofile="http://www.w3.org/2005/10/profile">
 <title>Social Warehouse</title>
+
+<link rel="icon" 
+      type="image/png" 
+      href="favicon.png">
 
 <link type="text/css" rel="stylesheet" href="style.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
