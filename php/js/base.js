@@ -74,7 +74,7 @@ function showHtml(html){
 	document.getElementById( 'datacontent' ).innerHTML = html;
 }
 
-function _loadCategories(callback, arg){	
+function _loadCategories(callback, arg){
 	get( {	'function': 'getCategories',
 			'location': (_location ? _location : "NULL"),
 			'palette': (_palette ? _palette : "NULL"),

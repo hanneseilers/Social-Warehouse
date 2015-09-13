@@ -26,9 +26,18 @@
 	}
 	
 	function db_deleteLocation($warehouseId, $id){
-		$sql = "DELETE FROM locations WHERE warehouse=".$warehouseId." AND id=".$id;
-		print $sql;
-		return dbSQL($sql);
+		$sql = "SELECT * FROM location WHERE warehouse=".$warehouseId." AND id=".$id;
+		if( count(dbSQL($sql)) > 0 ){
+			// delete storages
+			$sql = "DELETE FROM storages WHERE location=".$id;
+			dbSQL($sql);
+			
+			// delete palette
+			$sql = "DELETE FROM locations WHERE warehouse=".$warehouseId." AND id=".$id;
+			return dbSQL($sql);
+		}
+		
+		return false;
 	}
 
 ?>

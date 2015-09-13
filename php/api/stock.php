@@ -28,5 +28,9 @@
 				print $ERR;
 		}
 		
+		if( $_GET['function'] == "getPaletteStockInfo" && isset($_GET['palette']) ){
+			print json_encode( db_getPlaetteStockInfo($_GET['palette']) );
+		}
+		
 	}
 ?>

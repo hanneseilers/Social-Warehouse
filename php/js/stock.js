@@ -91,7 +91,6 @@ function hasChildCategory(id){
 }
 
 function getCategory(id){
-	
 	if( id != null ){
 		for( var i=0; i < _categories.length; i++ ){
 			if( _categories[i]['id'] == id ){

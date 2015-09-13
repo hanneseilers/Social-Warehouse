@@ -16,8 +16,18 @@
 	}
 	
 	function db_deletePalette($warehouseId, $id){
-		$sql = "DELETE FROM palettes WHERE warehouse=".$warehouseId." AND id=".$id;
-		return dbSQL($sql);
+		$sql = "SELECT * FROM palettes WHERE warehouse=".$warehouseId." AND id=".$id;
+		if( count(dbSQL($sql)) > 0 ){
+			// delete storage data
+			$sql = "DELETE FROM storages WHERE palette=".$id;
+			dbSQL($sql);
+			
+			// delete palette
+			$sql = "DELETE FROM palettes WHERE warehouse=".$warehouseId." AND id=".$id;
+			return dbSQL($sql);
+		}
+		
+		return false;
 	}
 	
 	function db_editPalette($warehouseId, $id, $name){

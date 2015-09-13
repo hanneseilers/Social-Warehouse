@@ -1,5 +1,9 @@
 function showPalettes(warehouseId){
 	setWarehouseId( warehouseId );
+	_loadCategories( showPalettes_2 );	
+}
+
+function showPalettes_2(){
 	_loadPalettes( _showPalettes );
 }
 
@@ -9,14 +13,20 @@ function _showPalettes(){
 	
 	// show palettes
 	for( i=0; i < _palettes.length; i++ ){
-		html += "\n<div class='groupitem " + (_palette == _palettes[i]['id'] ? "yellow" : "") + "'>"
-			+ "<span class='group_left' onclick='selectPalette(" + _palettes[i]['id'] + ")'>"
+		// create html
+		html += "\n<div class='groupitem " + (_palette == _palettes[i]['id'] ? "yellow" : "") + "'><div class='table'>"
+			+ "<span class='group_left text_bold' onclick='selectPalette(" + _palettes[i]['id'] + ")'>"
 			+ _palettes[i]['name'] + "</span>"
 			+ "<span class='inline_text hidetext'>" + LANG('palette_name') + ": "
 			+ "<input type='text' id='editpalette_" + _palettes[i]['id'] + "' /></span>"
 			+ " <a href='javascript: editPalette(" + _palettes[i]['id'] + ")' class='button green'>" + LANG('edit') + "</a>"
+			+ " <a href='javascript: showPaletteStock(" + _palettes[i]['id'] + ")' class='button yellow'>" + LANG('details') + "</a>"
 			+ " <a href='javascript: deletePalette(" + _palettes[i]['id'] + ")' class='button red'>" + LANG('delete') + "</a>"
+			+ "</div><div class='hidetext'><span class='table_cell' id='palette_stock_" + _palettes[i]['id'] + "' class='tinytext'></span></div>"
 			+ "</div>";
+		
+		// load stock info
+		_loadPaletteStockInfo(_palettes[i]['id']);
 	}
 	
 	// show form to add palette
@@ -93,4 +103,30 @@ function addPalette(){
 
 function deletePalette(id){
 	get( {'function': 'deletePalette', 'id': id}, function(){ _loadPalettes( _showPalettes ); });
+}
+
+function _loadPaletteStockInfo(palette){
+	get( {'function': 'getPaletteStockInfo', 'palette': palette},
+			function(data, status){
+				while( !document.getElementById( 'palette_stock_' + palette ) );
+				document.getElementById( 'palette_stock_' + palette ).innerHTML = "";
+			
+				if( status == "success" ){
+					stock = JSON.parse(data);
+					for( var i=0; i < stock.length; i++ ) {
+						hierarchy = getCategoryHierrachy( stock[i]['category'] )
+						document.getElementById( 'palette_stock_' + palette ).innerHTML =
+							document.getElementById( 'palette_stock_' + palette ).innerHTML + (i != 0 ? "<br />" : "")
+							+ hierarchy + " (" + stock[i]['total'] + LANG('pieces_short') + ")";
+					}				
+				}
+			} );
+}
+
+function showPaletteStock(palette){
+	if( document.getElementById( 'palette_stock_' + palette ).parentElement.style.display != "block" ){
+		document.getElementById( 'palette_stock_' + palette ).parentElement.style.display = "block";
+	} else {
+		document.getElementById( 'palette_stock_' + palette ).parentElement.style.display = "none"; 
+	}
 }
