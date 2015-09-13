@@ -1,7 +1,7 @@
 <?php
 
 	function db_addCateory($warehouseId, $name, $parent="NULL"){		
-		$sql = "SELECT * FROM categories WHERE warehouse=".$warehouseId." AND name='".$name."' AND parent=".$parent;
+		$sql = "SELECT * FROM categories WHERE warehouse=".$warehouseId." AND name='".$name."' AND parent".($parent == "NULL" ? " IS NULL" : "=".$parent);
 		if( count(dbSQL($sql)) == 0 ){
 			$sql = "INSERT INTO categories (parent, warehouse, name, required) VALUES (".$parent.", ".$warehouseId.", '".$name."', 0)";
 			return dbSQL($sql);
