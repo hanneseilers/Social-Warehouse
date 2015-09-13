@@ -20,7 +20,7 @@ function _showPalettes(){
 			+ "<span class='inline_text hidetext'>" + LANG('palette_name') + ": "
 			+ "<input type='text' id='editpalette_" + _palettes[i]['id'] + "' /></span>"
 			+ " <a href='javascript: editPalette(" + _palettes[i]['id'] + ")' class='button green'>" + LANG('edit') + "</a>"
-			+ " <a href='javascript: showPaletteStock(" + _palettes[i]['id'] + ")' class='button yellow'>" + LANG('details') + "</a>"
+			+ " <a href='javascript: showPaletteStock(" + _palettes[i]['id'] + ")' class='button orange'>" + LANG('details') + "</a>"
 			+ " <a href='javascript: deletePalette(" + _palettes[i]['id'] + ")' class='button red'>" + LANG('delete') + "</a>"
 			+ "</div><div class='hidetext'><span class='table_cell' id='palette_stock_" + _palettes[i]['id'] + "' class='tinytext'></span></div>"
 			+ "</div>";
@@ -77,6 +77,8 @@ function selectPalette(id){
 		_palette = null;
 	} else {
 		_palette = id;
+		palette = getPalette(id);
+		_location = palette['location'];
 	}
 	
 	_showPalettes();

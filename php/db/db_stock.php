@@ -1,6 +1,16 @@
 <?php
 
 	function db_addToStock($category, $location, $palette, $income, $outgo, $male, $female, $baby, $estimated){
+		// check if to set location to palette location
+		if( $palette != "NULL" ){
+			db_validatePaletteLocations();
+			
+			$storages = db_getPaletteStorages( $palette );
+			if( count($storages) > 0 ){
+				$location = $storages[0]['location'];
+			}
+		}
+		
 		// check if stock entry already available
 		$sql = "SELECT * FROM storages WHERE category=".$category
 			." AND location".($location == "NULL" ? " IS NULL" : "=".$location)
@@ -17,7 +27,10 @@
 		
 		// update existing
 		$sql = "UPDATE storages SET  income=income+".$income.", outgo=outgo+".$outgo." WHERE id=".$result[0]['id'];
-		return dbSQL($sql);
+		$return = dbSQL($sql);
+		
+		db_validatePaletteLocations();
+		return $return;
 	}
 	
 	function db_getStockInfo($category, $location, $palette){
