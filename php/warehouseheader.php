@@ -15,7 +15,7 @@
 	?>
 	</div>
 	
-	<table class="edit hidetext" id="warehouseeditdata">
+	<table class="hidetext" id="warehouseeditdata">
 	<tr>
 		<td><?php print LANG('warehouse_name'); ?>:</td>
 		<td><?php print "<input type='text' value='".$name."' id='warehousenamenew' />"; ?></td>

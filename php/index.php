@@ -7,9 +7,9 @@
 <script src="https://cdn.jsdelivr.net/jquery.scrollto/2.1.0/jquery.scrollTo.min.js"></script> <!--  Source: https://github.com/flesler/jquery.scrollTo -->
 <script src="js/md5.js"></script>
 <script src="js/base64.js"></script>
-<script src="js/jsfunctions.js"></script>
 <script src="js/lang.js"></script>
 <script src="js/base.js"></script>
+<script src="js/warehouses.js"></script>
 <script src="js/locations.js"></script>
 <script src="js/palettes.js"></script>
 <script src="js/stock.js"></script>
