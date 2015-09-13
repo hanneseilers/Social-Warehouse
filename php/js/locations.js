@@ -47,9 +47,11 @@ function _showLocations(){
 }
 
 function getLocation(id){
-	for( i=0; i < _locations.length; i++){
-		if( _locations[i]['id'] == id ){
-			return _locations[i];
+	if( id != null ){
+		for( i=0; i < _locations.length; i++){
+			if( _locations[i]['id'] == id ){
+				return _locations[i];
+			}
 		}
 	}
 	
@@ -129,10 +131,10 @@ function _loadLocationStockInfo(location){
 			} );
 }
 
-function showLocationStock(palette){
-	if( document.getElementById( 'location_stock_' + palette ).parentElement.style.display != "block" ){
-		document.getElementById( 'location_stock_' + palette ).parentElement.style.display = "block";
+function showLocationStock(vLocation){
+	if( document.getElementById( 'location_stock_' + vLocation ).parentElement.style.display != "block" ){
+		document.getElementById( 'location_stock_' + vLocation ).parentElement.style.display = "block";
 	} else {
-		document.getElementById( 'location_stock_' + palette ).parentElement.style.display = "none"; 
+		document.getElementById( 'location_stock_' + vLocation ).parentElement.style.display = "none"; 
 	}
 }

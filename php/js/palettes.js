@@ -17,10 +17,13 @@ function _showPalettes(){
 	
 	// show palettes
 	for( i=0; i < _palettes.length; i++ ){
+		// get location
+		vLocation = getLocation( _palettes[i]['location'] );
+		
 		// create html
 		html += "\n<div class='groupitem " + (_palette == _palettes[i]['id'] ? "yellow" : "") + "'><div class='table'>"
 			+ "<span class='group_left text_bold' onclick='selectPalette(" + _palettes[i]['id'] + ")'>"
-			+ _palettes[i]['name'] + "</span>"
+			+ _palettes[i]['name'] + (vLocation ? " : " + vLocation['name'] : "") + "</span>"
 			+ "<span class='inline_text hidetext'>" + LANG('palette_name') + ": "
 			+ "<input type='text' id='editpalette_" + _palettes[i]['id'] + "' /></span>"
 			+ " <a href='javascript: editPalette(" + _palettes[i]['id'] + ")' class='button green'>" + LANG('edit') + "</a>"
