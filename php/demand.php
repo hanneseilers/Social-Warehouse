@@ -99,8 +99,6 @@
 						print "<td class='".($highlight ? "highlight" : "")."'><a href='javascript: showDemandStock(".$categoryId.")' class='button smallbutton yellow'>".LANG('details')."</a></td>";
 					print "</tr>";
 					
-					
-					
 					// print stock info
 					if( isset($_SESSION['warehouseinfo']) ){
 						print "<tr id='stock_info_".$categoryId."' class='hidetext'><td></td><td class='tr_max, tinytext'>";
@@ -145,6 +143,8 @@
 									}
 										
 								}
+								
+								print "<p></p>";
 							}
 							
 						}
