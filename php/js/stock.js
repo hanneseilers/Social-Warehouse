@@ -208,14 +208,26 @@ function _showCategories(rootId){
 		vPalette = getPalette( _palette ); 
 	}
 	
+	// get category root
+	root = getCategory(rootId);
+	
+	// check if to add income and outgo options
+	addIncomeOutgo = false;
+	vCategoryRoot = rootId;
+	if( root != null && !hasChildCategory(root['id']) ){
+		addIncomeOutgo = true;
+		vCategory = getCategory(rootId);
+		if( root )
+			vCategoryRoot = root['parent'];
+	}
+	
 	// create html
-	html = "<h1 id='scrollTarget'>" + LANG('categories')
+	html = "<h1 " + (!addIncomeOutgo ? "id='scrollTarget'" : "")  + ">" + LANG('categories')
 		+ (vLocation ? ": " + vLocation['name'] : "" )
 		+ (vPalette ? " #" + vPalette['name'] : "" )
 		+ "</h1>";
 	
 	// create root category
-	root = getCategory(rootId);
 	if( root != null ){	
 		// get stock info including all sub categories
 		stock = getRecursiveStockInfo( root['id'] );
@@ -226,18 +238,12 @@ function _showCategories(rootId){
 			+ getCategoryHierrachy(root['id'])
 			+ " (" + stock['total'] + LANG('pieces_short') + ")"
 			+ "</a>\n";
-	}
-	
-	// check if to add income and oualert( status + "\n" + data );tgo options
-	addIncomeOutgo = false;
-	if( root != null && !hasChildCategory(root['id']) ){
-		addIncomeOutgo = true;
-	}
+	}	
 	
 	// create sub categories
-	row =0
+	row = 0;
 	for( var i=0; i < _categories.length; i++ ){		
-		if( _categories[i]['parent'] == rootId ){
+		if( _categories[i]['parent'] == vCategoryRoot ){
 			// check if to open row
 			if( row == 0 ){
 				html += "\n<div class=' table'>";
@@ -276,7 +282,7 @@ function _showCategories(rootId){
 	// show options to add storage
 	if( addIncomeOutgo ){		
 		// show gender button
-		html += "<div class='table'>"
+		html += "<div class='table' id='scrollTarget'>"
 			+ "<a href='javascript: _male = !_male; _baby = false; updateColors();' id='button_male' class='button button4 table_cell'><img src='img/male.png' /><br />" + LANG('male') + "</a>"
 			+ "<a href='javascript: _female = !_female; _baby = false; updateColors();' id='button_female' class='button button4 table_cell'><img src='img/female.png' /><br />" + LANG('female') + "</a>"
 			+ "<a href='javascript: _baby = !_baby; _male = false; _female = false; updateColors();' id='button_baby' class='button button4 table_cell'><img src='img/baby.png' /><br />" + LANG('children_baby') + "</a>"
