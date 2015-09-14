@@ -27,6 +27,7 @@ $LANG = [
 	'estimated' => "Estimated",
 	'pieces_short' => "pcs.",
 		
+	'loose_stock' => "Loose Stock",
 	'add_to_loose_stock' => "Add to loose stock",
 	'add_to_palette' => "Add to palette",
 		

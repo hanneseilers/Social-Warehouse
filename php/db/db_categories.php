@@ -62,6 +62,11 @@
 		return $result;
 	}
 	
+	function db_getSubCategories($warehouseId, $parent){
+		$sql = "SELECT * FROM categories WHERE warehouse=".$warehouseId. " AND parent=".$parent;
+		return dbSQL($sql);		
+	}
+	
 	function db_editCategory($id, $name, $required){
 		$sql = "UPDATE categories SET name='".$name."', required=".$required." WHERE id=".$id;
 		return dbSQL($sql);

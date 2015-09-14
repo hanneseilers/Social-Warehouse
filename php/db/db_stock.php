@@ -33,6 +33,11 @@
 		return $return;
 	}
 	
+	function db_getPalettesAtLocation( $category, $location ){
+		$sql = "SELECT storages.income, storages.outgo, palettes.name FROM storages JOIN palettes WHERE storages.category=".$category." AND storages.location=".$location." AND storages.palette=palettes.id";
+		return dbSQL($sql);
+	}
+	
 	function db_getStockInfo($category, $location, $palette){
 		$sql = "SELECT SUM(income) AS income_total, SUM(outgo) AS outgo_total, SUM(income)-SUM(outgo) AS total FROM storages WHERE category=".$category
 			." AND location".($location == "NULL" ? " IS NULL" : "=".$location)

@@ -49,10 +49,9 @@
 				$categoryId = $hierarchy['id'];
 				$category = db_getCategory( $warehouse['id'], $categoryId );
 				$hasChild = db_hasChildCategory( $warehouse['id'], $categoryId );
-				$stock = db_getCategoryStockInfo( $categoryId, "NULL", "NULL");
+				$stock = getRecursiveStockInfo( $warehouse['id'], $categoryId );
 				
-				if( count($stock) > 0 && count($category) > 0 ){
-					$stock = $stock[0];
+				if( count($category) > 0 ){
 					$category = $category[0];
 				
 					// calculate demand
@@ -91,22 +90,70 @@
 					// print category info
 					print "<tr>";
 					print "<td><img src='img/star-".$img1.".png' /><img src='img/star-".$img2.".png' /></td>";
-					print "<td class='td_max".($highlight ? " highlight" : "")."'>".($level == 0 ? "<b>" : "").$hierarchy['hierarchy'].($level == 0 ? "</b>" : "");
-					print "</td>";
-					print "<td class='".($highlight ? "highlight" : "")."'>".( !$hasChild ? "<a href='javascript: showDemandStock(".$categoryId.")' class='button smallbutton yellow'>".LANG('details') : "" )."</a></td>";
+					print "<td class='td_max".($highlight ? " highlight" : "")."'>".($level == 0 ? "<b>" : "").$hierarchy['hierarchy'].($level == 0 ? "</b> " : " ");
+					print "<span class='tinytext'>".$stock['total'].LANG('pieces_short')." ";
+					print "</span></td>";
+					
+					// print details button
+					if(isset($_SESSION['warehouseinfo']))
+						print "<td class='".($highlight ? "highlight" : "")."'><a href='javascript: showDemandStock(".$categoryId.")' class='button smallbutton yellow'>".LANG('details')."</a></td>";
 					print "</tr>";
 					
-					$highlight = !$highlight;
+					
 					
 					// print stock info
-					if( !$hasChild ){
-						
+					if( isset($_SESSION['warehouseinfo']) ){
 						print "<tr id='stock_info_".$categoryId."' class='hidetext'><td></td><td class='tr_max, tinytext'>";
-						print LANG('income')." = ".($stock['income_total'] ? $stock['income_total'] : "0").LANG('pieces_short')." ";
-						print LANG('outgo')." = ".($stock['outgo_total'] ? $stock['outgo_total'] : "0").LANG('pieces_short')."<br />";
+						print LANG('income')." = ".$stock['income_total'].LANG('pieces_short')." ";
+						print LANG('outgo')." = ".$stock['outgo_total'].LANG('pieces_short')."";
+						
+						if( !$hasChild ){
+							// add palette info
+							print "<p></p>";
+							
+							// add unlocated stock
+							$looseStock_unlocated = db_getStockInfo( $categoryId, "NULL", "NULL" );
+							
+							// add loose unlocated stock
+							print "<b>Not located:</b><br />";
+							print LANG('loose_stock')." = ";
+							print (count($looseStock_unlocated) > 0 && $looseStock_unlocated[0]['total'] ? $looseStock_unlocated[0]['total'] : "0");
+							print "<p></p>";
+							
+							// add located stock
+							$locations = db_getLocations( $warehouse['id'] );
+							foreach( $locations as $location ){
+								
+								$palettes = db_getPalettesAtLocation( $categoryId, $location['id'] );
+								$looseStock = db_getStockInfo( $categoryId, $location['id'], "NULL" );
+								
+								// ad location name
+								if( count($looseStock) > 0 || count($palettes) > 0){
+									print "<b>".$location['name'].":</b><br />";
+								}
+								
+								// add loose unlocated stock
+								if( count($looseStock) > 0 && $looseStock[0]['total'] ){
+									print LANG('loose_stock')." = ".($looseStock[0]['total'] ? $looseStock[0]['total'] : "0");
+									print "<p></p>";
+								}
+								
+								// add palettes
+								if( count($palettes) > 0 ){
+									foreach( $palettes as $palette ){
+										print "# ".$palette['name']." = ".($palette['income']-$palette['outgo']).LANG('pieces_short');
+									}
+										
+								}
+							}
+							
+						}
+						
 						print "</td></tr>";
 					}
 					
+					
+					$highlight = !$highlight;
 				}
 			}
 			
