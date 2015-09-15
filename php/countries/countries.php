@@ -10,7 +10,7 @@
 		$countries = array();
 		foreach( $f as $country ){
 			$data = explode(";", $country);
-			if( strcmp($data[0], "id") != 1 && count($data) > 4 )
+			if( is_numeric($data[0]) && count($data) > 4 )
 				array_push( $countries, [$data[2], $data[4]] );
 		}
 		
