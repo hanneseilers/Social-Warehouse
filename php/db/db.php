@@ -22,7 +22,7 @@ function dbSQL($sql){
 		else {
 			$vReturn = array();
 			while( ($vRow = $vResult->fetch_assoc()) ){
-				array_push($vReturn, $row);
+				array_push($vReturn, $vRow);
 			}
 			$vResult->close();
 		}

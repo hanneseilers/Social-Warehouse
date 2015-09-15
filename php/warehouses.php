@@ -13,7 +13,8 @@ City: <input type="text" id="filtercity" onkeypress="filterCity();" />
 	<?php
 		
 		// list warehouses
-		foreach( db_getWarehouses() as $vWarehouse ){
+		$warehouses = db_getWarehouses();
+		foreach( $warehouses as $vWarehouse ){			
 			print "<div class='groupitem'>";
 			print "<span class='group_left text_bold' onmousemove='moveWarehouseDescription(event);' onmouseover='showWarehouseDescription(".$vWarehouse['id'].");', onmouseout='hideWarehouseDescription();'>";
 			print "<span id='country_".$vWarehouse['country']."'><img src='countries/flags/".getCountryCode("countries/countries", $vWarehouse['country']).".png' /></span> ";
