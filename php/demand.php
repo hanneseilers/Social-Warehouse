@@ -53,6 +53,11 @@
 				
 				if( count($category) > 0 ){
 					$category = $category[0];
+					
+					// correct total stock
+					if( $stock['total'] < 0 ){
+						$stock['total'] = 0;
+					}
 				
 					// calculate demand
 					$demand = 0.0;

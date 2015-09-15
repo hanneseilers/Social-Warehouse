@@ -47,7 +47,11 @@
 	function db_clearPalette($warehouseId, $id){
 		$sql = "SELECT * FROM palettes WHERE warehouse=".$warehouseId." AND id=".$id;
 		if( count(dbSQL($sql)) > 0 ){				
-			// delete palette
+			// mark palette as cleared
+			$sql = "UPDATE palettes SET cleared=1 WHERE id=".$id;
+			dbSQL($sql);
+			
+			// reset storage incom
 			$sql = "UPDATE storages SET location=NULL, income=0 WHERE palette=".$id;
 			return dbSQL($sql);
 		}

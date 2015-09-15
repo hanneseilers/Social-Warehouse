@@ -12,11 +12,11 @@ function showPalettes_3(){
 }
 
 function _showPalettes(){
-	html = "<h1 id='scrollTarget'>" + LANG('palettes') + ":</h1>";
+	var html = "<h1 id='scrollTarget'>" + LANG('palettes') + ":</h1>";
 	html += LANG('palette_select_tip');
 	
 	// get set location info
-	gLocation = getLocation( _location );
+	var gLocation = getLocation( _location );
 	
 	// show palettes
 	for( var i=0; i < _palettes.length; i++ ){
@@ -26,20 +26,26 @@ function _showPalettes(){
 		// create html
 		html += "\n<div class='groupitem " + (_palette == _palettes[i]['id'] ? "yellow" : "") + "'><div class='table'>"
 			+ "<span class='group_left text_bold' onclick='selectPalette(" + _palettes[i]['id'] + ")'>"
-			+ _palettes[i]['name'] + (vLocation ? " : " + vLocation['name'] : "") + "</span>"
+			+ _palettes[i]['name'] + (vLocation ? " : " + vLocation['name'] : "")
+			+ (_palettes[i]['cleared'] == 1 ? " " + LANG('palette_cleared') : "")
+			+ "</span>"
 			+ "<span class='inline_text hidetext'>" + LANG('palette_name') + ": "
 			+ "<input type='text' id='editpalette_" + _palettes[i]['id'] + "' /></span>"
 			+ " <a href='javascript: editPalette(" + _palettes[i]['id'] + ")' class='button green'>" + LANG('edit') + "</a>"
 			+ " <a href='javascript: showPaletteStock(" + _palettes[i]['id'] + ")' class='button orange'>" + LANG('details') + "</a>"
-			+ " <a href='javascript: clearPalette(" + _palettes[i]['id'] + ")' class='button red'>" + LANG('clear') + "</a></div>"
-			+ "<div class='hidetext'>"
+			+ (_palettes[i]['cleared'] == 0 ? " <a href='javascript: clearPalette(" + _palettes[i]['id'] + ")' class='button red'>" + LANG('clear') + "</a>" : "")
+			+ "</div>";
+		
+		// stock info
+		html += "<div class='hidetext'>"
 			+ "<span class='table_cell' id='palette_stock_" + _palettes[i]['id'] + "' class='tinytext'></span></div>"
 			+ "<div class='hidetext' id='palette_move_" + _palettes[i]['id'] + "'>"
 			+ "<a href='javascript: movePalette(" + _palettes[i]['id'] + ")' class='button'>"
 			+ (gLocation ? LANG('move_palette') + " " + gLocation['name'] : LANG('palette_location_remove') ) + "</a>"
 			+ " <a href='javascript: deletePalette(" + _palettes[i]['id'] + ")' class='button red'>" + LANG('delete') + "</a>"
-			+ "</div>"
 			+ "</div>";
+			
+		html += "</div>";
 		
 		// load stock info
 		_loadPaletteStockInfo( _palettes[i]['id'] );
