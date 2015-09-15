@@ -1,8 +1,8 @@
 <?php
 
-$GLOBALS['dbDatabase'] = "35110m24661_5";
-$GLOBALS['dbUser'] = "35110m24661_5";
-$GLOBALS['dbPassword'] = "tjDGPjFIOz7zpH3rPdcR";
+$GLOBALS['dbDatabase'] = "databse";
+$GLOBALS['dbUser'] = "user";
+$GLOBALS['dbPassword'] = "password";
 $GLOBALS['dbHost'] = "localhost";
 $GLOBALS['log_enabled'] = false;
 
