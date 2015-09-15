@@ -1,7 +1,6 @@
 
-function getRecursiveStockInfo(categoryId){	
-	var income = 0;
-	var outgo = 0;
+function getRecursiveStockTotal(categoryId){	
+	var total = 0;
 	var visited = [];
 	var not_visited = [categoryId];
 	var id;
@@ -12,10 +11,7 @@ function getRecursiveStockInfo(categoryId){
 		
 		if( category ){			
 			// add category income and outgo
-			if( category['stockinfo']['income_total'] )
-				income += Number(category['stockinfo']['income_total']);
-			if( category['stockinfo']['outgo_total'] )
-				outgo += Number(category['stockinfo']['outgo_total']);
+			total += Number(category['stockinfo']['overall']);
 			
 			subcategories = getSubCategories( id );			
 			for( var i=0; i < subcategories.length; i++ ){
@@ -26,5 +22,5 @@ function getRecursiveStockInfo(categoryId){
 		}
 	}
 	
-	return { 'income_total': income, 'outgo_total': outgo, 'total': income-outgo };
+	return total;
 }
