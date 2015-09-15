@@ -48,8 +48,4 @@
 			<td colspan="2" align="center"><a href="javascript: addWarehouse();" class="button block"><?php print LANG('add_warehouse'); ?></a></td>
 		</tr>
 	</table>
-	
-	<?php
-						print getCountryDropdownOptions( __DIR__."/countries/countries" );
-					?>
 </div>
