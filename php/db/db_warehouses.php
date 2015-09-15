@@ -50,7 +50,6 @@ function db_addWarehouse($name, $description, $password, $country, $city, $mail)
 			$warehousename = $country." - ".$city.": ".$name;
 			$message = preg_replace( "/%/", $warehousename, $message, 1 );
 			$message = preg_replace( "/%/", "http://".$_SERVER['HTTP_HOST'], $message, 1 );
-			$message = preg_replace( "/%/", $password, $message, 1 );
 			
 			send_mail( $mail_from, $mail, LANG('mail_registered_subject'), $message );
 			return true;

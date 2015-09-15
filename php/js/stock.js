@@ -179,13 +179,9 @@ function _showCategories(rootId){
 	}
 	
 	// calculate class
-	var vClass = 3;
-	if( _categories.length % 4 == 0 ){
-		vClass = 4;
-	} else if( _categories.length % 3 == 0 ){
+	var vClass = 4;
+	if( _categories.length < 4 ){
 		vClass = 3;
-	} else if( _categories.length >= 4){
-		vClass = 4;
 	}
 	
 	// get location data
@@ -256,7 +252,7 @@ function _showCategories(rootId){
 			row++;
 			
 			// check if to cloes row
-			if( row == vClass-1 ){
+			if( row == vClass ){
 				row = 0;
 				html += "</div>\n"
 			}
