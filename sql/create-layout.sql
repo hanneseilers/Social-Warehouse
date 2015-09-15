@@ -3,9 +3,9 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Table `warehouses`
+-- Table `sw_warehouses`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `warehouses` (
+CREATE TABLE IF NOT EXISTS `sw_warehouses` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` TINYTEXT NOT NULL,
   `description` LONGTEXT NULL,
@@ -18,9 +18,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `categories`
+-- Table `sw_categories`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `categories` (
+CREATE TABLE IF NOT EXISTS `sw_categories` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `parent` INT NULL,
   `warehouse` INT NOT NULL,
@@ -31,21 +31,21 @@ CREATE TABLE IF NOT EXISTS `categories` (
   INDEX `fk_categories_categories1_idx` (`parent` ASC),
   CONSTRAINT `fk_categories_groups`
     FOREIGN KEY (`warehouse`)
-    REFERENCES `warehouses` (`id`)
+    REFERENCES `sw_warehouses` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_categories_categories1`
     FOREIGN KEY (`parent`)
-    REFERENCES `categories` (`id`)
+    REFERENCES `sw_categories` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `palettes`
+-- Table `sw_palettes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `palettes` (
+CREATE TABLE IF NOT EXISTS `sw_palettes` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `warehouse` INT NOT NULL,
   `name` MEDIUMTEXT NOT NULL,
@@ -54,16 +54,16 @@ CREATE TABLE IF NOT EXISTS `palettes` (
   INDEX `fk_palettes_groups1_idx` (`warehouse` ASC),
   CONSTRAINT `fk_palettes_groups1`
     FOREIGN KEY (`warehouse`)
-    REFERENCES `warehouses` (`id`)
+    REFERENCES `sw_warehouses` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `locations`
+-- Table `sw_locations`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `locations` (
+CREATE TABLE IF NOT EXISTS `sw_locations` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `warehouse` INT NOT NULL,
   `name` TINYTEXT NULL,
@@ -71,16 +71,16 @@ CREATE TABLE IF NOT EXISTS `locations` (
   INDEX `fk_locations_warehouses1_idx` (`warehouse` ASC),
   CONSTRAINT `fk_locations_warehouses1`
     FOREIGN KEY (`warehouse`)
-    REFERENCES `warehouses` (`id`)
+    REFERENCES `sw_warehouses` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `storages`
+-- Table `sw_storages`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `storages` (
+CREATE TABLE IF NOT EXISTS `sw_storages` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `category` INT NOT NULL,
   `location` INT NULL,
@@ -96,17 +96,17 @@ CREATE TABLE IF NOT EXISTS `storages` (
   INDEX `fk_storages_locations1_idx` (`location` ASC),
   CONSTRAINT `fk_storages_categories1`
     FOREIGN KEY (`category`)
-    REFERENCES `categories` (`id`)
+    REFERENCES `sw_categories` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_storages_palettes1`
     FOREIGN KEY (`palette`)
-    REFERENCES `palettes` (`id`)
+    REFERENCES `sw_palettes` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_storages_locations1`
     FOREIGN KEY (`location`)
-    REFERENCES `locations` (`id`)
+    REFERENCES `sw_locations` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

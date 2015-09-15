@@ -1,7 +1,7 @@
 <?php
 
 	function db_getPalettes($warehouseId){
-		$sql = "SELECT * FROM palettes WHERE warehouse=".$warehouseId." ORDER BY name ASC";
+		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." ORDER BY name ASC";
 		$palettes = dbSQL($sql);
 		
 		// add locations
@@ -20,9 +20,9 @@
 	}
 	
 	function db_addPalette($warehouseId, $name){
-		$sql = "SELECT * FROM palettes WHERE warehouse=".$warehouseId." AND name='".$name."'";
+		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." AND name='".$name."'";
 		if( count(dbSQL($sql)) == 0 ){
-			$sql = "INSERT INTO palettes (warehouse, name) VALUES (".$warehouseId.", '".$name."')";
+			$sql = "INSERT INTO ".$GLOBALS['dbPrefix']."palettes (warehouse, name) VALUES (".$warehouseId.", '".$name."')";
 			return dbSQL($sql);
 		}
 		
@@ -30,14 +30,14 @@
 	}
 	
 	function db_deletePalette($warehouseId, $id){
-		$sql = "SELECT * FROM palettes WHERE warehouse=".$warehouseId." AND id=".$id;
+		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." AND id=".$id;
 		if( count(dbSQL($sql)) > 0 ){
 			// delete storage data
-			$sql = "DELETE FROM storages WHERE palette=".$id;
+			$sql = "DELETE FROM ".$GLOBALS['dbPrefix']."storages WHERE palette=".$id;
 			dbSQL($sql);
 			
 			// delete palette
-			$sql = "DELETE FROM palettes WHERE warehouse=".$warehouseId." AND id=".$id;
+			$sql = "DELETE FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." AND id=".$id;
 			return dbSQL($sql);
 		}
 		
@@ -45,14 +45,14 @@
 	}
 	
 	function db_clearPalette($warehouseId, $id){
-		$sql = "SELECT * FROM palettes WHERE warehouse=".$warehouseId." AND id=".$id;
+		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." AND id=".$id;
 		if( count(dbSQL($sql)) > 0 ){				
 			// mark palette as cleared
-			$sql = "UPDATE palettes SET cleared=1 WHERE id=".$id;
+			$sql = "UPDATE ".$GLOBALS['dbPrefix']."palettes SET cleared=1 WHERE id=".$id;
 			dbSQL($sql);
 			
 			// reset storage incom
-			$sql = "UPDATE storages SET location=NULL, income=0 WHERE palette=".$id;
+			$sql = "UPDATE ".$GLOBALS['dbPrefix']."storages SET location=NULL, income=0 WHERE palette=".$id;
 			return dbSQL($sql);
 		}
 	
@@ -60,9 +60,9 @@
 	}
 	
 	function db_editPalette($warehouseId, $id, $name){
-		$sql = "SELECT * FROM palettes WHERE warehouse=".$warehouseId." AND name='".$name."'";
+		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." AND name='".$name."'";
 		if( count(dbSQL($sql)) == 0 ){
-			$sql = "UPDATE palettes SET name='".$name."' WHERE warehouse=".$warehouseId." AND id=".$id;
+			$sql = "UPDATE ".$GLOBALS['dbPrefix']."palettes SET name='".$name."' WHERE warehouse=".$warehouseId." AND id=".$id;
 			$return = dbSQL($sql);
 			
 			db_validatePaletteLocations();
@@ -73,7 +73,7 @@
 	}
 	
 	function db_movePalette($palette, $location){
-		$sql = "UPDATE storages SET location=".($location == "NULL" ? "NULL" : $location)." WHERE palette=".$palette;
+		$sql = "UPDATE ".$GLOBALS['dbPrefix']."storages SET location=".($location == "NULL" ? "NULL" : $location)." WHERE palette=".$palette;
 		$return = dbSQL($sql);
 		print $sql;
 		db_validatePaletteLocations();
@@ -81,12 +81,12 @@
 	}
 	
 	function db_getPaletteStorages($palette){
-		$sql = "SELECT * FROM storages WHERE palette=".$palette." AND location IS NOT NULL";
+		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."storages WHERE palette=".$palette." AND location IS NOT NULL";
 		return dbSQL($sql);
 	}
 	
 	function db_validatePaletteLocations(){
-		$sql = "SELECT * FROM palettes";
+		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."palettes";
 		$palettes = dbSQL($sql);
 		
 		// check every palette
@@ -98,7 +98,7 @@
 			// update locations
 			if( count($storages) > 0 ){
 				$location = $storages[0]['location'];
-				$sql = "UPDATE storages SET location=".$location." WHERE palette=".$palette['id'];
+				$sql = "UPDATE ".$GLOBALS['dbPrefix']."storages SET location=".$location." WHERE palette=".$palette['id'];
 				dbSQL($sql);
 			}
 			

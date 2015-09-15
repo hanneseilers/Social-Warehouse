@@ -12,7 +12,7 @@
 		}
 		
 		// check if stock entry already available
-		$sql = "SELECT * FROM storages WHERE category=".$category
+		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."storages WHERE category=".$category
 			." AND location".($location == "NULL" ? " IS NULL" : "=".$location)
 			." AND palette".($palette == "NULL" ? " IS NULL" : "=".$palette)
 			." AND male=".$male." AND female=".$female." AND baby=".$baby;		
@@ -20,13 +20,13 @@
 		
 		// insert new
 		if( count($result) == 0 ){			
-			$sql = "INSERT INTO storages (category, location, palette, income, outgo, male, female, baby)"
+			$sql = "INSERT INTO ".$GLOBALS['dbPrefix']."storages (category, location, palette, income, outgo, male, female, baby)"
 					." VALUES (".$category.", ".$location.", ".$palette.", ".$income.", ".$outgo.", ".$male.", ".$female.", ".$baby.")";
 			return dbSQL($sql);			
 		} 
 		
 		// update existing
-		$sql = "UPDATE storages SET  income=income+".$income.", outgo=outgo+".$outgo." WHERE id=".$result[0]['id'];
+		$sql = "UPDATE ".$GLOBALS['dbPrefix']."storages SET  income=income+".$income.", outgo=outgo+".$outgo." WHERE id=".$result[0]['id'];
 		$return = dbSQL($sql);
 		
 		db_validatePaletteLocations();
@@ -34,29 +34,35 @@
 	}
 	
 	function db_getPalettesAtLocation( $category, $location ){
-		$sql = "SELECT storages.income, storages.outgo, palettes.name FROM storages JOIN palettes WHERE storages.category=".$category." AND storages.location=".$location." AND storages.palette=palettes.id";
+		$sql = "SELECT ".$GLOBALS['dbPrefix']."storages.income, ".$GLOBALS['dbPrefix']."storages.outgo, ".$GLOBALS['dbPrefix']."palettes.name "
+				."FROM ".$GLOBALS['dbPrefix']."storages JOIN ".$GLOBALS['dbPrefix']."palettes WHERE storages.category=".$category." "
+				."AND ".$GLOBALS['dbPrefix']."storages.location=".$location." AND ".$GLOBALS['dbPrefix']."storages.palette=".$GLOBALS['dbPrefix']."palettes.id";
 		return dbSQL($sql);
 	}
 	
 	function db_getStockInfo($category, $location, $palette){
-		$sql = "SELECT SUM(income) AS income_total, SUM(outgo) AS outgo_total, SUM(income)-SUM(outgo) AS total FROM storages WHERE category=".$category
-			." AND location".($location == "NULL" ? " IS NULL" : "=".$location)
-			." AND palette".($palette == "NULL" ? " IS NULL" : "=".$palette)."";
+		$sql = "SELECT SUM(income) AS income_total, SUM(outgo) AS outgo_total, SUM(income)-SUM(outgo) AS total "
+				."FROM ".$GLOBALS['dbPrefix']."storages WHERE category=".$category
+				." AND location".($location == "NULL" ? " IS NULL" : "=".$location)
+				." AND palette".($palette == "NULL" ? " IS NULL" : "=".$palette)."";
 		return dbSQL($sql);
 	}
 	
 	function db_getCategoryStockInfo($category){
-		$sql = "SELECT SUM(income) AS income_total, SUM(outgo) AS outgo_total, SUM(income)-SUM(outgo) AS total FROM storages WHERE category=".$category;
+		$sql = "SELECT SUM(income) AS income_total, SUM(outgo) AS outgo_total, SUM(income)-SUM(outgo) AS total "
+				."FROM ".$GLOBALS['dbPrefix']."storages WHERE category=".$category;
 		return dbSQL($sql);
 	}
 	
 	function db_getPlaetteStockInfo($palette){
-		$sql = "SELECT category, SUM(income) AS income_total, SUM(outgo) AS outgo_total, SUM(income)-SUM(outgo) AS total FROM storages WHERE palette=".$palette." GROUP BY category";
+		$sql = "SELECT category, SUM(income) AS income_total, SUM(outgo) AS outgo_total, SUM(income)-SUM(outgo) AS total "
+				."FROM ".$GLOBALS['dbPrefix']."storages WHERE palette=".$palette." GROUP BY category";
 		return dbSQL($sql);
 	}
 	
 	function db_getLocationStockInfo($location){
-		$sql = "SELECT category, SUM(income) AS income_total, SUM(outgo) AS outgo_total, SUM(income)-SUM(outgo) AS total FROM storages WHERE location=".$location." GROUP BY category";
+		$sql = "SELECT category, SUM(income) AS income_total, SUM(outgo) AS outgo_total, SUM(income)-SUM(outgo) AS total "
+				."FROM ".$GLOBALS['dbPrefix']."storages WHERE location=".$location." GROUP BY category";
 		return dbSQL($sql);
 	}
 

@@ -1,11 +1,11 @@
 <?php
 function db_getWarehouses(){
-	$sql = "SELECT * FROM warehouses ORDER BY name ASC";
+	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses ORDER BY name ASC";
 	return dbSQL($sql);
 }
 
 function db_checkWarehouseLogin($id, $password){
-	$sql = "SELECT * FROM warehouses WHERE id=".$id." AND password='".$password."'";
+	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses WHERE id=".$id." AND password='".$password."'";
 	$result = dbSQL($sql);
 	if( count($result) > 0 )
 		return True;
@@ -14,20 +14,20 @@ function db_checkWarehouseLogin($id, $password){
 }
 
 function db_getWarehouseInfo($id){
-	$sql = "SELECT * FROM warehouses WHERE id=".$id;
+	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses WHERE id=".$id;
 	return dbSQL($sql);
 }
 
 function db_editWarehouse($id, $name, $description, $password, $country, $city, $mail){
-	$sql = "SELECT * FROM warehouses WHERE name='".$name."' AND country='".$country."' AND city='".$city."'";
+	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses WHERE name='".$name."' AND country='".$country."' AND city='".$city."'";
 	if( count(dbSQL($sql)) == 0 ){
 		
 		if( strlen($password) > 0 )
-			$sql = "UPDATE warehouses "
+			$sql = "UPDATE ".$GLOBALS['dbPrefix']."warehouses "
 					."SET name='".$name."', description='".$description."', "
 					." password='".$password."', country='".$country."', city='".$city."' mail='".$mail."' WHERE id=".$id;
 		else
-			$sql = "UPDATE warehouses SET name='".$name."', description='".$description."', country='".$country."', city='".$city."' WHERE id=".$id;
+			$sql = "UPDATE ".$GLOBALS['dbPrefix']."warehouses SET name='".$name."', description='".$description."', country='".$country."', city='".$city."' WHERE id=".$id;
 		return dbSQL($sql);
 		
 	}
@@ -38,9 +38,9 @@ function db_editWarehouse($id, $name, $description, $password, $country, $city, 
 function db_addWarehouse($name, $description, $password, $country, $city, $mail){
 	global $mail_from;
 	
-	$sql = "SELECT * FROM warehouses WHERE name='".$name."' AND country='".$country."' AND city='".$city."'";
+	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses WHERE name='".$name."' AND country='".$country."' AND city='".$city."'";
 	if( count(dbSQL($sql)) == 0 ){
-		$sql = "INSERT INTO warehouses (name, description, password, country, city, mail) "
+		$sql = "INSERT INTO ".$GLOBALS['dbPrefix']."warehouses (name, description, password, country, city, mail) "
 				."VALUES ('".$name."', '".$description."', '".$password."', '".$country."', '".$city."', '".$mail."')";
 		if( dbSQL($sql) ){
 			
@@ -61,40 +61,42 @@ function db_addWarehouse($name, $description, $password, $country, $city, $mail)
 }
 
 function db_deleteWarehouse($id){
-	$sql = "SELECT storages.id FROM categories INNER JOIN storages ON storages.category=categories.id AND categories.warehouse=".$id;
+	$sql = "SELECT ".$GLOBALS['dbPrefix']."storages.id "
+			."FROM ".$GLOBALS['dbPrefix']."categories INNER JOIN ".$GLOBALS['dbPrefix']."storages "
+			."ON ".$GLOBALS['dbPrefix']."storages.category=".$GLOBALS['dbPrefix']."categories.id AND ".$GLOBALS['dbPrefix']."categories.warehouse=".$id;
 	$result = dbSQL($sql);
 	
 	// delete stoarges
 	foreach( $result as $storage ){
-		$sql = "DELETE FROM storages WHERE id=".$storage['id'];
+		$sql = "DELETE FROM ".$GLOBALS['dbPrefix']."storages WHERE id=".$storage['id'];
 		dbSQL($sql);
 	}
 	
 	// delete categories
-	$sql = "SELECT * FROM categories WHERE warehouse=".$id." ORDER BY id DESC";
+	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."categories WHERE warehouse=".$id." ORDER BY id DESC";
 	$result = dbSQL($sql);
 
 	foreach( $result as $category ){
-		$sql = "DELETE FROM categories WHERE id=".$category['id'];
+		$sql = "DELETE FROM ".$GLOBALS['dbPrefix']."categories WHERE id=".$category['id'];
 		dbSQL($sql);
 	}
 	
 	// delete location
-	$sql = "DELETE FROM locations WHERE warehouse=".$id;
+	$sql = "DELETE FROM ".$GLOBALS['dbPrefix']."locations WHERE warehouse=".$id;
 	print $sql."<br />";
 	dbSQL($sql);
 	
 	// delete palettes
-	$sql = "DELETE FROM palettes WHERE warehouse=".$id;
+	$sql = "DELETE FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$id;
 	dbSQL($sql);
 	
 	// delete warehouse
-	$sql = "DELETE FROM warehouses WHERE id=".$id;
+	$sql = "DELETE FROM ".$GLOBALS['dbPrefix']."warehouses WHERE id=".$id;
 	return dbSQL($sql);
 }
 
 function db_getWarehouseDescription($id){
-	$sql = "SELECT * FROM warehouses WHERE id=".$id;
+	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses WHERE id=".$id;
 	return dbSQL($sql)[0]['description'];
 }
 ?>
