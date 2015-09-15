@@ -8,23 +8,23 @@
 		
 		if( $_GET['function'] == "editLocation" && isset($_GET['id']) && isset($_GET['name']) ){
 			if( db_editLocation($_GET['id'], base64_decode($_GET['name'])) )
-				print $OK;
+				print $GLOBALS['OK'];
 			else
-				print $ERR;
+				print $GLOBALS['ERR'];
 		}
 		
 		if( $_GET['function'] == "addLocation" && isset($_GET['name']) ){
 			if( db_addLocation($_SESSION['warehouseinfo']['id'], base64_decode($_GET['name'])) )
-				print $OK;
+				print $GLOBALS['OK'];
 			else
-				print $ERR;
+				print $GLOBALS['ERR'];
 		}
 		
 		if( $_GET['function'] == "deleteLocation" && isset($_GET['id']) ){
 			if( db_deleteLocation($_SESSION['warehouseinfo']['id'], $_GET['id']) )
-				print $OK;
+				print $GLOBALS['OK'];
 			else
-				print $ERR;
+				print $GLOBALS['ERR'];
 		}
 				
 	}

@@ -7,9 +7,9 @@
 	session_start();
 	include( "../db/db.php" );
 	
-	$OK = "ok";
-	$ERR = "err";
-	$SEP = ";";
+	$GLOBALS['OK'] = "ok";
+	$GLOBALS['ERR'] = "err";
+	$GLOBALS['SEP'] = ";";
 	
 	// include sup api fiels
 	include( "categories.php" );
@@ -34,12 +34,12 @@
 	if( $_GET['function'] == "checkLogin" ){
 		if( db_checkWarehouseLogin($_GET['warehouse'], $_GET['pw']) ){
 			_updateWarehouseInfo( $_GET['warehouse'] );
-			print $OK;
+			print $GLOBALS['OK'];
 		} else {
-			print $ERR;
+			print $GLOBALS['ERR'];
 		}
 		
-		print $SEP.$_GET['warehouse'];
+		print $GLOBALS['SEP'].$_GET['warehouse'];
 	}
 	
 	/*

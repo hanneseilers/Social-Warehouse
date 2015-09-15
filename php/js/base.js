@@ -7,7 +7,7 @@ _palettes = [];
 _palette = null
 
 get = function (data, callback){
-	$.get( "api/api.php", data, callback );
+	$.get( document.location+"api/api.php", data, callback );
 }
 
 function login(id){

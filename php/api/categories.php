@@ -2,21 +2,19 @@
 
 	if( isset($_SESSION['warehouseinfo']) && isset($_GET['function']) ){
 		
-		if( $_GET['function'] == "addCategory" && isset($_GET['name']) && isset($_GET['parent']) ){
-			if( $_GET['parent'] == '' )
-				$_GET['parent'] = "NULL";
-			
-			if( db_addCateory( $_SESSION['warehouseinfo']['id'], base64_decode($_GET['name']), $_GET['parent'] ) )
-				print $OK;
+		if( $_GET['function'] == "addCategory" && isset($_GET['name']) && isset($_GET['name']) ){			
+			$result = db_addCateory( $_SESSION['warehouseinfo']['id'], base64_decode($_GET['name']), $_GET['parent'] );
+			if( $result )
+				print $GLOBALS['OK'];
 			else
-				print $ERR;
+				print $GLOBALS['ERR'];
 		}
 		
 		if( $_GET['function'] == "deleteCategory" && isset($_GET['id']) ){
 			if( db_deleteCategory($_SESSION['warehouseinfo']['id'], $_GET['id']) )
-				print $OK;
+				print $GLOBALS['OK'];
 			else
-				print $ERR;
+				print $GLOBALS['ERR'];
 		}
 		
 		if( $_GET['function'] == "getCategories" && isset($_GET['location']) && isset($_GET['palette']) ){
@@ -25,11 +23,11 @@
 		
 		if( $_GET['function'] == "editCategory" && isset($_GET['id']) && isset($_GET['name']) && isset($_GET['demand']) ){
 			if( db_editCategory($_GET['id'], base64_decode($_GET['name']), $_GET['demand']) )
-				print $OK;
+				print $GLOBALS['OK'];
 			else
-				print $ERR;
+				print $GLOBALS['ERR'];
 		}
 		
 	}
-
+	
 ?>

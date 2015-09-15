@@ -22,9 +22,9 @@ if( $_GET['function'] == "addWarehouse"
 			base64_decode($_GET['country']),
 			base64_decode($_GET['city']),
 			base64_decode($_GET['mail']) ) )
-		print $OK;
+		print $GLOBALS['OK'];
 	else
-		print $ERR;
+		print $GLOBALS['ERR'];
 }
 
 /*
@@ -33,10 +33,10 @@ if( $_GET['function'] == "addWarehouse"
  */
 if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "deleteWarehouse" ){
 	if( db_deleteWarehouse($_SESSION['warehouseinfo']['id']) ){
-		print $OK;
+		print $GLOBALS['OK'];
 		session_destroy();
 	} else{
-		print $ERR;
+		print $GLOBALS['ERR'];
 	}
 }
 
@@ -63,9 +63,9 @@ if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "editWarehouse"
 			base64_decode($_GET['city']),
 			base64_decode($_GET['mail'])) ){
 		_updateWarehouseInfo( $_SESSION['warehouseinfo']['id'] );
-		print $OK;
+		print $GLOBALS['OK'];
 	} else {
-		print $ERR;
+		print $GLOBALS['ERR'];
 	}
 }
 
@@ -77,9 +77,9 @@ if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "editWarehouse"
 if( $_GET['function'] == "getWarehouseDescription" ){
 	$result = db_getWarehouseDescription( $_GET['warehouse'] );
 	if( strlen($result) > 0 ){
-		print $OK.$SEP.$result;
+		print $GLOBALS['OK'].$GLOBALS['SEP'].$result;
 	} else {
-		print $ERR;
+		print $GLOBALS['ERR'];
 	}
 }
 ?>

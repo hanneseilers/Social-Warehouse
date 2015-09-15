@@ -21,9 +21,9 @@
 					$_GET['female'],
 					$_GET['baby']) )
 				
-				print $OK;
+				print $GLOBALS['OK'];
 			else
-				print $ERR;
+				print $GLOBALS['ERR'];
 		}
 		
 		if( $_GET['function'] == "getPaletteStockInfo" && isset($_GET['palette']) ){

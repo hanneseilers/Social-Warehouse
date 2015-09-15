@@ -4,30 +4,30 @@
 	
 		if( $_GET['function'] == "addPalette" && isset($_GET['name'])  ){
 			if( db_addPalette($_SESSION['warehouseinfo']['id'], base64_decode($_GET['name'])) )
-				print $OK;
+				print $GLOBALS['OK'];
 			else
-				print $ERR;
+				print $GLOBALS['ERR'];
 		}
 		
 		if( $_GET['function'] == "deletePalette" && isset($_GET['id'])  ){
 			if( db_deletePalette($_SESSION['warehouseinfo']['id'], $_GET['id']) )
-				print $OK;
+				print $GLOBALS['OK'];
 			else
-				print $ERR;
+				print $GLOBALS['ERR'];
 		}
 		
 		if( $_GET['function'] == "clearPalette" && isset($_GET['id'])  ){
 			if( db_clearPalette($_SESSION['warehouseinfo']['id'], $_GET['id']) )
-				print $OK;
+				print $GLOBALS['OK'];
 			else
-				print $ERR;
+				print $GLOBALS['ERR'];
 		}
 		
 		if( $_GET['function'] == "editPalette" && isset($_GET['id']) && isset($_GET['name'])  ){
 			if( db_editPalette($_SESSION['warehouseinfo']['id'], $_GET['id'], base64_decode($_GET['name'])) )
-				print $OK;
+				print $GLOBALS['OK'];
 			else
-				print $ERR;
+				print $GLOBALS['ERR'];
 		}
 		
 		if( $_GET['function'] == "getPalettes"  ){
@@ -36,9 +36,9 @@
 		
 		if( $_GET['function'] == "movePalette" && isset($_GET['palette']) && isset($_GET['location'])  ){
 			if( db_movePalette($_GET['palette'], $_GET['location']) )
-				print $OK;
+				print $GLOBALS['OK'];
 			else
-				print $ERR;
+				print $GLOBALS['ERR'];
 		}
 			
 	}

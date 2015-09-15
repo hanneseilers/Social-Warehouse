@@ -16,9 +16,11 @@ function dbSQL($sql){
 		// send query
 		$vResult = $db->query( $sql );
 		if( $GLOBALS['log_enabled'] ) print "<hr />".$sql."<hr />";
-		
+
 		// check result
-		if( gettype($vResult) == "boolean" ) $vReturn = $vResult;
+		if( gettype($vResult) == "boolean" ){
+			$vReturn = $vResult;
+		}
 		else {
 			$vReturn = array();
 			while( ($vRow = $vResult->fetch_assoc()) ){

@@ -128,7 +128,7 @@ function addCategory(parent){
 		
 		name = document.getElementById( 'addcategory' ).value;
 		if( name.length > 0 ){
-			get( {'function': 'addCategory', 'name': base64_encode(name), 'parent': parent}, function(data, status){
+			get( {'function': 'addCategory', 'name': base64_encode(name), 'parent': (parent ? parent : "NULL")}, function(data, status){
 				if( status == "success" && data == "ok" ){
 					_rootId = parent;
 					_loadCategories( _showCategories, parent );
