@@ -31,12 +31,14 @@ function _showPalettes(){
 			+ "<input type='text' id='editpalette_" + _palettes[i]['id'] + "' /></span>"
 			+ " <a href='javascript: editPalette(" + _palettes[i]['id'] + ")' class='button green'>" + LANG('edit') + "</a>"
 			+ " <a href='javascript: showPaletteStock(" + _palettes[i]['id'] + ")' class='button orange'>" + LANG('details') + "</a>"
-			+ " <a href='javascript: deletePalette(" + _palettes[i]['id'] + ")' class='button red'>" + LANG('delete') + "</a></div>"
+			+ " <a href='javascript: clearPalette(" + _palettes[i]['id'] + ")' class='button red'>" + LANG('clear') + "</a></div>"
 			+ "<div class='hidetext'>"
 			+ "<span class='table_cell' id='palette_stock_" + _palettes[i]['id'] + "' class='tinytext'></span></div>"
-			+ "<div class='hidetext' id='palette_move_" + _palettes[i]['id'] + "'><a href='javascript: movePalette(" + _palettes[i]['id'] + ")' class='button'>"
-			+ (gLocation ? LANG('move_palette') + " " + gLocation['name'] : LANG('palette_location_remove') )
-			+ "</a></div>"
+			+ "<div class='hidetext' id='palette_move_" + _palettes[i]['id'] + "'>"
+			+ "<a href='javascript: movePalette(" + _palettes[i]['id'] + ")' class='button'>"
+			+ (gLocation ? LANG('move_palette') + " " + gLocation['name'] : LANG('palette_location_remove') ) + "</a>"
+			+ " <a href='javascript: deletePalette(" + _palettes[i]['id'] + ")' class='button red'>" + LANG('delete') + "</a>"
+			+ "</div>"
 			+ "</div>";
 		
 		// load stock info
@@ -121,6 +123,10 @@ function deletePalette(id){
 	get( {'function': 'deletePalette', 'id': id}, function(){ _loadPalettes( _showPalettes ); });
 }
 
+function clearPalette(id){
+	get( {'function': 'clearPalette', 'id': id}, function(){ _loadPalettes( _showPalettes ); });
+}
+
 function movePalette(palette){
 	get( {'function': 'movePalette', 'palette': palette, 'location': (_location ? _location : "NULL")},
 			function(data, status){
@@ -135,13 +141,18 @@ function _loadPaletteStockInfo(palette){
 				document.getElementById( 'palette_stock_' + palette ).innerHTML = "";
 			
 				if( status == "success" ){
-					stock = JSON.parse(data);
+					var stock = JSON.parse(data);
+					
+					// add stock info
 					for( var i=0; i < stock.length; i++ ) {
-						hierarchy = getCategoryHierrachy( stock[i]['category'] )
-						document.getElementById( 'palette_stock_' + palette ).innerHTML =
-							document.getElementById( 'palette_stock_' + palette ).innerHTML + (i != 0 ? "<br />" : "")
-							+ hierarchy + " (" + stock[i]['total'] + LANG('pieces_short') + ")";
-					}				
+						var hierarchy = getCategoryHierrachy( stock[i]['category'] )
+						if( stock[i]['total'] && stock[i]['total'] > 0 ){
+							document.getElementById( 'palette_stock_' + palette ).innerHTML = document.getElementById( 'palette_stock_' + palette ).innerHTML
+								+ (i != 0 ? "<br />" : "")
+								+ hierarchy
+								+ " (" + stock[i]['total'] + LANG('pieces_short') + ")";
+						}
+					}
 				}
 			} );
 }

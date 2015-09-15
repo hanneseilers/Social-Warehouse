@@ -44,6 +44,17 @@
 		return false;
 	}
 	
+	function db_clearPalette($warehouseId, $id){
+		$sql = "SELECT * FROM palettes WHERE warehouse=".$warehouseId." AND id=".$id;
+		if( count(dbSQL($sql)) > 0 ){				
+			// delete palette
+			$sql = "UPDATE storages SET location=NULL, income=0 WHERE palette=".$id;
+			return dbSQL($sql);
+		}
+	
+		return false;
+	}
+	
 	function db_editPalette($warehouseId, $id, $name){
 		$sql = "SELECT * FROM palettes WHERE warehouse=".$warehouseId." AND name='".$name."'";
 		if( count(dbSQL($sql)) == 0 ){

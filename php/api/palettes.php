@@ -16,6 +16,13 @@
 				print $ERR;
 		}
 		
+		if( $_GET['function'] == "clearPalette" && isset($_GET['id'])  ){
+			if( db_clearPalette($_SESSION['warehouseinfo']['id'], $_GET['id']) )
+				print $OK;
+			else
+				print $ERR;
+		}
+		
 		if( $_GET['function'] == "editPalette" && isset($_GET['id']) && isset($_GET['name'])  ){
 			if( db_editPalette($_SESSION['warehouseinfo']['id'], $_GET['id'], base64_decode($_GET['name'])) )
 				print $OK;
