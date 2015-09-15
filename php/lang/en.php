@@ -82,7 +82,7 @@ $LANG = [
 	 * 2nd % = website url
 	 * 3rd % = password
 	 */
-	'mail_registered_text' => "<p>Hi,<br/>You successfully added a new Social-Warehouse <b>%</b> at %.<br />You can now login with your new password %.</p><br />Best regards your Social-Warehouse administrator.",
+	'mail_registered_text' => "<p>Hi,<br/>You successfully added a new Social-Warehouse<br /><br /><b>%</b><br /><br />at %.<br />You can now login with your new password: <i>%</i></p><br />Best regards your Social-Warehouse administrator.",
 		
 ]
 

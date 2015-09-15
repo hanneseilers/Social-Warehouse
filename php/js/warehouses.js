@@ -42,7 +42,6 @@ function addWarehouse(){
 					'mail': base64_encode(mail)
 				},
 				function(data, status){
-					alert(data);
 					if( status == "success" && data.length > 0 && data == "ok" )
 						location.reload();
 					else
