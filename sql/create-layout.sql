@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`palettes` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `warehouse` INT NOT NULL,
   `name` MEDIUMTEXT NOT NULL,
+  `cleared` TINYINT(1) NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   INDEX `fk_palettes_groups1_idx` (`warehouse` ASC),
   CONSTRAINT `fk_palettes_groups1`
@@ -86,8 +87,8 @@ CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`storages` (
   `category` INT NOT NULL,
   `location` INT NULL,
   `palette` INT NULL,
-  `in` BIGINT NOT NULL,
-  `out` BIGINT NOT NULL,
+  `income` BIGINT NOT NULL,
+  `outgo` BIGINT NOT NULL,
   `estimated` TINYINT(1) NOT NULL,
   `male` TINYINT(1) NULL,
   `female` TINYINT(1) NULL,
