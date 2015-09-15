@@ -7,22 +7,30 @@ include( "config.php" );
  * @param string $sql	SQL command to execute.
  * @return array
  */
-function dbSQL($sql){	
-	global $dbDatabase, $dbUser, $dbPassword, $dbHost, $log_enabled;
+function dbSQL($sql){
+	// create connection object
+	$vReturn = false;
+	$db = new mysqli( $GLOBALS['dbHost'], $GLOBALS['dbUser'], $GLOBALS['dbPassword'], $GLOBALS['dbDatabase'] );
+	if( mysqli_connect_errno() == 0 ){
 	
-	$vHandle = mysqli_connect($dbHost, $dbUser, $dbPassword, $dbDatabase);
-	$vResult = mysqli_query($vHandle, $sql);
-	
-	if( $log_enabled ) print "<hr />".$sql."<hr />";
-
-	if( gettype($vResult) == "boolean" ) return $vResult;
-	else{
-		$vReturn = array();
-		while( ($row=mysqli_fetch_assoc($vResult)) ){
-			array_push($vReturn, $row);	
+		// send query
+		$vResult = $db->query( $sql );
+		if( $GLOBALS['log_enabled'] ) print "<hr />".$sql."<hr />";
+		
+		// check result
+		if( gettype($vResult) == "boolean" ) $vReturn = $vResult;
+		else {
+			$vReturn = array();
+			while( ($vRow = $vResult->fetch_assoc()) ){
+				array_push($vReturn, $row);
+			}
+			$vResult->close();
 		}
-		return $vReturn;
+
 	}
+
+	$db->close();
+	return $vReturn;
 }
 
 // include sub php files

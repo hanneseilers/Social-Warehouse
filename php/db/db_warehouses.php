@@ -18,12 +18,14 @@ function db_getWarehouseInfo($id){
 	return dbSQL($sql);
 }
 
-function db_editWarehouse($id, $name, $description, $password, $country, $city){
+function db_editWarehouse($id, $name, $description, $password, $country, $city, $mail){
 	$sql = "SELECT * FROM warehouses WHERE name='".$name."' AND country='".$country."' AND city='".$city."'";
 	if( count(dbSQL($sql)) == 0 ){
 		
 		if( strlen($password) > 0 )
-			$sql = "UPDATE warehouses SET name='".$name."', description='".$description."', password='".$password."', country='".$country."', city='".$city."' WHERE id=".$id;
+			$sql = "UPDATE warehouses "
+					."SET name='".$name."', description='".$description."', "
+					." password='".$password."', country='".$country."', city='".$city."' mail='".$mail."' WHERE id=".$id;
 		else
 			$sql = "UPDATE warehouses SET name='".$name."', description='".$description."', country='".$country."', city='".$city."' WHERE id=".$id;
 		return dbSQL($sql);
@@ -33,17 +35,29 @@ function db_editWarehouse($id, $name, $description, $password, $country, $city){
 	return false;
 }
 
-function db_addWarehouse($name, $description, $password, $country, $city){
+function db_addWarehouse($name, $description, $password, $country, $city, $mail){
+	global $mail_from;
+	
 	$sql = "SELECT * FROM warehouses WHERE name='".$name."' AND country='".$country."' AND city='".$city."'";
 	if( count(dbSQL($sql)) == 0 ){
-		$sql = "INSERT INTO warehouses (name, description, password, country, city) VALUES ('".$name."', '".$description."', '".$password."', '".$country."', '".$city."')";
+		$sql = "INSERT INTO warehouses (name, description, password, country, city, mail) "
+				."VALUES ('".$name."', '".$description."', '".$password."', '".$country."', '".$city."', '".$mail."')";
 		if( dbSQL($sql) ){
-			$sql = "SELECT id FROM warehouses WHERE name='".$name."' AND description='".$description."'AND password='".$password."'";
-			return dbSQL($sql)[0]['id'];
+			
+			// send mail
+			include( "../lang/lang.php" );
+			$message = LANG('mail_registered_text');
+			$warehousename = $country." - ".$city.": ".$name;
+			$message = preg_replace( "/%/", $warehousename, $message, 1 );
+			$message = preg_replace( "/%/", "http://".$_SERVER['HTTP_HOST'], $message, 1 );
+			$message = preg_replace( "/%/", $password, $message, 1 );
+			
+			send_mail( $mail_from, $mail, LANG('mail_registered_subject'), $message );
+			return true;
 		}
 	}
 
-	return -1;
+	return false;
 }
 
 function db_deleteWarehouse($id){

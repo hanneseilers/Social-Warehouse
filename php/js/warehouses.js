@@ -5,6 +5,7 @@ function addWarehouse(){
 	description = document.getElementById( 'warehousedescription' ).value.trim();
 	country = document.getElementById( 'country' ).value.trim();
 	city = document.getElementById( 'city' ).value.trim();
+	mail = document.getElementById( 'mail' ).value.trim();
 
 	// hide errors
 	document.getElementById( 'warehousewrong' ).style.display = "none";
@@ -12,6 +13,7 @@ function addWarehouse(){
 	document.getElementById( 'passwordmissing' ).style.display = "none";
 	document.getElementById( 'passwordwrong' ).style.display = "none";
 	document.getElementById( 'citymissing' ).style.display = "none";
+	document.getElementById( 'mail' ).style.display = "none";
 	
 	// check password
 	if( password.length == 0){
@@ -23,6 +25,9 @@ function addWarehouse(){
 	else if( city.length == 0 ) {
 		document.getElementById( 'citymissing' ).style.display = "block";
 	}
+	else if( !validateEmail(mail) ){
+		document.getElementById( 'mail' ).style.display = "block";
+	}
 	
 		
 	// try to create new warehouse
@@ -33,11 +38,12 @@ function addWarehouse(){
 					'desc': base64_encode(description),
 					'pw': password,
 					'country': base64_encode(country),
-					'city': base64_encode(city)
+					'city': base64_encode(city),
+					'mail': base64_encode(mail)
 				},
 				function(data, status){
-					data = data.split(";");
-					if( status == "success" && data.length > 0 && data[0] == "ok" )
+					alert(data);
+					if( status == "success" && data.length > 0 && data == "ok" )
 						location.reload();
 					else
 						document.getElementById( 'warehousewrong' ).style.display = "block";
@@ -176,4 +182,9 @@ function getStyleRuleValue(style, selector, sheet) {
         }
     }
     return null;
+}
+
+function validateEmail(email) {
+    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    return re.test(email);
 }

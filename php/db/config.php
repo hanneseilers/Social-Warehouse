@@ -1,13 +1,13 @@
 <?php
 
-$dbDatabase = "dbname";
-$dbUser = "root";
-$dbPassword = "password";
-$dbHost = "localhost";
-$log_enabled = false;
+$GLOBALS['dbDatabase'] = "database";
+$GLOBALS['dbUser'] = "user";
+$GLOBALS['dbPassword'] = "password";
+$GLOBALS['dbHost'] = "localhost";
+$GLOBALS['log_enabled'] = false;
 
 // mail address registered at providers webspace.
-$mail_real_from = "mail@domain.com";
+$GLOBALS['mail_from'] = "mail@domain.com";
 
 /**
  * Sends mail.
@@ -31,7 +31,7 @@ function send_mail($from, $to, $subject, $message){
 	$header[] = "X-Sender-IP: " . $_SERVER['REMOTE_ADDR'];
 	
 	// send mail
-	mail($to, $subject, $message, implode("\r\n", $header), "-f " . $mail_real_from);
+	mail($to, $subject, $message, implode("\r\n", $header), "-f " . $GLOBALS['mail_from']);
 	
 }
 

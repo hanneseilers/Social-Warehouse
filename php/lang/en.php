@@ -11,6 +11,7 @@ $LANG = [
 	'details' => "Details",
 	'country' => "Country",
 	'city' => "City",
+	'e-mail' => "E-Mail address",
 	'password' => "Password",
 	'password_repeat' => "Repeat password",
 	'description' => "Description",
@@ -30,6 +31,7 @@ $LANG = [
 	'loose_stock' => "Loose Stock",
 	'add_to_loose_stock' => "Add to loose stock",
 	'add_to_palette' => "Add to palette",
+	'email_error' => "No correct e-mail address!",
 		
 	'city_missing' => "City missing!",
 	'stock' => "Stock",
@@ -72,6 +74,15 @@ $LANG = [
 	'palette_location_remove' => "Remove Location",
 	'palette_name_missing' => "Palette name missing!",
 	'palette_name_error' => "Palette is alreay there!!",
+		
+	'mail_registered_subject' => "Social-Warehouse: New Warehouse added.",
+	
+	/*
+	 * 1st % = warehouse name
+	 * 2nd % = website url
+	 * 3rd % = password
+	 */
+	'mail_registered_text' => "<p>Hi,<br/>You successfully added a new Social-Warehouse <b>%</b> at %.<br />You can now login with your new password %.</p><br />Best regards your Social-Warehouse administrator.",
 		
 ]
 

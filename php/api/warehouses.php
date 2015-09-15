@@ -8,10 +8,21 @@
  * city = warehouse city
  * @return = <status>;<warehouse-id>
  */
-if( $_GET['function'] == "addWarehouse" ){
-	$id = db_addWarehouse( base64_decode($_GET['name']), base64_decode($_GET['desc']), $_GET['pw'], base64_decode($_GET['country']), base64_decode($_GET['city']) );
-	if( $id > 0 )
-		print $OK.$SEP.$id;
+if( $_GET['function'] == "addWarehouse"
+		&& isset($_GET['name'])
+		&& isset($_GET['desc'])
+		&& isset($_GET['pw'])
+		&& isset($_GET['country'])
+		&& isset($_GET['city'])
+		&& isset($_GET['mail']) ){
+	
+	if( db_addWarehouse( base64_decode($_GET['name']),
+			base64_decode($_GET['desc']),
+			$_GET['pw'],
+			base64_decode($_GET['country']),
+			base64_decode($_GET['city']),
+			base64_decode($_GET['mail']) ) )
+		print $OK;
 	else
 		print $ERR;
 }
@@ -37,8 +48,20 @@ if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "deleteWarehouse" 
  * city = warehouse city
  * @return = <status>
  */
-if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "editWarehouse" ){
-	if( db_editWarehouse($_SESSION['warehouseinfo']['id'], base64_decode($_GET['name']), base64_decode($_GET['desc']), $_GET['pw'], base64_decode($_GET['country']), base64_decode($_GET['city'])) ){
+if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "editWarehouse"
+		&& isset($_GET['name'])
+		&& isset($_GET['desc'])
+		&& isset($_GET['pw'])
+		&& isset($_GET['country'])
+		&& isset($_GET['city'])
+		&& isset($_GET['mail']) ){
+	if( db_editWarehouse($_SESSION['warehouseinfo']['id'],
+			base64_decode($_GET['name']),
+			base64_decode($_GET['desc']),
+			$_GET['pw'],
+			base64_decode($_GET['country']),
+			base64_decode($_GET['city']),
+			base64_decode($_GET['mail'])) ){
 		_updateWarehouseInfo( $_SESSION['warehouseinfo']['id'] );
 		print $OK;
 	} else {

@@ -12,11 +12,12 @@
 	
 	// load deafult language
 	include( __DIR__."/".$default_language );
-	$DEFLANG = $LANG;
+	$GLOBALS['DEFLANG'] = $LANG;
 	
 	// load local language file
-	if( file_exists($local_language) )
+	if( file_exists(__DIR__."/".$local_language) )
 		include( __DIR__."/".$local_language );
+	$GLOBALS['LANG'] = $LANG;
 	
 	// check for get request
 	if( isset($_GET['lang']) ){
@@ -29,12 +30,13 @@
 	}
 	
 	function LANG($key){
-		global $LANG, $DEFLANG;
-		if( array_key_exists($key, $LANG) )
-			return $LANG[$key];
 		
-		if( array_key_exists($key, $DEFLANG) )
-			return $DEFLANG[$key];
+		if( $GLOBALS['LANG'] && array_key_exists($key, $GLOBALS['LANG']) )
+			return $GLOBALS['LANG'][$key];
+		
+		print "check deflang<br>";
+		if( $GLOBALS['DEFLANG'] && array_key_exists($key, $GLOBALS['DEFLANG']) )
+			return $GLOBALS['DEFLANG'][$key];
 		
 		return "err";
 	}

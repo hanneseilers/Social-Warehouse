@@ -26,6 +26,11 @@
 			<td><br /></td>
 		</tr>
 		<tr>
+			<td><?php print LANG('e-mail'); ?>:</td>
+			<td><input type="email" id="mail" /></td>
+			<td id="emailwrong" class="errortext hidetext"><?php print LANG('email_error'); ?></td>
+		</tr>
+		<tr>
 			<td><?php print LANG('password'); ?>:</td>
 			<td><input type="password" id="password" /></td>
 			<td id="passwordwrong" class="errortext hidetext"><?php print LANG('passwords_not_equal'); ?></td>
