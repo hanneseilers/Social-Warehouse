@@ -21,7 +21,7 @@ function _showPalettes(){
 	// show palettes
 	for( var i=0; i < _palettes.length; i++ ){
 		// get location
-		vLocation = getLocation( _palettes[i]['location'] );
+		var vLocation = getLocation( _palettes[i]['location'] );
 		
 		// create html
 		html += "\n<div class='groupitem " + (_palette == _palettes[i]['id'] ? "yellow" : "") + "'><div class='table'>"
@@ -67,7 +67,7 @@ function _showPalettes(){
 }
 
 function getPalette(id){
-	for( i=0; i < _palettes.length; i++){
+	for( var i=0; i < _palettes.length; i++){
 		if( _palettes[i]['id'] == id ){
 			return _palettes[i];
 		}
@@ -77,8 +77,8 @@ function getPalette(id){
 }
 
 function editPalette(id){
-	name = document.getElementById( 'editpalette_' + id ).value.trim()
-	vPalette = getPalette(id);
+	var name = document.getElementById( 'editpalette_' + id ).value.trim()
+	var vPalette = getPalette(id);
 	
 	if( name.length > 0 ){
 		get( 	{'function': 'editPalette', 'id': id, 'name': base64_encode(name)},
@@ -110,7 +110,7 @@ function addPalette(){
 	document.getElementById( 'palette_name_missing' ).style.display = "none";
 	document.getElementById( 'palette_name_error' ).style.display = "none";
 	
-	name = document.getElementById( 'addPalette' ).value.trim();
+	var name = document.getElementById( 'addPalette' ).value.trim();
 	if( name.length > 0 ){
 		get( 	{'function': 'addPalette', 'name': base64_encode(name)},
 				function(data, status){

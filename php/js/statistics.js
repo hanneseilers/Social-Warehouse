@@ -1,9 +1,10 @@
 
 function getRecursiveStockInfo(categoryId){	
-	income = 0;
-	outgo = 0;
-	visited = [];
-	not_visited = [categoryId];
+	var income = 0;
+	var outgo = 0;
+	var visited = [];
+	var not_visited = [categoryId];
+	var id;
 	
 	while( (id = not_visited.pop()) != undefined ){
 		category = getCategory( id );

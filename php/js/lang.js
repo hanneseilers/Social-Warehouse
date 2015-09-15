@@ -1,4 +1,4 @@
-LANGOBJ = {};
+var LANGOBJ = {};
 
 function LANG(key){
 	

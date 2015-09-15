@@ -1,11 +1,11 @@
 function addWarehouse(){
-	name = document.getElementById( 'warehousename' ).value.trim();
-	password = document.getElementById( 'password' ).value.trim();
-	password2 = document.getElementById( 'password-repeat' ).value.trim();
-	description = document.getElementById( 'warehousedescription' ).value.trim();
-	country = document.getElementById( 'country' ).value.trim();
-	city = document.getElementById( 'city' ).value.trim();
-	mail = document.getElementById( 'mail' ).value.trim();
+	var name = document.getElementById( 'warehousename' ).value.trim();
+	var password = document.getElementById( 'password' ).value.trim();
+	var password2 = document.getElementById( 'password-repeat' ).value.trim();
+	var description = document.getElementById( 'warehousedescription' ).value.trim();
+	var country = document.getElementById( 'country' ).value.trim();
+	var city = document.getElementById( 'city' ).value.trim();
+	var mail = document.getElementById( 'mail' ).value.trim();
 
 	// hide errors
 	document.getElementById( 'warehousewrong' ).style.display = "none";
@@ -59,7 +59,7 @@ function deleteWarehouse(){
 
 function editWarehouse(){
 	
-	tableEdit = document.getElementById( 'warehouseeditdata' );
+	var tableEdit = document.getElementById( 'warehouseeditdata' );
 	
 	// hide errors
 	document.getElementById( 'passwordwrong' ).style.display = "none";
@@ -158,14 +158,6 @@ function moveWarehouseDescription(event){
 
 function hideWarehouseDescription(){
 	document.getElementById( 'overlay' ).style.display = "none";
-}
-
-function filterCountry(){
-	country = document.getElementById( 'filtercountry' ).value;
-}
-
-function filterCity(){
-	city = document.getElementById( 'filtercity' ).value;
 }
 
 function getStyleRuleValue(style, selector, sheet) {

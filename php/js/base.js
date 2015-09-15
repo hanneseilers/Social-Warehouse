@@ -1,13 +1,13 @@
-_warehouseId = 0;
-_rootId = null;
-_categories = [];
-_locations = [];
-_location = null;
-_palettes = [];
-_palette = null
+var _warehouseId = 0;
+var _rootId = null;
+var _categories = [];
+var _locations = [];
+var _location = null;
+var _palettes = [];
+var _palette = null
 
 get = function (data, callback){
-	$.get( document.location+"api/api.php", data, callback );
+	$.get( "api/api.php", data, callback );
 }
 
 function login(id){

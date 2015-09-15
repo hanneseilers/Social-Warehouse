@@ -9,7 +9,7 @@ function showLocations_2(){
 
 function _showLocations(){
 	
-	html = "<h1 id='scrollTarget'>" + LANG('locations') + ":</h1>";
+	var html = "<h1 id='scrollTarget'>" + LANG('locations') + ":</h1>";
 	html += LANG('location_select_tip');
 	
 	// show locations
@@ -48,7 +48,7 @@ function _showLocations(){
 
 function getLocation(id){
 	if( id != null ){
-		for( i=0; i < _locations.length; i++){
+		for( var i=0; i < _locations.length; i++){
 			if( _locations[i]['id'] == id ){
 				return _locations[i];
 			}
@@ -60,7 +60,7 @@ function getLocation(id){
 
 function editLocation(id){
 	name = document.getElementById( 'editlocation_' + id ).value.trim()
-	vLocation = getLocation(id);
+	var vLocation = getLocation(id);
 	
 	document.getElementById( 'location_name_error_' + id ).style.display = "none";
 	
@@ -94,7 +94,7 @@ function addLocation(){
 	document.getElementById( 'location_name_missing' ).style.display = "none";
 	document.getElementById( 'location_name_error' ).style.display = "none";
 	
-	name = document.getElementById( 'addLocation' ).value.trim();
+	var name = document.getElementById( 'addLocation' ).value.trim();
 	if( name.length > 0 ){
 		get( 	{'function': 'addLocation', 'name': base64_encode(name)},
 				function(data, status){

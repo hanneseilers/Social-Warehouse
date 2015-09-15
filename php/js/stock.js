@@ -1,12 +1,12 @@
-_male = false;
-_female = false;
-_baby = false;
-_income_selected = false;
-_outgo_selected = false;
+var _male = false;
+var _female = false;
+var _baby = false;
+var _income_selected = false;
+var _outgo_selected = false;
 
 function addToStock(category){
-	income = document.getElementById( 'income' ).value;
-	outgo = document.getElementById( 'outgo' ).value;
+	var income = document.getElementById( 'income' ).value;
+	var outgo = document.getElementById( 'outgo' ).value;
 	
 	get( {	'function': 'addToStock',
 			'category': category,
@@ -31,11 +31,11 @@ function addToStock(category){
 
 function updateColors(){
 	// get colors
-	defColor = getStyleRuleValue( 'background-color', '.button' );
-	orange = getStyleRuleValue( 'background-color', '.orange' );
-	blue = getStyleRuleValue( 'background-color', '.blue' );
-	yellow = getStyleRuleValue( 'background-color', '.yellow' );
-	purple = getStyleRuleValue( 'background-color', '.purple' );
+	var defColor = getStyleRuleValue( 'background-color', '.button' );
+	var orange = getStyleRuleValue( 'background-color', '.orange' );
+	var blue = getStyleRuleValue( 'background-color', '.blue' );
+	var yellow = getStyleRuleValue( 'background-color', '.yellow' );
+	var purple = getStyleRuleValue( 'background-color', '.purple' );
 	
 	// reset button background
 	document.getElementById( 'button_male' ).style.backgroundColor = defColor;
@@ -95,10 +95,10 @@ function getCategory(id){
 }
 
 function getSubCategories(id){
-	categories = [];
+	var categories = [];
 	
 	if( id != null ){
-		for( i=0; i < _categories.length; i++ ){
+		for( var i=0; i < _categories.length; i++ ){
 			if( _categories[i]['parent'] == id ){
 				categories.push( _categories[i] );
 			}
@@ -109,9 +109,9 @@ function getSubCategories(id){
 }
 
 function getCategoryHierrachy(id){
-	hierarchy = "";
+	var hierarchy = "";
 	while( id != null ){
-		category = getCategory(id);
+		var category = getCategory(id);
 		if( hierarchy.length != 0 ){
 			hierarchy = " > " + hierarchy;
 		}
@@ -157,9 +157,9 @@ function deleteCategory(id){
 }
 
 function editCategory(id){
-	name = document.getElementById( 'categoryname' ).value.trim();
+	var name = document.getElementById( 'categoryname' ).value.trim();
 	
-	demand = 0;
+	var demand = 0;
 	if( document.getElementById( 'demand' ) )
 		demand = document.getElementById( 'demand' ).value;
 	
@@ -179,7 +179,7 @@ function _showCategories(rootId){
 	}
 	
 	// calculate class
-	vClass = 3;
+	var vClass = 3;
 	if( _categories.length % 4 == 0 ){
 		vClass = 4;
 	} else if( _categories.length % 3 == 0 ){
@@ -189,23 +189,23 @@ function _showCategories(rootId){
 	}
 	
 	// get location data
-	vLocation = null;
+	var vLocation = null;
 	if( _location ){
 		vLocation = getLocation( _location ); 
 	}
 	
 	// get palette data
-	vPalette = null;
+	var vPalette = null;
 	if( _palette ){
 		vPalette = getPalette( _palette ); 
 	}
 	
 	// get category root
-	root = getCategory(rootId);
+	var root = getCategory(rootId);
 	
 	// check if to add income and outgo options
-	addIncomeOutgo = false;
-	vCategoryRoot = rootId;
+	var addIncomeOutgo = false;
+	var vCategoryRoot = rootId;
 	if( root != null && !hasChildCategory(root['id']) ){
 		addIncomeOutgo = true;
 		vCategory = getCategory(rootId);
@@ -214,7 +214,7 @@ function _showCategories(rootId){
 	}
 	
 	// create html
-	html = "<h1 " + (!addIncomeOutgo ? "id='scrollTarget'" : "")  + ">" + LANG('categories')
+	var html = "<h1 " + (!addIncomeOutgo ? "id='scrollTarget'" : "")  + ">" + LANG('categories')
 		+ (vLocation ? ": " + vLocation['name'] : "" )
 		+ (vPalette ? " #" + vPalette['name'] : "" )
 		+ "</h1>";
@@ -222,7 +222,7 @@ function _showCategories(rootId){
 	// create root category
 	if( root != null ){	
 		// get stock info including all sub categories
-		stock = getRecursiveStockInfo( root['id'] );
+		var stock = getRecursiveStockInfo( root['id'] );
 		
 		// create html
 		html += "<a href='javascript: _showCategories("
@@ -233,7 +233,7 @@ function _showCategories(rootId){
 	}	
 	
 	// create sub categories
-	row = 0;
+	var row = 0;
 	for( var i=0; i < _categories.length; i++ ){		
 		if( _categories[i]['parent'] == vCategoryRoot ){
 			// check if to open row
@@ -242,7 +242,7 @@ function _showCategories(rootId){
 			}
 			
 			// set link
-			href = "_showCategories(" + _categories[i]['id'] + ");";
+			var href = "_showCategories(" + _categories[i]['id'] + ");";
 			
 			// get stock info including all sub categories
 			stock = getRecursiveStockInfo( _categories[i]['id'] );
