@@ -25,7 +25,6 @@ $LANG = [
 	'income' => "Income",
 	'outgo' => "Outgo",
 	'total' => "Total",
-	'estimated' => "Estimated",
 	'pieces_short' => "pcs.",
 		
 	'loose_stock' => "Loose Stock",

@@ -10,8 +10,7 @@
 				&& isset($_GET['out'])
 				&& isset($_GET['male'])
 				&& isset($_GET['female'])
-				&& isset($_GET['baby'])
-				&& isset($_GET['estimated']) ){
+				&& isset($_GET['baby']) ){
 			
 			if( db_addToStock( $_GET['category'],
 					$_GET['location'],
@@ -20,8 +19,7 @@
 					$_GET['out'],
 					$_GET['male'],
 					$_GET['female'],
-					$_GET['baby'],
-					$_GET['estimated']) )
+					$_GET['baby']) )
 				
 				print $OK;
 			else

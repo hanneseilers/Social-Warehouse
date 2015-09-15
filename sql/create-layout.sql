@@ -89,7 +89,6 @@ CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`storages` (
   `palette` INT NULL,
   `income` BIGINT NOT NULL,
   `outgo` BIGINT NOT NULL,
-  `estimated` TINYINT(1) NOT NULL,
   `male` TINYINT(1) NULL,
   `female` TINYINT(1) NULL,
   `baby` VARCHAR(45) NULL,

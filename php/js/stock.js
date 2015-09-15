@@ -1,7 +1,6 @@
 _male = false;
 _female = false;
 _baby = false;
-_estimated = false;
 _income_selected = false;
 _outgo_selected = false;
 
@@ -17,8 +16,7 @@ function addToStock(category){
 			'out': (outgo.length > 0 ? outgo : 0),
 			'male': _male,
 			'female': _female,
-			'baby': _baby,
-			'estimated': _estimated
+			'baby': _baby
 			},
 			
 			function (data, status){
@@ -38,13 +36,11 @@ function updateColors(){
 	blue = getStyleRuleValue( 'background-color', '.blue' );
 	yellow = getStyleRuleValue( 'background-color', '.yellow' );
 	purple = getStyleRuleValue( 'background-color', '.purple' );
-	lightred = getStyleRuleValue( 'background-color', '.lightred' );
 	
 	// reset button background
 	document.getElementById( 'button_male' ).style.backgroundColor = defColor;
 	document.getElementById( 'button_female' ).style.backgroundColor = defColor;
 	document.getElementById( 'button_baby' ).style.backgroundColor = defColor;
-	document.getElementById( 'button_estimated' ).style.backgroundColor = defColor;
 	document.getElementById( 'income' ).parentElement.style.backgroundColor = defColor;
 	document.getElementById( 'outgo' ).parentElement.style.backgroundColor = defColor;
 	
@@ -58,10 +54,6 @@ function updateColors(){
 		if( _female ){
 			document.getElementById( 'button_female' ).style.backgroundColor = purple;
 		}
-	}
-	
-	if( _estimated ){
-		document.getElementById( 'button_estimated' ).style.backgroundColor = lightred;
 	}
 	
 	if( _income_selected ){
@@ -286,7 +278,6 @@ function _showCategories(rootId){
 			+ "<a href='javascript: _male = !_male; _baby = false; updateColors();' id='button_male' class='button button4 table_cell'><img src='img/male.png' /><br />" + LANG('male') + "</a>"
 			+ "<a href='javascript: _female = !_female; _baby = false; updateColors();' id='button_female' class='button button4 table_cell'><img src='img/female.png' /><br />" + LANG('female') + "</a>"
 			+ "<a href='javascript: _baby = !_baby; _male = false; _female = false; updateColors();' id='button_baby' class='button button4 table_cell'><img src='img/baby.png' /><br />" + LANG('children_baby') + "</a>"
-			+ "<a href='javascript: _estimated = !_estimated; updateColors();' id='button_estimated' class='button button4 table_cell'><img src='img/estimate.png' /><br />" + LANG('estimated') + "</a>"
 			+ "</div>";
 		
 		// show in and out fields

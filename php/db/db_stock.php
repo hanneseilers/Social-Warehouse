@@ -1,6 +1,6 @@
 <?php
 
-	function db_addToStock($category, $location, $palette, $income, $outgo, $male, $female, $baby, $estimated){
+	function db_addToStock($category, $location, $palette, $income, $outgo, $male, $female, $baby){
 		// check if to set location to palette location
 		if( $palette != "NULL" ){
 			db_validatePaletteLocations();
@@ -15,13 +15,13 @@
 		$sql = "SELECT * FROM storages WHERE category=".$category
 			." AND location".($location == "NULL" ? " IS NULL" : "=".$location)
 			." AND palette".($palette == "NULL" ? " IS NULL" : "=".$palette)
-			." AND male=".$male." AND female=".$female." AND baby=".$baby." AND estimated=".$estimated;		
+			." AND male=".$male." AND female=".$female." AND baby=".$baby;		
 		$result = dbSQL($sql);
 		
 		// insert new
 		if( count($result) == 0 ){			
-			$sql = "INSERT INTO storages (category, location, palette, income, outgo, estimated, male, female, baby)"
-					." VALUES (".$category.", ".$location.", ".$palette.", ".$income.", ".$outgo.", ".$estimated.", ".$male.", ".$female.", ".$baby.")";
+			$sql = "INSERT INTO storages (category, location, palette, income, outgo, male, female, baby)"
+					." VALUES (".$category.", ".$location.", ".$palette.", ".$income.", ".$outgo.", ".$male.", ".$female.", ".$baby.")";
 			return dbSQL($sql);			
 		} 
 		
