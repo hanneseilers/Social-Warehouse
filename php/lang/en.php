@@ -8,6 +8,7 @@ $LANG = [
 	'delete' => "Delete",
 	'clear' => "Clear",
 	'help' => "Help",
+	'legend' => "Legend",
 	'details' => "Details",
 	'country' => "Country",
 	'city' => "City",
