@@ -210,7 +210,7 @@ function _showCategories(rootId){
 	}
 	
 	// create html
-	var html = "<h1 " + (!addIncomeOutgo ? "id='scrollTarget'" : "")  + ">" + LANG('categories')
+	var html = "<h1 id='scrollTarget'>" + LANG('categories')
 		+ (vLocation ? ": " + vLocation['name'] : "" )
 		+ (vPalette ? " #" + vPalette['name'] : "" )
 		+ "</h1>";
@@ -221,12 +221,39 @@ function _showCategories(rootId){
 		var stockTotal = getRecursiveStockTotal( root['id'] );
 		
 		// create html
-		html += "<a href='javascript: _showCategories("
+		html += "<div><a href='javascript: _showCategories("
 			+ root['parent'] + ");' class='button centertext block'>"
 			+ getCategoryHierrachy(root['id'])
 			+ " (" + stockTotal + LANG('pieces_short') + ")"
-			+ "</a>\n";
-	}	
+			+ "</a></div>\n";
+		
+	}
+	
+	// add add-category form
+	html += "<div class='groupitem'><span class='group_left'>"
+		+ LANG('category_name') + ": <input type='text' id='addcategory' onkeypress='if(event.keyCode == 13) addCategory(" + rootId + ");' /></span>" 
+		+ "<a href='javascript: addCategory(" + rootId + ");' class='button'>" + LANG('add_category') + "</a></div>";
+	
+	// show options to add storage
+	if( addIncomeOutgo ){		
+		// show gender button
+		html += "<div class='table'>"
+			+ "<a href='javascript: _male = !_male; _baby = false; updateColors();' id='button_male' class='button button4 table_cell'><img src='img/male.png' /><br />" + LANG('male') + "</a>"
+			+ "<a href='javascript: _female = !_female; _baby = false; updateColors();' id='button_female' class='button button4 table_cell'><img src='img/female.png' /><br />" + LANG('female') + "</a>"
+			+ "<a href='javascript: _baby = !_baby; _male = false; _female = false; updateColors();' id='button_baby' class='button button4 table_cell'><img src='img/baby.png' /><br />" + LANG('children_baby') + "</a>"
+			+ "</div>";
+		
+		// show in and out fields
+		html += "<div class='table'>"
+			+ "<span class='button button3 table_cell biginput'>" + LANG('income') + "<br />"
+			+ "<input id='income'  type='number' onfocus='_income_selected = true; _outgo_selected = false; updateColors();' onkeypress='if(event.keyCode == 13) addToStock(" + root['id'] + ");' /></span>"
+			+ "<span class='button button3 table_cell biginput'>" + LANG('outgo') + "<br />"
+			+ "<input id='outgo'  type='number' onfocus='_income_selected = false; _outgo_selected = true; updateColors();' onkeypress='if(event.keyCode == 13) addToStock(" + root['id'] + ");' /></span>"
+			+ "<a href='javascript: addToStock(" + root['id'] + ");' id='button_add' class='button button3 table_cell biginput green'>"
+			+ (!vPalette ? LANG('add_to_loose_stock') : LANG('add_to_palette') + "<br />" + vPalette['name']) + "</a>";
+			
+		html += "</div>";
+	}		
 	
 	// create sub categories
 	var row = 0;
@@ -267,32 +294,6 @@ function _showCategories(rootId){
 	// add spacer
 	html += "<div class='hspacer'></div>";
 			
-	// show options to add storage
-	if( addIncomeOutgo ){		
-		// show gender button
-		html += "<div class='table' id='scrollTarget'>"
-			+ "<a href='javascript: _male = !_male; _baby = false; updateColors();' id='button_male' class='button button4 table_cell'><img src='img/male.png' /><br />" + LANG('male') + "</a>"
-			+ "<a href='javascript: _female = !_female; _baby = false; updateColors();' id='button_female' class='button button4 table_cell'><img src='img/female.png' /><br />" + LANG('female') + "</a>"
-			+ "<a href='javascript: _baby = !_baby; _male = false; _female = false; updateColors();' id='button_baby' class='button button4 table_cell'><img src='img/baby.png' /><br />" + LANG('children_baby') + "</a>"
-			+ "</div>";
-		
-		// show in and out fields
-		html += "<div class='table'>"
-			+ "<span class='button button3 table_cell biginput'>" + LANG('income') + "<br />"
-			+ "<input id='income'  type='number' onfocus='_income_selected = true; _outgo_selected = false; updateColors();' onkeypress='if(event.keyCode == 13) addToStock(" + root['id'] + ");' /></span>"
-			+ "<span class='button button3 table_cell biginput'>" + LANG('outgo') + "<br />"
-			+ "<input id='outgo'  type='number' onfocus='_income_selected = false; _outgo_selected = true; updateColors();' onkeypress='if(event.keyCode == 13) addToStock(" + root['id'] + ");' /></span>"
-			+ "<a href='javascript: addToStock(" + root['id'] + ");' id='button_add' class='button button3 table_cell biginput green'>"
-			+ (!vPalette ? LANG('add_to_loose_stock') : LANG('add_to_palette') + "<br />" + vPalette['name']) + "</a>";
-			
-		html += "</div>";
-	}
-		
-	// add add-category form
-	html += "<div class='groupitem'><span class='group_left'>"
-		+ LANG('category_name') + ": <input type='text' id='addcategory' onkeypress='if(event.keyCode == 13) addCategory(" + rootId + ");' /></span>" 
-		+ "<a href='javascript: addCategory(" + rootId + ");' class='button'>" + LANG('add_category') + "</a></div>";
-	
 	if( root != null ){	
 		// add category edit & delete form
 		html += "<div class='groupitem'><span class='group_left'>"

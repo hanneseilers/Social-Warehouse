@@ -9,7 +9,16 @@ function showLocations_2(){
 
 function _showLocations(){
 	
-	var html = "<h1 id='scrollTarget'>" + LANG('locations') + ":</h1>";
+	// show form to add location
+	var html = "<h1>" + LANG('add_location') + ":</h1>\n"
+		+ "<div class='groupitem'><span class='group_left'>"
+		+ LANG('location_name') + ": <input type='text' id='addLocation' onkeypress='if(event.keyCode == 13) addLocation();' /></span>"
+		+ "<span class='inline_text errortext hidetext' id='location_name_missing'>" + LANG('location_name_missing') + "</span>"
+		+ "<span class='inline_text errortext hidetext' id='location_name_error'>" + LANG('location_name_error') + "</span>"
+		+ "<a href='javascript: addLocation()' class='button'>" + LANG('add_location') + "</a>" 
+		+ "</div>";
+	
+	html += "<h1 id='scrollTarget'>" + LANG('locations') + ":</h1>";
 	html += LANG('location_select_tip');
 	
 	// show locations
@@ -29,15 +38,6 @@ function _showLocations(){
 		// load stock info
 		_loadLocationStockInfo( _locations[i]['id'] );
 	}
-	
-	// show form to add location
-	html += "<h1>" + LANG('add_location') + ":</h1>\n"
-		+ "<div class='groupitem'><span class='group_left'>"
-		+ LANG('location_name') + ": <input type='text' id='addLocation' onkeypress='if(event.keyCode == 13) addLocation();' /></span>"
-		+ "<span class='inline_text errortext hidetext' id='location_name_missing'>" + LANG('location_name_missing') + "</span>"
-		+ "<span class='inline_text errortext hidetext' id='location_name_error'>" + LANG('location_name_error') + "</span>"
-		+ "<a href='javascript: addLocation()' class='button'>" + LANG('add_location') + "</a>" 
-		+ "</div>";
 	
 	// show locations
 	showHtml(html);

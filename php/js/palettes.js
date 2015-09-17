@@ -12,11 +12,23 @@ function showPalettes_3(){
 }
 
 function _showPalettes(){
-	var html = "<h1 id='scrollTarget'>" + LANG('palettes') + ":</h1>";
-	html += LANG('palette_select_tip');
 	
 	// get set location info
 	var gLocation = getLocation( _location );
+	
+	// show form to add palette
+	var html = "<h1>" + LANG('add_palette') + ":</h1>\n"
+		+ "<div class='groupitem'><span class='group_left'>"
+		+ LANG('palette_name') + ": <input type='text' id='addPalette' onkeypress='if(event.keyCode == 13) addPalette()'; /></span>"
+		+ "<span class='inline_text errortext hidetext' id='palette_name_missing'>" + LANG('palette_name_missing') + "</span>"
+		+ "<span class='inline_text errortext hidetext' id='palette_name_error'>" + LANG('palette_name_error') + "</span>"
+		+ "<a href='javascript: addPalette()' class='button'>" + LANG('add_palette') + "</a>" 
+		+ "</div>";
+	
+	
+	html += "<h1 id='scrollTarget'>" + LANG('palettes') + ":</h1>";
+	html += LANG('palette_select_tip');
+	
 	
 	// show palettes
 	for( var i=0; i < _palettes.length; i++ ){
@@ -24,7 +36,7 @@ function _showPalettes(){
 		var vLocation = getLocation( _palettes[i]['location'] );
 		
 		// create html
-		html += "\n<div class='groupitem " + (_palette == _palettes[i]['id'] ? "yellow" : "") + "'><div class='table'>"
+		html += "\n<div id='paletteitem_" + _palettes[i]['id'] + "' class='groupitem " + (_palette == _palettes[i]['id'] ? "yellow" : "") + "'><div class='table'>"
 			+ "<span class='group_left text_bold' onclick='selectPalette(" + _palettes[i]['id'] + ")'>"
 			+ _palettes[i]['name'] + (vLocation ? " : " + vLocation['name'] : "")
 			+ (_palettes[i]['cleared'] == 1 ? " " + LANG('palette_cleared') : "")
@@ -50,15 +62,6 @@ function _showPalettes(){
 		// load stock info
 		_loadPaletteStockInfo( _palettes[i]['id'] );
 	}
-	
-	// show form to add palette
-	html += "<h1>" + LANG('add_palette') + ":</h1>\n"
-		+ "<div class='groupitem'><span class='group_left'>"
-		+ LANG('palette_name') + ": <input type='text' id='addPalette' onkeypress='if(event.keyCode == 13) addPalette()'; /></span>"
-		+ "<span class='inline_text errortext hidetext' id='palette_name_missing'>" + LANG('palette_name_missing') + "</span>"
-		+ "<span class='inline_text errortext hidetext' id='palette_name_error'>" + LANG('palette_name_error') + "</span>"
-		+ "<a href='javascript: addPalette()' class='button'>" + LANG('add_palette') + "</a>" 
-		+ "</div>";
 	
 	// show palettes
 	showHtml(html);

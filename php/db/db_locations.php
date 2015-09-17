@@ -1,7 +1,7 @@
 <?php
 	
 	function db_getLocations($warehouseId){
-		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."locations WHERE warehouse=".$warehouseId;
+		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."locations WHERE warehouse=".$warehouseId." ORDER BY name ASC";
 		return dbSQL($sql);
 	}
 	

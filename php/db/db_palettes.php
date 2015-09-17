@@ -1,7 +1,7 @@
 <?php
 
 	function db_getPalettes($warehouseId){
-		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." ORDER BY name ASC";
+		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." ORDER BY name DESC";
 		$palettes = dbSQL($sql);
 		
 		// add locations
