@@ -129,6 +129,7 @@
 							."<td><img src='img/unisex_s.png' />".$stock['outgo']['unisex'].LANG('pieces_short')."</td>"
 							."<td><img src='img/asex_s.png' />".$stock['outgo']['asex'].LANG('pieces_short')."</td></tr></table>";
 						
+						// add details
 						if( !$hasChild ){
 							// add palette info
 							print "<p></p>";
@@ -155,7 +156,7 @@
 								$looseStock = db_getStockInfo( $categoryId, $location['id'], "NULL" );
 								
 								// ad location name
-								if( count($palettes) > 0
+								if( (count($palettes) > 0 && $palettes[0]['name'])
 										|| $looseStock['male']['total'] > 0
 										|| $looseStock['female']['total'] > 0
 										|| $looseStock['baby']['total'] > 0
@@ -175,7 +176,7 @@
 								}
 									
 								// add palettes
-								if( count($palettes) > 0 ){
+								if( count($palettes) > 0 && $palettes[0]['name'] ){
 									print "<table class='tinytext'>";
 									foreach( $palettes as $palette ){
 										$paletteStock = db_getStockInfo( $categoryId, $location['id'], $palette['id'] );
