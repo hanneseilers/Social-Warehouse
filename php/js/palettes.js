@@ -1,13 +1,17 @@
 function showPalettes(warehouseId){
 	setWarehouseId( warehouseId );
-	_loadCategories( showPalettes_2 );	
+	_loadWarehouse( showPalettes_2 );	
 }
 
 function showPalettes_2(){
-	_loadLocations( showPalettes_3 );
+	_loadCategories( showPalettes_3 );	
 }
 
 function showPalettes_3(){
+	_loadLocations( showPalettes_4 );
+}
+
+function showPalettes_4(){
 	_loadPalettes( _showPalettes );
 }
 

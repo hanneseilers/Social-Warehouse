@@ -1,5 +1,6 @@
 var _warehouseId = 0;
 var _rootId = null;
+var _warehouse = null;
 var _categories = [];
 var _locations = [];
 var _location = null;
@@ -65,6 +66,9 @@ function logout(){
 
 function setWarehouseId(id){
 	_warehouseId = id;
+}
+
+function _setWarehouseId2(){
 	document.getElementById( 'loading' ).style.display = 'block';
 	document.getElementById( 'datacontent' ).style.display = 'none';
 }
@@ -73,6 +77,23 @@ function showHtml(html){
 	document.getElementById( 'loading' ).style.display = 'none';
 	document.getElementById( 'datacontent' ).style.display = 'block';
 	document.getElementById( 'datacontent' ).innerHTML = html;
+}
+
+function _loadWarehouse(callback, arg){
+	get( {	'function': 'getWarehouse', 'id': (_warehouseId ? _warehouseId : "NULL") },
+		function(data, status){
+			if( status == "success" ){
+				_warehouse = JSON.parse(data);
+			}
+			
+			if( callback ){
+				if( arg ){
+					callback(arg);
+				} else {
+					callback()
+				}
+			}
+		} );
 }
 
 function _loadCategories(callback, arg){

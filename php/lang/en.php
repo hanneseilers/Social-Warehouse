@@ -29,6 +29,8 @@ $LANG = [
 	'total' => "Total",
 	'pieces_short' => "pcs.",
 	'restrict_permissions' => "Restrict Permissions",
+	'disable_location_less' => "Disable stock without location",
+	'disable_palette_less' => "Disable stock without palette",
 		
 	'loose_stock' => "Loose Stock",
 	'add_to_loose_stock' => "Add to loose stock",
@@ -65,6 +67,7 @@ $LANG = [
 	'add_location' => "Add Location",
 	'location_name_missing' => "Location name missing!",
 	'location_name_error' => "Location is alreay there!!",
+	'location_selection_missing' => "No location selected.",
 		
 	'palettes' => "Palettes",
 	'palette_name' => "Palette name",
@@ -76,6 +79,7 @@ $LANG = [
 	'palette_location_remove' => "Remove Location",
 	'palette_name_missing' => "Palette name missing!",
 	'palette_name_error' => "Palette is alreay there!!",
+	'palette_selection_missing' => "No palette selected.",
 		
 	'mail_registered_subject' => "Social-Warehouse: New Warehouse added.",
 	

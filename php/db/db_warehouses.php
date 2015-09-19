@@ -14,20 +14,36 @@ function db_checkWarehouseLogin($id, $password){
 }
 
 function db_getWarehouseInfo($id){
-	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses WHERE id=".$id;
+	$sql = "SELECT id, name, description, country, city, mail, disableLocationLess, disablePaletteLess FROM ".$GLOBALS['dbPrefix']."warehouses WHERE id=".$id;
 	return dbSQL($sql);
 }
 
-function db_editWarehouse($id, $name, $description, $password, $country, $city, $mail){
+function db_editWarehouse($id, $name, $description, $password, $country, $city, $mail, $locationLess, $paletteLess){
 	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses WHERE name='".$name."' AND country='".$country."' AND city='".$city."'";
-	if( count(dbSQL($sql)) == 0 ){
+	if( count(dbSQL($sql)) > 0 ){
 		
-		if( strlen($password) > 0 )
-			$sql = "UPDATE ".$GLOBALS['dbPrefix']."warehouses "
-					."SET name='".$name."', description='".$description."', "
-					." password='".$password."', country='".$country."', city='".$city."' mail='".$mail."' WHERE id=".$id;
-		else
-			$sql = "UPDATE ".$GLOBALS['dbPrefix']."warehouses SET name='".$name."', description='".$description."', country='".$country."', city='".$city."' WHERE id=".$id;
+		if( strlen($password) > 0 ){
+			$sql = "UPDATE ".$GLOBALS['dbPrefix']."warehouses SET"
+					." name='".$name."'"
+					.", description='".$description."'"
+					.", country='".$country."'"
+					.", city='".$city."'"
+					.", mail='".$mail."'"
+					.", disableLocationLess=".$locationLess
+					.", disablePaletteLess=".$paletteLess
+					.", password='".$password."'"
+					." WHERE id=".$id;
+		} else{
+			$sql = "UPDATE ".$GLOBALS['dbPrefix']."warehouses SET"
+					." name='".$name."'"
+					.", description='".$description."'"
+					.", country='".$country."'"
+					.", city='".$city."'"
+					.", mail='".$mail."'"
+					.", disableLocationLess=".$locationLess
+					.", disablePaletteLess=".$paletteLess
+					." WHERE id=".$id;
+		}
 		return dbSQL($sql);
 		
 	}

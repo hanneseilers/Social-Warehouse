@@ -54,19 +54,36 @@ if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "editWarehouse"
 		&& isset($_GET['pw'])
 		&& isset($_GET['country'])
 		&& isset($_GET['city'])
-		&& isset($_GET['mail']) ){
+		&& isset($_GET['mail'])
+		&& isset($_GET['locationLess'])
+		&& isset($_GET['paletteLess']) ){
 	if( db_editWarehouse($_SESSION['warehouseinfo']['id'],
 			base64_decode($_GET['name']),
 			base64_decode($_GET['desc']),
 			$_GET['pw'],
 			base64_decode($_GET['country']),
 			base64_decode($_GET['city']),
-			base64_decode($_GET['mail'])) ){
+			base64_decode($_GET['mail']),
+			$_GET['locationLess'],
+			$_GET['paletteLess']) ){
 		_updateWarehouseInfo( $_SESSION['warehouseinfo']['id'] );
 		print $GLOBALS['OK'];
 	} else {
 		print $GLOBALS['ERR'];
 	}
+}
+
+/*
+ * Get warehouse data
+ * id = warehouse id
+ * @return = warehouse json data
+ */
+if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "getWarehouse" && isset($_GET['id']) ){
+	$result = db_getWarehouseInfo( $_GET['id'] );
+	if( $result )
+		print json_encode($result[0]);
+	else
+		print $ERR;
 }
 
 /*

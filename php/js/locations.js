@@ -1,9 +1,13 @@
 function showLocations($warehouseId){
 	setWarehouseId($warehouseId);
-	_loadCategories( showLocations_2 );
+	_loadWarehouse( showLocations_2 );
 }
 
 function showLocations_2(){
+	_loadCategories( showLocations_3 );
+}
+
+function showLocations_3(){
 	_loadLocations( _showLocations );
 }
 

@@ -13,7 +13,7 @@ function addWarehouse(){
 	document.getElementById( 'passwordmissing' ).style.display = "none";
 	document.getElementById( 'passwordwrong' ).style.display = "none";
 	document.getElementById( 'citymissing' ).style.display = "none";
-	document.getElementById( 'mail' ).style.display = "none";
+	document.getElementById( 'emailwrong' ).style.display = "none";
 	
 	// check password
 	if( password.length == 0){
@@ -26,7 +26,7 @@ function addWarehouse(){
 		document.getElementById( 'citymissing' ).style.display = "block";
 	}
 	else if( !validateEmail(mail) ){
-		document.getElementById( 'mail' ).style.display = "block";
+		document.getElementById( 'emailwrong' ).style.display = "block";
 	}
 	
 		
@@ -66,21 +66,27 @@ function editWarehouse(){
 	document.getElementById( 'citymissing' ).style.display = "none";
 	document.getElementById( 'warehouse_name_missing' ).style.display = "none";
 	document.getElementById( 'warehouse_name_error' ).style.display = "none";
+	document.getElementById( 'emailwrong' ).style.display = "none";
 	
 	if( tableEdit.style.display != "block" ){
 		tableEdit.style.display = "block";
 	} else {	
-		name = document.getElementById( 'warehousenamenew' ).value.trim();
-		password = document.getElementById( 'password' ).value.trim();
-		password2 = document.getElementById( 'password-repeat' ).value.trim();
-		description = document.getElementById( 'warehousedescription' ).value.trim();
-		country = document.getElementById( 'country' ).value.trim();
-		city = document.getElementById( 'city' ).value.trim();
+		var name = document.getElementById( 'warehousenamenew' ).value.trim();
+		var mail = document.getElementById( 'mail' ).value.trim();
+		var password = document.getElementById( 'password' ).value.trim();
+		var password2 = document.getElementById( 'password-repeat' ).value.trim();
+		var description = document.getElementById( 'warehousedescription' ).value.trim();
+		var country = document.getElementById( 'country' ).value.trim();
+		var city = document.getElementById( 'city' ).value.trim();
+		var disableLocationLess = document.getElementById( 'disableLotionLess' ).checked;
+		var disablePaletteLess = document.getElementById( 'disablePaletteLess' ).checked;
 		
 		if( password != password2 ){
 			document.getElementById( 'passwordwrong' ).style.display = "block";
 		} else if( city.length == 0 ){
 			document.getElementById( 'citymissing' ).style.display = "block";
+		} else if( !validateEmail(mail) ){
+			document.getElementById( 'emailwrong' ).style.display = "block";
 		} else {
 			
 			if( password.length > 0 )
@@ -90,10 +96,13 @@ function editWarehouse(){
 				get( 	{
 							'function': 'editWarehouse',
 							'name': base64_encode(name),
+							'mail': base64_encode(mail),
 							'desc': base64_encode(description),
 							'pw': password,
 							'country': base64_encode(country),
-							'city': base64_encode(city)
+							'city': base64_encode(city),
+							'locationLess': (disableLocationLess ? 1 : 0),
+							'paletteLess': (disablePaletteLess ? 1 : 0)
 						},
 						function(data, status){
 							if( status == "success" && data == "ok" ){
