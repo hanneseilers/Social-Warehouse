@@ -14,7 +14,11 @@
 		print "<span class='group_left text_bold'>".LANG('warehouse').": ".$name."</span>";
 		print "<span class='inline_text hidetext errortext' id='warehouse_name_error'>".LANG('warehouse_name_error')."</span>";
 		print "<span class='inline_text hidetext errortext' id='warehouse_name_missing'>".LANG('warehouse_name_missing')."</span>";
-		print "<a href='javascript: editWarehouse();' id='warehouse_edit' class='button green'>".LANG('edit')."</a> ";
+		
+		if( !isset($_SESSION['warehouseinfo']['restricted']) || !$_SESSION['warehouseinfo']['restricted'] ){
+			print "<a href='javascript: editWarehouse();' id='warehouse_edit' class='button green'>".LANG('edit')."</a> ";
+		}
+		
 		print "<a href='?demand=".$id."' class='button yellow' target='_blanc'>".LANG('stock_details')."</a>";
 		print "<a href='javascript: logout();' class='button red'>".LANG('logout')."</a>";
 		

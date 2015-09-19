@@ -1,6 +1,6 @@
 function showLocations($warehouseId){
 	setWarehouseId($warehouseId);
-	_loadWarehouse( showLocations_2 );
+	_loadRestricted( showLocations_2 );
 }
 
 function showLocations_2(){

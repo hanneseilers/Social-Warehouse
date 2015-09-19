@@ -26,7 +26,7 @@
 	}
 	
 	/* 
-	 * check if login data is valid
+	 * check if login data is valid.
 	 * warehouse = id
 	 * pw = md5 password
 	 * @return = <status>;<warehouse-id>
@@ -43,10 +43,29 @@
 	}
 	
 	/*
-	 * Logout and destory session 
+	 * Logout and destory session.
 	 */
 	if( $_GET['function'] == "logout" ){
 		session_destroy();
+	}
+	
+	/*
+	 * Checks if access is restricted.
+	 */
+	if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "checkRestricted" ){
+		if( isset($_SESSION['warehouseinfo']['restricted']) && $_SESSION['warehouseinfo']['restricted'] ){
+			print $GLOBALS['OK'];
+		} else {
+			print $GLOBALS['ERR'];
+		}
+	}
+
+	/*
+	 * Restricts access.
+	 */
+	if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "setRestricted" ){
+		$_SESSION['warehouseinfo']['restricted'] = true;
+		print $GLOBALS['OK'];
 	}
 	
 ?>

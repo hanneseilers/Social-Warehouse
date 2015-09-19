@@ -66,9 +66,6 @@ function logout(){
 
 function setWarehouseId(id){
 	_warehouseId = id;
-}
-
-function _setWarehouseId2(){
 	document.getElementById( 'loading' ).style.display = 'block';
 	document.getElementById( 'datacontent' ).style.display = 'none';
 }
@@ -135,6 +132,24 @@ function _loadPalettes(callback, arg){
 	get( {'function': 'getPalettes'}, function(data, status){
 		if( status == "success" ){
 			_palettes = JSON.parse(data);
+		}
+		
+		if( callback ){
+			if( arg ){
+				callback(arg);
+			} else {
+				callback()
+			}
+		}
+	} );
+}
+
+function _loadRestricted(callback, arg){
+	get( {'function': 'checkRestricted'}, function(data, status){
+		if( status == "success" && data == "ok" ){
+			_restricted = true;
+		} else {
+			_restricted = false;
 		}
 		
 		if( callback ){

@@ -120,6 +120,15 @@ function editWarehouse(){
 }
 
 function setRestricted(){
+	if( !_restricted ){
+		get( {'function': "setRestricted"}, function(data, status){
+			if( status == "success" && data == "ok" )
+				_restricted = true;
+			else
+				_restricted = false;
+		} );
+	}
+	
 	_restricted = true;
 	document.getElementById( 'warehouseeditdata' ).style.display = "none";
 	document.getElementById( 'warehouse_edit' ).style.display = "none";

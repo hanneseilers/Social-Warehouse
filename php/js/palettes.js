@@ -1,6 +1,6 @@
 function showPalettes(warehouseId){
 	setWarehouseId( warehouseId );
-	_loadWarehouse( showPalettes_2 );	
+	_loadRestricted( showPalettes_2 );	
 }
 
 function showPalettes_2(){
