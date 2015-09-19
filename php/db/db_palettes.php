@@ -22,11 +22,21 @@
 	function db_addPalette($warehouseId, $name){
 		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." AND name='".$name."'";
 		if( count(dbSQL($sql)) == 0 ){
+			
 			$sql = "INSERT INTO ".$GLOBALS['dbPrefix']."palettes (warehouse, name) VALUES (".$warehouseId.", '".$name."')";
-			return dbSQL($sql);
+			if( dbSQL($sql) ){
+				
+				// get new id
+				$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." AND name='".$name."'";
+				$result = dbSQL($sql);
+				if( $result ){
+					return $result[0]['id'];
+				}
+			}
+			
 		}
 		
-		return false;
+		return -1;;
 	}
 	
 	function db_deletePalette($warehouseId, $id){

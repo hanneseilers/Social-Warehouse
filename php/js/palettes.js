@@ -41,7 +41,7 @@ function _showPalettes(){
 			+ _palettes[i]['name'] + (vLocation ? " : " + vLocation['name'] : "")
 			+ (_palettes[i]['cleared'] == 1 ? " " + LANG('palette_cleared') : "")
 			+ "</span>"
-			+ "<span class='inline_text hidetext'>" + LANG('palette_name') + ": "
+			+ "<span class='inline_text hidetextif( !_restricted ){'>" + LANG('palette_name') + ": "
 			+ "<input type='text' id='editpalette_" + _palettes[i]['id'] + "' /></span>"
 			+ " <a href='javascript: editPalette(" + _palettes[i]['id'] + ")' class='button green'>" + LANG('edit') + "</a>"
 			+ " <a href='javascript: showPaletteStock(" + _palettes[i]['id'] + ")' class='button orange'>" + LANG('details') + "</a>"
@@ -53,11 +53,13 @@ function _showPalettes(){
 			+ "<span class='table_cell' id='palette_stock_" + _palettes[i]['id'] + "' class='tinytext'></span></div>"
 			+ "<div class='hidetext' id='palette_move_" + _palettes[i]['id'] + "'>"
 			+ "<a href='javascript: movePalette(" + _palettes[i]['id'] + ")' class='button'>"
-			+ (gLocation ? LANG('move_palette') + " " + gLocation['name'] : LANG('palette_location_remove') ) + "</a>"
-			+ " <a href='javascript: deletePalette(" + _palettes[i]['id'] + ")' class='button red'>" + LANG('delete') + "</a>"
-			+ "</div>";
-			
-		html += "</div>";
+			+ (gLocation ? LANG('move_palette') + " " + gLocation['name'] : LANG('palette_location_remove') ) + "</a>";
+		
+		if( !_restricted ){
+			html += " <a href='javascript: deletePalette(" + _palettes[i]['id'] + ")' class='button red'>" + LANG('delete') + "</a>";
+		}
+		
+		html += "</div></div>";
 		
 		// load stock info
 		_loadPaletteStockInfo( _palettes[i]['id'] );
@@ -117,7 +119,9 @@ function addPalette(){
 	if( name.length > 0 ){
 		get( 	{'function': 'addPalette', 'name': base64_encode(name)},
 				function(data, status){
-			if( status == "success" && data == "ok" ){
+			data = data.split(';');
+			if( status == "success" && data.length > 1 && data[0] == "ok" ){
+				_palette = Number(data[1]);
 				_loadPalettes( _showPalettes );
 			} else {
 				document.getElementById( 'palette_name_error' ).style.display = "table-cell";

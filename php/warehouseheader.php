@@ -1,4 +1,4 @@
-<div class="groupitem">
+<div class="groupitem" id="warehouseheader">
 
 	<div>
 	<?php		
@@ -10,7 +10,7 @@
 		print "<span class='group_left text_bold'>".LANG('warehouse').": ".$name."</span>";
 		print "<span class='inline_text hidetext errortext' id='warehouse_name_error'>".LANG('warehouse_name_error')."</span>";
 		print "<span class='inline_text hidetext errortext' id='warehouse_name_missing'>".LANG('warehouse_name_missing')."</span>";
-		print "<a href='javascript: editWarehouse();' class='button green'>".LANG('edit')."</a> ";
+		print "<a href='javascript: editWarehouse();' id='warehouse_edit' class='button green'>".LANG('edit')."</a> ";
 		print "<a href='?demand=".$id."' class='button yellow' target='_blanc'>".LANG('stock_details')."</a>";
 		print "<a href='javascript: logout();' class='button red'>".LANG('logout')."</a>";
 		
@@ -55,7 +55,10 @@
 		<td colspan="4"><textarea rows="3" id="warehousedescription"><?php print $_SESSION['warehouseinfo']['description']; ?></textarea></td>
 	</tr>
 	<tr>
-		<td align="center"><a href="javascript: deleteWarehouse();" class="button block red"><?php print LANG('delete_warehouse'); ?></a></td>
+		<td align="center">
+			<a href="javascript: deleteWarehouse();" class="button block red"><?php print LANG('delete_warehouse'); ?></a>
+			<a href="javascript: setRestricted();" class="button block yellow"><?php print LANG('restrict_permissions'); ?></a>
+		</td>
 	</tr>
 	</table>
 </div>

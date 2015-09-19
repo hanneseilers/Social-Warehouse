@@ -30,9 +30,13 @@ function _showLocations(){
 			+ "<span class='inline_text hidetext'>" + LANG('location_name') + ": "
 			+ "<input type='text' id='editlocation_" + _locations[i]['id'] + "' /></span>"
 			+ " <a href='javascript: editLocation(" + _locations[i]['id'] + ")' class='button green'>" + LANG('edit') + "</a>"
-			+ " <a href='javascript: showLocationStock(" + _locations[i]['id'] + ")' class='button orange'>" + LANG('details') + "</a>"
-			+ " <a href='javascript: deleteLocation(" + _locations[i]['id'] + ")' class='button red'>" + LANG('delete') + "</a>"
-			+ "</div><div class='hidetext'><span class='table_cell' id='location_stock_" + _locations[i]['id'] + "' class='tinytext'></span></div>"
+			+ " <a href='javascript: showLocationStock(" + _locations[i]['id'] + ")' class='button orange'>" + LANG('details') + "</a>";
+		
+		if( !_restricted ){
+			html += " <a href='javascript: deleteLocation(" + _locations[i]['id'] + ")' class='button red'>" + LANG('delete') + "</a>";
+		}
+				
+		html += "</div><div class='hidetext'><span class='table_cell' id='location_stock_" + _locations[i]['id'] + "' class='tinytext'></span></div>"
 			+ "</div>";
 		
 		// load stock info

@@ -3,10 +3,12 @@
 	if( isset($_SESSION['warehouseinfo']) && isset($_GET['function']) ){
 	
 		if( $_GET['function'] == "addPalette" && isset($_GET['name'])  ){
-			if( db_addPalette($_SESSION['warehouseinfo']['id'], base64_decode($_GET['name'])) )
-				print $GLOBALS['OK'];
-			else
-				print $GLOBALS['ERR'];
+			$result = db_addPalette($_SESSION['warehouseinfo']['id'], base64_decode($_GET['name']));
+			if( $result > 0 ){
+				print $GLOBALS['OK'].$GLOBALS['SEP'].$result;
+			} else {
+				print $GLOBALS['ERR'].$GLOBALS['SEP'].$result;
+			}
 		}
 		
 		if( $_GET['function'] == "deletePalette" && isset($_GET['id'])  ){

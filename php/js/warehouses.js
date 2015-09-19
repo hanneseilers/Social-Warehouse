@@ -110,6 +110,12 @@ function editWarehouse(){
 	}
 }
 
+function setRestricted(){
+	_restricted = true;
+	document.getElementById( 'warehouseeditdata' ).style.display = "none";
+	document.getElementById( 'warehouse_edit' ).style.display = "none";
+}
+
 function showWarehouseDescription(id){
 	// show loading
 	document.getElementById( 'overlay_text' ).style.display = "none";

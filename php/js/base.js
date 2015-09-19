@@ -5,6 +5,7 @@ var _locations = [];
 var _location = null;
 var _palettes = [];
 var _palette = null
+var _restricted = false;
 
 get = function (data, callback){
 	$.get( "api/api.php", data, callback );

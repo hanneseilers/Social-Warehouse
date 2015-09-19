@@ -28,6 +28,7 @@ $LANG = [
 	'outgo' => "Outgo",
 	'total' => "Total",
 	'pieces_short' => "pcs.",
+	'restrict_permissions' => "Restrict Permissions",
 		
 	'loose_stock' => "Loose Stock",
 	'add_to_loose_stock' => "Add to loose stock",

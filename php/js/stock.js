@@ -236,7 +236,7 @@ function _showCategories(rootId){
 	
 	// show options to add storage
 	if( addIncomeOutgo ){		
-		// show gender button
+		// show gender buttons
 		html += "<div class='table'>"
 			+ "<a href='javascript: _male = !_male; _baby = false; updateColors();' id='button_male' class='button button4 table_cell'><img src='img/male.png' /><br />" + LANG('male') + "</a>"
 			+ "<a href='javascript: _female = !_female; _baby = false; updateColors();' id='button_female' class='button button4 table_cell'><img src='img/female.png' /><br />" + LANG('female') + "</a>"
@@ -291,10 +291,10 @@ function _showCategories(rootId){
 		html += "</div>";
 	}
 			
-	// add spacer
-	html += "<div class='hspacer'></div>";
-			
-	if( root != null ){	
+	if( root != null && !_restricted ){	
+		// add spacer
+		html += "<div class='hspacer'></div>";
+		
 		// add category edit & delete form
 		html += "<div class='groupitem'><span class='group_left'>"
 			+ LANG('category_name') + ": <input type='text' id='categoryname' value='" + root['name'] + "' />"
