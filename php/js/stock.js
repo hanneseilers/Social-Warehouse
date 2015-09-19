@@ -108,14 +108,18 @@ function getSubCategories(id){
 	return categories;
 }
 
-function getCategoryHierrachyLinks(id){
+function getCategoryHierrachy(id, links){
 	var hierarchy = "";
 	while( id != null ){
 		var category = getCategory(id);
 		if( hierarchy.length != 0 ){
 			hierarchy = " > " + hierarchy;
 		}
-		hierarchy = "<a href='javascript: _showCategories(" + id + ");' class='button' >" + category['name'] + "</a>" + hierarchy;
+		hierarchy = 
+			(links ? "<a href='javascript: _showCategories(" + id + ");' class='button' >" : "")
+			+ category['name']
+			+ (links ? "</a>" : "")
+			+ hierarchy;
 		id = category['parent'];
 	}
 	
@@ -220,7 +224,7 @@ function _showCategories(rootId){
 		// create html
 		html += "<div>"
 			+ "<a href='javascript: _showCategories();' class='button'>Stock</a> > "
-			+ getCategoryHierrachyLinks(root['id'])
+			+ getCategoryHierrachy(root['id'], true)
 			+ "</div>\n";		
 	}
 	

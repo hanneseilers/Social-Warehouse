@@ -120,18 +120,23 @@ function deleteLocation(id){
 function _loadLocationStockInfo(location){
 	get( {'function': 'getLocationStockInfo', 'location': location},
 			function(data, status){
-				while( !document.getElementById( 'location_stock_' + location ) );
+
 				document.getElementById( 'location_stock_' + location ).innerHTML = "";
-			
 				if( status == "success" ){
+					
 					stock = JSON.parse(data);
 					for( var i=0; i < stock.length; i++ ) {
+						
 						hierarchy = getCategoryHierrachy( stock[i]['category'] )
 						document.getElementById( 'location_stock_' + location ).innerHTML =
-							document.getElementById( 'location_stock_' + location ).innerHTML + (i != 0 ? "<br />" : "")
+							document.getElementById( 'location_stock_' + location ).innerHTML
+							+ (i != 0 ? "<br />" : "")
 							+ hierarchy + " (" + stock[i]['total'] + LANG('pieces_short') + ")";
-					}				
+						
+					}
+					
 				}
+				
 			} );
 }
 
