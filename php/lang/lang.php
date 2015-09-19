@@ -34,7 +34,6 @@
 		if( $GLOBALS['LANG'] && array_key_exists($key, $GLOBALS['LANG']) )
 			return $GLOBALS['LANG'][$key];
 		
-		print "check deflang<br>";
 		if( $GLOBALS['DEFLANG'] && array_key_exists($key, $GLOBALS['DEFLANG']) )
 			return $GLOBALS['DEFLANG'][$key];
 		
