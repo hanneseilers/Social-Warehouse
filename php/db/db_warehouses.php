@@ -64,6 +64,18 @@ function db_editWarehouse($id, $name, $description, $password, $country, $city, 
 	return false;
 }
 
+function db_editWarehouseRestrictedPassword($id, $password){
+	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses WHERE id='".$id."'";
+	if( count(dbSQL($sql)) > 0 ){
+		$sql = "UPDATE ".$GLOBALS['dbPrefix']."warehouses SET"
+					." passwordRestricted='".$password."'"
+					." WHERE id=".$id;
+		return dbSQL($sql);
+	}
+	
+	return false;
+}
+
 function db_addWarehouse($name, $description, $password, $country, $city, $mail){
 	global $mail_from;
 	

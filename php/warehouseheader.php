@@ -15,7 +15,7 @@
 		print "<span class='inline_text hidetext errortext' id='warehouse_name_error'>".LANG('warehouse_name_error')."</span>";
 		print "<span class='inline_text hidetext errortext' id='warehouse_name_missing'>".LANG('warehouse_name_missing')."</span>";
 		
-		if( !isset($_SESSION['warehouseinfo']['restricted']) || !$_SESSION['warehouseinfo']['restricted'] ){
+		if( !isset($_SESSION['restricted']) || !$_SESSION['restricted'] ){
 			print "<a href='javascript: editWarehouse();' id='warehouse_edit' class='button green'>".LANG('edit')."</a> ";
 		}
 		
@@ -64,6 +64,13 @@
 		<td><?php print LANG('password_repeat'); ?>:</td>
 		<td><input type="password" id="password-repeat" /></td>
 		<td id="passwordwrong" class="errortext hidetext"><?php print LANG('passwords_not_equal'); ?></td>
+	</tr>
+	<tr>
+		<td><?php print LANG('password_restricted'); ?>:</td>
+		<td><input type="password" id="password-restricted" /></td>
+		<td><?php print LANG('password_restricted_repeat'); ?>:</td>
+		<td><input type="password" id="password-restricted-repeat" /></td>
+		<td id="passwordrestrictedwrong" class="errortext hidetext"><?php print LANG('passwords_not_equal'); ?></td>
 	</tr>	
 	<tr>
 		<td colspan=4><?php print LANG('description'); ?>:</td>

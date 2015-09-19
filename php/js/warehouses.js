@@ -63,6 +63,7 @@ function editWarehouse(){
 	
 	// hide errors
 	document.getElementById( 'passwordwrong' ).style.display = "none";
+	document.getElementById( 'passwordrestrictedwrong' ).style.display = "none";
 	document.getElementById( 'citymissing' ).style.display = "none";
 	document.getElementById( 'warehouse_name_missing' ).style.display = "none";
 	document.getElementById( 'warehouse_name_error' ).style.display = "none";
@@ -75,6 +76,8 @@ function editWarehouse(){
 		var mail = document.getElementById( 'mail' ).value.trim();
 		var password = document.getElementById( 'password' ).value.trim();
 		var password2 = document.getElementById( 'password-repeat' ).value.trim();
+		var passwordRestricted = document.getElementById( 'password-restricted' ).value.trim();
+		var passwordRestricted2 = document.getElementById( 'password-restricted-repeat' ).value.trim();
 		var description = document.getElementById( 'warehousedescription' ).value.trim();
 		var country = document.getElementById( 'country' ).value.trim();
 		var city = document.getElementById( 'city' ).value.trim();
@@ -83,6 +86,8 @@ function editWarehouse(){
 		
 		if( password != password2 ){
 			document.getElementById( 'passwordwrong' ).style.display = "block";
+		} else if( passwordRestricted != passwordRestricted2 ){
+			document.getElementById( 'passwordrestrictedwrong' ).style.display = "block";
 		} else if( city.length == 0 ){
 			document.getElementById( 'citymissing' ).style.display = "block";
 		} else if( !validateEmail(mail) ){
@@ -93,6 +98,10 @@ function editWarehouse(){
 				password = MD5(password);
 			
 			if( name.length > 0 ){
+				
+				var sendRestrictedPassword = (passwordRestricted.length > 0);
+				
+				// send standard options
 				get( 	{
 							'function': 'editWarehouse',
 							'name': base64_encode(name),
@@ -106,16 +115,32 @@ function editWarehouse(){
 						},
 						function(data, status){
 							if( status == "success" && data == "ok" ){
-								location.reload();
+								if( !sendRestrictedPassword )
+									location.reload();
 							} else {
 								document.getElementById( 'warehouse_name_error' ).style.display = "table-cell";
 							}
 						} );
+				
+				// check if to set restricted password
+				if( sendRestrictedPassword ){
+					
+					passwordRestricted = MD5(passwordRestricted);
+					get( 	{'function': 'editRestrictedPassword', 'pw': passwordRestricted},
+							function(data, status){
+								if( status == "success" && data == "ok" ){
+									location.reload();
+								}
+						});	
+					
+				}
+				
 			} else {
 				document.getElementById( 'warehouse_name_missing' ).style.display = "table-cell";
 			}
 			
 		}
+		
 	}
 }
 

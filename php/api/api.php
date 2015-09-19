@@ -26,7 +26,7 @@
 	}
 	
 	function _setRestricted(){
-		$_SESSION['warehouseinfo']['restricted'] = true;
+		$_SESSION['restricted'] = true;
 	}
 	
 	/* 
@@ -61,7 +61,7 @@
 	 * Checks if access is restricted.
 	 */
 	if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "checkRestricted" ){
-		if( isset($_SESSION['warehouseinfo']['restricted']) && $_SESSION['warehouseinfo']['restricted'] ){
+		if( isset($_SESSION['restricted']) && $_SESSION['restricted'] ){
 			print $GLOBALS['OK'];
 		} else {
 			print $GLOBALS['ERR'];

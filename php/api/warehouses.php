@@ -74,6 +74,23 @@ if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "editWarehouse"
 }
 
 /*
+ * Changes password for restricted access
+ */
+if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "editRestrictedPassword" && isset($_GET['pw']) ){
+	if( isset($_SESSION['restricted']) && $_SESSION['restricted'] ){
+		print $GLOBALS['ERR'];
+	} else {
+		
+		if( db_editWarehouseRestrictedPassword($_SESSION['warehouseinfo']['id'], $_GET['pw']) ){
+			print $GLOBALS['OK'];
+		} else {
+			print $GLOBALS['ERR'];
+		}
+		
+	}
+}
+
+/*
  * Get warehouse data
  * id = warehouse id
  * @return = warehouse json data
