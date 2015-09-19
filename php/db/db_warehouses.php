@@ -5,7 +5,20 @@ function db_getWarehouses(){
 }
 
 function db_checkWarehouseLogin($id, $password){
-	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses WHERE id=".$id." AND password='".$password."'";
+	// check admin password
+	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses WHERE id=".$id
+			." AND password='".$password."'";
+	$result = dbSQL($sql);
+	if( count($result) > 0 )
+		return True;
+
+	return False;
+}
+
+function db_checkWarehouseLoginRestricted($id, $password){
+	// check restricted password
+	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses WHERE id=".$id
+	." AND passwordRestricted='".$password."'";
 	$result = dbSQL($sql);
 	if( count($result) > 0 )
 		return True;

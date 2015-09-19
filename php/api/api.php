@@ -25,6 +25,10 @@
 		$_SESSION['warehouseinfo'] = db_getWarehouseInfo( $id )[0];
 	}
 	
+	function _setRestricted(){
+		$_SESSION['warehouseinfo']['restricted'] = true;
+	}
+	
 	/* 
 	 * check if login data is valid.
 	 * warehouse = id
@@ -34,6 +38,10 @@
 	if( $_GET['function'] == "checkLogin" ){
 		if( db_checkWarehouseLogin($_GET['warehouse'], $_GET['pw']) ){
 			_updateWarehouseInfo( $_GET['warehouse'] );
+			print $GLOBALS['OK'];
+		} else if( db_checkWarehouseLoginRestricted($_GET['warehouse'], $_GET['pw']) ){
+			_updateWarehouseInfo( $_GET['warehouse'] );
+			_setRestricted();
 			print $GLOBALS['OK'];
 		} else {
 			print $GLOBALS['ERR'];
@@ -64,7 +72,7 @@
 	 * Restricts access.
 	 */
 	if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "setRestricted" ){
-		$_SESSION['warehouseinfo']['restricted'] = true;
+		_setRestricted();
 		print $GLOBALS['OK'];
 	}
 	
