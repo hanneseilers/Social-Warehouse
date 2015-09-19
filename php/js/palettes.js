@@ -68,7 +68,12 @@ function _showPalettes(){
 	// show palettes
 	showHtml(html);
 	
-	$.scrollTo( document.getElementById('scrollTarget') );
+	// scroll to selected palette or to scrollTarget
+	scrollPalette = document.getElementById( 'paletteitem_' + _palette );
+	if( scrollPalette )
+		$.scrollTo( scrollPalette );
+	else
+		$.scrollTo( document.getElementById('scrollTarget') );
 }
 
 function getPalette(id){
