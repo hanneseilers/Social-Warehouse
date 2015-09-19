@@ -108,14 +108,14 @@ function getSubCategories(id){
 	return categories;
 }
 
-function getCategoryHierrachy(id){
+function getCategoryHierrachyLinks(id){
 	var hierarchy = "";
 	while( id != null ){
 		var category = getCategory(id);
 		if( hierarchy.length != 0 ){
 			hierarchy = " > " + hierarchy;
 		}
-		hierarchy = category['name'] + hierarchy;
+		hierarchy = "<a href='javascript: _showCategories(" + id + ");' class='button' >" + category['name'] + "</a>" + hierarchy;
 		id = category['parent'];
 	}
 	
@@ -216,17 +216,12 @@ function _showCategories(rootId){
 		+ "</h1>";
 	
 	// create root category
-	if( root != null ){	
-		// get stock info including all sub categories
-		var stockTotal = getRecursiveStockTotal( root['id'] );
-		
+	if( root != null ){			
 		// create html
-		html += "<div><a href='javascript: _showCategories("
-			+ root['parent'] + ");' class='button centertext block'>"
-			+ getCategoryHierrachy(root['id'])
-			+ " (" + stockTotal + LANG('pieces_short') + ")"
-			+ "</a></div>\n";
-		
+		html += "<div>"
+			+ "<a href='javascript: _showCategories();' class='button'>Stock</a> > "
+			+ getCategoryHierrachyLinks(root['id'])
+			+ "</div>\n";		
 	}
 	
 	// add add-category form
@@ -268,7 +263,7 @@ function _showCategories(rootId){
 			var href = "_showCategories(" + _categories[i]['id'] + ");";
 			
 			// get stock info including all sub categories
-			stockTotal = getRecursiveStockTotal( _categories[i]['id'] );
+			var stockTotal = getRecursiveStockTotal( _categories[i]['id'] );
 			
 			// add button
 			html += "\t<a href='javascript: " + href + "' class='button button"+ vClass
