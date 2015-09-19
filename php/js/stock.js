@@ -236,11 +236,15 @@ function _showCategories(rootId){
 		+ "</h1>";
 	
 	// create root category
-	if( root != null ){			
+	if( root != null ){
+		// get stock info including all sub categories
+		var stockTotal = getRecursiveStockTotal( root['id'] );
+		
 		// create html
 		html += "<div>"
 			+ "<a href='javascript: _showCategories();' class='button'>Stock</a> > "
 			+ getCategoryHierrachy(root['id'], true)
+			+ " (" + stockTotal + LANG('pieces_short') + ")"
 			+ "</div>\n";		
 	}
 	
@@ -297,15 +301,10 @@ function _showCategories(rootId){
 			// set link
 			var href = "_showCategories(" + _categories[i]['id'] + ");";
 			
-			// get stock info including all sub categories
-			var stockTotal = getRecursiveStockTotal( _categories[i]['id'] );
-			
 			// add button
 			html += "\t<a href='javascript: " + href + "' class='button button"+ vClass
 					+ " table_cell blue bigbutton'>"
-					+ _categories[i]['name'] + "<br /><span class='tinytext'>"
-					+ stockTotal + LANG('pieces_short')
-					+ "</span></a>\n";
+					+ _categories[i]['name'] + "</a>\n";
 			row++;
 			
 			// check if to cloes row
