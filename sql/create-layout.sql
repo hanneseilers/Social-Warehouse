@@ -12,7 +12,10 @@ CREATE TABLE IF NOT EXISTS `sw_warehouses` (
   `country` TINYTEXT NOT NULL,
   `city` TINYTEXT NOT NULL,
   `password` MEDIUMTEXT NOT NULL,
+  `passwordRestricted` MEDIUMTEXT NULL,
   `mail` TEXT NOT NULL,
+  `disableLocationLess` TINYINT(1) NOT NULL DEFAULT 0,
+  `disablePlatetteLess` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
