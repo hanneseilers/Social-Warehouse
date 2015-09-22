@@ -29,45 +29,41 @@ function addToStock(category){
 	
 }
 
-function updateColors(){
-	if( !_restricted ){
-		
-		// get colors
-		var defColor = getStyleRuleValue( 'background-color', '.button' );
-		var orange = getStyleRuleValue( 'background-color', '.orange' );
-		var blue = getStyleRuleValue( 'background-color', '.blue' );
-		var yellow = getStyleRuleValue( 'background-color', '.yellow' );
-		var purple = getStyleRuleValue( 'background-color', '.purple' );
-		
-		// reset button background
-		document.getElementById( 'button_male' ).style.backgroundColor = defColor;
-		document.getElementById( 'button_female' ).style.backgroundColor = defColor;
-		document.getElementById( 'button_baby' ).style.backgroundColor = defColor;
-		document.getElementById( 'income' ).parentElement.style.backgroundColor = defColor;
-		document.getElementById( 'outgo' ).parentElement.style.backgroundColor = defColor;
-		
-		// set color of selected options
-		if( _baby ){
-			document.getElementById( 'button_baby' ).style.backgroundColor = orange;
-		} else {
-			if( _male ){
-				document.getElementById( 'button_male' ).style.backgroundColor = blue;
-			}
-			if( _female ){
-				document.getElementById( 'button_female' ).style.backgroundColor = purple;
-			}
+function updateColors(){		
+	// get colors
+	var defColor = getStyleRuleValue( 'background-color', '.button' );
+	var orange = getStyleRuleValue( 'background-color', '.orange' );
+	var blue = getStyleRuleValue( 'background-color', '.blue' );
+	var yellow = getStyleRuleValue( 'background-color', '.yellow' );
+	var purple = getStyleRuleValue( 'background-color', '.purple' );
+	
+	// reset button background
+	document.getElementById( 'button_male' ).style.backgroundColor = defColor;
+	document.getElementById( 'button_female' ).style.backgroundColor = defColor;
+	document.getElementById( 'button_baby' ).style.backgroundColor = defColor;
+	document.getElementById( 'income' ).parentElement.style.backgroundColor = defColor;
+	document.getElementById( 'outgo' ).parentElement.style.backgroundColor = defColor;
+	
+	// set color of selected options
+	if( _baby ){
+		document.getElementById( 'button_baby' ).style.backgroundColor = orange;
+	} else {
+		if( _male ){
+			document.getElementById( 'button_male' ).style.backgroundColor = blue;
 		}
-		
-		if( _income_selected ){
-			document.getElementById( 'outgo' ).value = "";
-			document.getElementById( 'income' ).focus();
-			document.getElementById( 'income' ).parentElement.style.backgroundColor = yellow;
-		} else if( _outgo_selected ){
-			document.getElementById( 'income' ).value = "";
-			document.getElementById( 'outgo' ).focus();
-			document.getElementById( 'outgo' ).parentElement.style.backgroundColor = yellow;
+		if( _female ){
+			document.getElementById( 'button_female' ).style.backgroundColor = purple;
 		}
-		
+	}
+	
+	if( _income_selected ){
+		document.getElementById( 'outgo' ).value = "";
+		document.getElementById( 'income' ).focus();
+		document.getElementById( 'income' ).parentElement.style.backgroundColor = yellow;
+	} else if( _outgo_selected ){
+		document.getElementById( 'income' ).value = "";
+		document.getElementById( 'outgo' ).focus();
+		document.getElementById( 'outgo' ).parentElement.style.backgroundColor = yellow;
 	}
 }
 
@@ -249,9 +245,11 @@ function _showCategories(rootId){
 	}
 	
 	// add add-category form
-	html += "<div class='groupitem'><span class='group_left'>"
-		+ LANG('category_name') + ": <input type='text' id='addcategory' onkeypress='if(event.keyCode == 13) addCategory(" + rootId + ");' /></span>" 
-		+ "<a href='javascript: addCategory(" + rootId + ");' class='button'>" + LANG('add_category') + "</a></div>";
+	if( !_restricted ){
+		html += "<div class='groupitem'><span class='group_left'>"
+			+ LANG('category_name') + ": <input type='text' id='addcategory' onkeypress='if(event.keyCode == 13) addCategory(" + rootId + ");' /></span>" 
+			+ "<a href='javascript: addCategory(" + rootId + ");' class='button'>" + LANG('add_category') + "</a></div>";
+	}
 	
 	// check if location or palette needed
 	if( locationLess && paletteLess ){
