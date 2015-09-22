@@ -10,11 +10,14 @@ include( "config.php" );
 function dbSQL($sql){
 	// create connection object
 	$vReturn = false;
-	$db = new mysqli( $GLOBALS['dbHost'], $GLOBALS['dbUser'], $GLOBALS['dbPassword'], $GLOBALS['dbDatabase'] );
+	
+	if( !isset($GLOBALS['db']) )
+		$GLOBALS['db'] = new mysqli( $GLOBALS['dbHost'], $GLOBALS['dbUser'], $GLOBALS['dbPassword'], $GLOBALS['dbDatabase'] );
+	
 	if( mysqli_connect_errno() == 0 ){
 	
 		// send query
-		$vResult = $db->query( $sql );
+		$vResult = $GLOBALS['db']->query( $sql );
 		if( $GLOBALS['log_enabled'] ) print "<hr />".$sql."<hr />";
 
 		// check result
@@ -30,8 +33,7 @@ function dbSQL($sql){
 		}
 
 	}
-
-	$db->close();
+	
 	return $vReturn;
 }
 

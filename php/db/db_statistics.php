@@ -23,7 +23,6 @@
 				$id = $category[0]['parent'];
 				
 			}
-			https://www.google.de/search?client=ubuntu&channel=fs&q=ocalhost&ie=utf-8&oe=utf-8&gfe_rd=cr&ei=ZXv2VcOIEIqJ8Qek1I74Dg
 		}
 			
 		return $hierarchy;
