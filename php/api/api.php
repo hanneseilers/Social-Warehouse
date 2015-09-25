@@ -6,6 +6,7 @@
 
 	session_start();
 	include( "../db/db.php" );
+	include( "../db/db_statistics.php" );
 	
 	$GLOBALS['OK'] = "ok";
 	$GLOBALS['ERR'] = "err";

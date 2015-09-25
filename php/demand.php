@@ -101,19 +101,27 @@
 				// print category name
 				print str_repeat( '&#160;&#160;&#160;&#160;', $hierarchyEntry['level'] )
 					.$hierarchyEntry['hierarchy'][0]['name']
-					." (".$stock['overall'].LANG('pieces_short').")";
+					." (". $stock['overall'] ." ". LANG('pieces_short') ." ". LANG('in_stock') .")"
+					."</td>";
 					
 				// print details button and line end
-				print "</td>"
-					."<td>"
-					."<a href='javascript: showDemandStock(".$categoryId.")' class='button smallbutton yellow'>"
-					.LANG('details')."</a>"
-					."</td>"
-					."</tr>";
+				if( isset($_SESSION['warehouseinfo']) ){
+					print "<td>"
+						."<a href='javascript: showDemandStock(".$categoryId.")' class='button smallbutton yellow'>"
+						.LANG('details')."</a>"
+						."</td>";
+				}
+				
+				print "</tr>";
 				
 				// print details container start
 				print "<tr id='stock_info_".$categoryId."' class='hidetext " .($highlight ? "highlight" : ""). "'><td></td>"
-					."<td id='stock_details_".$categoryId."' class='td_max'><div align='center'><img src='img/loading.gif' /></div></td>";
+					."<td id='stock_details_".$categoryId."' class='td_max'>"
+					."<table class='table hidetext tinytext' id='stock_details_table_".$categoryId."'>"
+					."</table>"
+						
+					."<div align='center' id='stock_loading_".$categoryId."'><img src='img/loading.gif' /></div>"
+					."</td>";
 				
 				// print details container end
 				print "<td></td></tr>";

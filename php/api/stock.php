@@ -27,12 +27,24 @@
 		}
 		
 		if( $_GET['function'] == "getPaletteStockInfo" && isset($_GET['palette']) ){
-			print json_encode( db_getPlaetteStockInfo($_GET['palette']) );
+			print json_encode( db_getPaletteStockInfo($_GET['palette']) );
 		}
 		
 		if( $_GET['function'] == "getLocationStockInfo" && isset($_GET['location']) ){
 			print json_encode( db_getLocationStockInfo($_GET['location']) );
 		}
 		
+		if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "getCategoryStockInfo" && isset($_GET['category']) ){
+			print json_encode( getRecursiveStockInfo( $_SESSION['warehouseinfo']['id'], $_GET['category']) );
+		}
+		
+		if( $_GET['function'] == "getStockInfo"
+				&& isset($_GET['category'])
+				&& isset($_GET['location'])
+				&& isset($_GET['palette']) ){
+			print json_encode( db_getStockInfo($_GET['category'],
+					$_GET['location'],
+					$_GET['palette']) );
+		}
 	}
 ?>

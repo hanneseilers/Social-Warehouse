@@ -35,6 +35,8 @@ $LANG = [
 	'disable_palette_less' => "Disable stock without palette",
 		
 	'loose_stock' => "Loose Stock",
+	'unlocated_stock' => "Unlocated Stock",
+	'in_stock' => "in stock",
 	'add_to_loose_stock' => "Add to loose stock",
 	'add_to_palette' => "Add to palette",
 	'email_error' => "No correct e-mail address!",

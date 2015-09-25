@@ -37,31 +37,44 @@
 		$sql = "SELECT SUM(income), SUM(outgo), ".$GLOBALS['dbPrefix']."palettes.id, ".$GLOBALS['dbPrefix']."palettes.name "
 				."FROM ".$GLOBALS['dbPrefix']."storages JOIN ".$GLOBALS['dbPrefix']."palettes WHERE ".$GLOBALS['dbPrefix']."storages.category=".$category." "
 				."AND ".$GLOBALS['dbPrefix']."storages.location=".$location." AND ".$GLOBALS['dbPrefix']."storages.palette=".$GLOBALS['dbPrefix']."palettes.id";
-		return dbSQL($sql);
+		return dbSqlCache($sql);
 	}
 	
 	function _dbGetStockInfo($category, $location, $palette, $male, $female, $baby){
-		$sql = "SELECT SUM(income) AS income, SUM(outgo) AS outgo, SUM(income)-SUM(outgo) AS total "
-				."FROM ".$GLOBALS['dbPrefix']."storages WHERE category=".$category
-				." AND location".($location == "NULL" ? " IS NULL" : "=".$location)
-				." AND palette".($palette == "NULL" ? " IS NULL" : "=".$palette)
-				." AND ".($male ? "male" : "!male")
+		if( $category == "NULL" ) $category = null;
+		if( $location == "NULL" ) $location = null;
+		if( $palette == "NULL" ) $palette = null;
+		
+		$sql = "SELECT category, location, palette, SUM(income) AS income, SUM(outgo) AS outgo, SUM(income)-SUM(outgo) AS total "
+				."FROM ".$GLOBALS['dbPrefix']."storages WHERE " 
+				.($male ? "male" : "!male")
 				." AND ".($female ? "female" : "!female")
-				." AND ".($baby ? "baby" : "!baby");
-		$result = dbSQL($sql);
+				." AND ".($baby ? "baby" : "!baby")
+				." GROUP BY category, location, palette";
+		$result = dbSqlCache($sql);
 		
 		// check for null results
 		if( gettype($result) == "array" ){
-			if( $result[0]['income'] == null )
-				$result[0]['income'] = 0;
-			if( $result[0]['outgo'] == null )
-				$result[0]['outgo'] = 0;
-			if( $result[0]['total'] == null || $result[0]['total'] < 0 )
-				$result[0]['total'] = 0;
-				
-			return $result[0];
+			
+			// find category in result
+			foreach( $result as $entry ){
+				if( $entry['category'] == $category
+						&& $entry['location'] == $location
+						&& $entry['palette'] == $palette ){
+							
+					$entry['income'] = intval( $entry['income'] );
+					$entry['outgo'] = intval( $entry['outgo'] );
+					$entry['total'] = intval( $entry['total'] );
+					if( $entry['total'] < 0 )
+						$entry['total'] = 0;
+						
+					return $entry;
+					
+				}
+			}
+			
 		}
-		return false;
+		return array( 'income' => 0, 'outgo' => 0, 'total' => 0 );
 	}
 	
 	function db_getStockInfo($category, $location, $palette){
@@ -132,16 +145,16 @@
 		);
 	}
 	
-	function db_getPlaetteStockInfo($palette){
+	function db_getPaletteStockInfo($palette){
 		$sql = "SELECT category, SUM(income) AS income, SUM(outgo) AS outgo, SUM(income)-SUM(outgo) AS total "
 				."FROM ".$GLOBALS['dbPrefix']."storages WHERE palette=".$palette." GROUP BY category";
-		return dbSQL($sql);
+		return dbSqlCache($sql);
 	}
 	
 	function db_getLocationStockInfo($location){
 		$sql = "SELECT category, SUM(income) AS income, SUM(outgo) AS outgo, SUM(income)-SUM(outgo) AS total "
 				."FROM ".$GLOBALS['dbPrefix']."storages WHERE location=".$location." GROUP BY category";
-		return dbSQL($sql);
+		return dbSqlCache($sql);
 	}
 
 ?>
