@@ -12,7 +12,7 @@
 		}
 		
 		// check if stock entry already available
-		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."storages WHERE category=".$category
+		$sql = "SELECT id FROM ".$GLOBALS['dbPrefix']."storages WHERE category=".$category
 			." AND location".($location == "NULL" ? " IS NULL" : "=".$location)
 			." AND palette".($palette == "NULL" ? " IS NULL" : "=".$palette)
 			." AND male=".$male." AND female=".$female." AND baby=".$baby;		

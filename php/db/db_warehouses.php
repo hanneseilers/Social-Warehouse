@@ -1,15 +1,15 @@
 <?php
 function db_getWarehouses(){
-	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses ORDER BY name ASC";
+	$sql = "SELECT id, name, description, country, city, mail, disableLocationLess, disablePaletteLess FROM ".$GLOBALS['dbPrefix']."warehouses ORDER BY name ASC";
 	return dbSQL($sql);
 }
 
 function db_checkWarehouseLogin($id, $password){
 	// check admin password
-	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses WHERE id=".$id
+	$sql = "SELECT COUNT(id) AS num FROM ".$GLOBALS['dbPrefix']."warehouses WHERE id=".$id
 			." AND password='".$password."'";
 	$result = dbSQL($sql);
-	if( count($result) > 0 )
+	if( $result[0]['num'] > 0 )
 		return True;
 
 	return False;
@@ -17,10 +17,10 @@ function db_checkWarehouseLogin($id, $password){
 
 function db_checkWarehouseLoginRestricted($id, $password){
 	// check restricted password
-	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses WHERE id=".$id
+	$sql = "SELECT COUNT(id) AS num FROM ".$GLOBALS['dbPrefix']."warehouses WHERE id=".$id
 	." AND passwordRestricted='".$password."'";
 	$result = dbSQL($sql);
-	if( count($result) > 0 )
+	if( $result[0]['num'] > 0 )
 		return True;
 
 	return False;
@@ -32,8 +32,8 @@ function db_getWarehouseInfo($id){
 }
 
 function db_editWarehouse($id, $name, $description, $password, $country, $city, $mail, $locationLess, $paletteLess){
-	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses WHERE name='".$name."' AND country='".$country."' AND city='".$city."'";
-	if( count(dbSQL($sql)) > 0 ){
+	$sql = "SELECT COUNT(id) AS num FROM ".$GLOBALS['dbPrefix']."warehouses WHERE name='".$name."' AND country='".$country."' AND city='".$city."'";
+	if( dbSQL($sql)[0]['num'] > 0 ){
 		
 		if( strlen($password) > 0 ){
 			$sql = "UPDATE ".$GLOBALS['dbPrefix']."warehouses SET"
@@ -65,8 +65,8 @@ function db_editWarehouse($id, $name, $description, $password, $country, $city, 
 }
 
 function db_editWarehouseRestrictedPassword($id, $password){
-	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses WHERE id='".$id."'";
-	if( count(dbSQL($sql)) > 0 ){
+	$sql = "SELECT COUNT(id) AS num FROM ".$GLOBALS['dbPrefix']."warehouses WHERE id='".$id."'";
+	if( dbSQL($sql)[0]['num'] > 0 ){
 		$sql = "UPDATE ".$GLOBALS['dbPrefix']."warehouses SET"
 					." passwordRestricted='".$password."'"
 					." WHERE id=".$id;
@@ -79,8 +79,8 @@ function db_editWarehouseRestrictedPassword($id, $password){
 function db_addWarehouse($name, $description, $password, $country, $city, $mail){
 	global $mail_from;
 	
-	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses WHERE name='".$name."' AND country='".$country."' AND city='".$city."'";
-	if( count(dbSQL($sql)) == 0 ){
+	$sql = "SELECT COUNT(id) AS num FROM ".$GLOBALS['dbPrefix']."warehouses WHERE name='".$name."' AND country='".$country."' AND city='".$city."'";
+	if( dbSQL($sql)[0]['num'] == 0 ){
 		$sql = "INSERT INTO ".$GLOBALS['dbPrefix']."warehouses (name, description, password, country, city, mail) "
 				."VALUES ('".$name."', '".$description."', '".$password."', '".$country."', '".$city."', '".$mail."')";
 		if( dbSQL($sql) ){
@@ -113,7 +113,7 @@ function db_deleteWarehouse($id){
 	}
 	
 	// delete categories
-	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."categories WHERE warehouse=".$id." ORDER BY id DESC";
+	$sql = "SELECT id FROM ".$GLOBALS['dbPrefix']."categories WHERE warehouse=".$id." ORDER BY id DESC";
 	$result = dbSQL($sql);
 
 	foreach( $result as $category ){
@@ -136,7 +136,7 @@ function db_deleteWarehouse($id){
 }
 
 function db_getWarehouseDescription($id){
-	$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."warehouses WHERE id=".$id;
+	$sql = "SELECT description FROM ".$GLOBALS['dbPrefix']."warehouses WHERE id=".$id;
 	return dbSQL($sql)[0]['description'];
 }
 ?>

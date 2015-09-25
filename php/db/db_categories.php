@@ -1,8 +1,8 @@
 <?php
 
 	function db_addCateory($warehouseId, $name, $parent="NULL"){		
-		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."categories WHERE warehouse=".$warehouseId." AND name='".$name."' AND parent".($parent == "NULL" ? " IS NULL" : "=".$parent);
-		if( count(dbSQL($sql)) == 0 ){
+		$sql = "SELECT COUNT(id) AS num FROM ".$GLOBALS['dbPrefix']."categories WHERE warehouse=".$warehouseId." AND name='".$name."' AND parent".($parent == "NULL" ? " IS NULL" : "=".$parent);
+		if( dbSQL($sql)[0]['num'] == 0 ){
 			$sql = "INSERT INTO ".$GLOBALS['dbPrefix']."categories (parent, warehouse, name, required) VALUES (".$parent.", ".$warehouseId.", '".$name."', 0)";
 			return dbSQL($sql);
 		}
@@ -11,13 +11,13 @@
 	}
 	
 	function db_getCategory($warehouseId, $id){
-		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."categories WHERE warehouse=".$warehouseId." AND id=".$id;
+		$sql = "SELECT id, name, parent, required FROM ".$GLOBALS['dbPrefix']."categories WHERE warehouse=".$warehouseId." AND id=".$id;
 		return dbSQL($sql);
 	}
 	
 	function db_hasChildCategory($warehouseId, $id){
-		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."categories WHERE warehouse=".$warehouseId." AND parent=".$id;
-		if( count(dbSQL($sql)) > 0 )
+		$sql = "SELECT COUNT(id) AS num FROM ".$GLOBALS['dbPrefix']."categories WHERE warehouse=".$warehouseId." AND parent=".$id;
+		if( dbSQL($sql)[0]['num'] > 0 )
 			return true;
 		
 		return false;
@@ -50,7 +50,7 @@
 	}
 
 	function db_getCategories($warehouseId, $location, $palette){
-		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."categories WHERE warehouse=".$warehouseId. " ORDER BY name ASC";
+		$sql = "SELECT id, name, parent, required FROM ".$GLOBALS['dbPrefix']."categories WHERE warehouse=".$warehouseId. " ORDER BY name ASC";
 		$result = dbSQL($sql);
 		
 		// add information about current stock
@@ -63,7 +63,7 @@
 	}
 	
 	function db_getSubCategories($warehouseId, $parent){
-		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."categories WHERE warehouse=".$warehouseId. " AND parent=".$parent;
+		$sql = "SELECT id FROM ".$GLOBALS['dbPrefix']."categories WHERE warehouse=".$warehouseId. " AND parent=".$parent;
 		return dbSQL($sql);		
 	}
 	

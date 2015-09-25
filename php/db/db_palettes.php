@@ -1,7 +1,7 @@
 <?php
 
 	function db_getPalettes($warehouseId){
-		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." ORDER BY name DESC";
+		$sql = "SELECT id, name, cleared FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." ORDER BY name DESC";
 		$palettes = dbSQL($sql);
 		
 		// add locations
@@ -20,8 +20,8 @@
 	}
 	
 	function db_addPalette($warehouseId, $name){
-		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." AND name='".$name."'";
-		if( count(dbSQL($sql)) == 0 ){
+		$sql = "SELECT COUNT(id) AS num FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." AND name='".$name."'";
+		if( dbSQL($sql)[0]['num'] == 0 ){
 			
 			$sql = "INSERT INTO ".$GLOBALS['dbPrefix']."palettes (warehouse, name) VALUES (".$warehouseId.", '".$name."')";
 			if( dbSQL($sql) ){
@@ -40,8 +40,8 @@
 	}
 	
 	function db_deletePalette($warehouseId, $id){
-		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." AND id=".$id;
-		if( count(dbSQL($sql)) > 0 ){
+		$sql = "SELECT COUNT(id) AS num FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." AND id=".$id;
+		if( dbSQL($sql)[0]['num'] > 0 ){
 			// delete storage data
 			$sql = "DELETE FROM ".$GLOBALS['dbPrefix']."storages WHERE palette=".$id;
 			dbSQL($sql);
@@ -55,8 +55,8 @@
 	}
 	
 	function db_clearPalette($warehouseId, $id){
-		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." AND id=".$id;
-		if( count(dbSQL($sql)) > 0 ){				
+		$sql = "SELECT COUNT(id) AS num FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." AND id=".$id;
+		if( dbSQL($sql)[0]['num'] > 0 ){				
 			// mark palette as cleared
 			$sql = "UPDATE ".$GLOBALS['dbPrefix']."palettes SET cleared=1 WHERE id=".$id;
 			dbSQL($sql);
@@ -70,8 +70,8 @@
 	}
 	
 	function db_editPalette($warehouseId, $id, $name){
-		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." AND name='".$name."'";
-		if( count(dbSQL($sql)) == 0 ){
+		$sql = "SELECT COUNT(id) AS num FROM ".$GLOBALS['dbPrefix']."palettes WHERE warehouse=".$warehouseId." AND name='".$name."'";
+		if( dbSQL($sql)[0]['num'] == 0 ){
 			$sql = "UPDATE ".$GLOBALS['dbPrefix']."palettes SET name='".$name."' WHERE warehouse=".$warehouseId." AND id=".$id;
 			$return = dbSQL($sql);
 			
@@ -91,12 +91,12 @@
 	}
 	
 	function db_getPaletteStorages($palette){
-		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."storages WHERE palette=".$palette." AND location IS NOT NULL";
+		$sql = "SELECT id, category, location, income, outgo, male, female, baby FROM ".$GLOBALS['dbPrefix']."storages WHERE palette=".$palette." AND location IS NOT NULL";
 		return dbSQL($sql);
 	}
 	
 	function db_validatePaletteLocations(){
-		$sql = "SELECT * FROM ".$GLOBALS['dbPrefix']."palettes";
+		$sql = "SELECT id FROM ".$GLOBALS['dbPrefix']."palettes";
 		$palettes = dbSQL($sql);
 		
 		// check every palette
