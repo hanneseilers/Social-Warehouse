@@ -1,31 +1,49 @@
 <?php
 
-	function getCategoryHierarchyStrings($warehouseId, $categories){
+	function getCategoryHierarchyStrings($categories){
 		$hierarchies = [];
 		foreach( $categories as $category ){
-			array_push( $hierarchies,
-						['hierarchy' => getCategoryHierarchy($warehouseId, $category['id']), 'id' => $category['id']] );
+			array_push( $hierarchies, getCategoryHierarchy($categories, $category['id']) );
 		}
 		
 		return $hierarchies;
 	}
 
 	
-	function getCategoryHierarchy($warehouseId, $id){
-		$hierarchy = "";
+	function getCategoryHierarchy($categories, $id){
+		$hierarchy = [];
+		$string = "";
+		$level = -1;
 		while( $id ){
-			$category = db_getCategory( $warehouseId, $id );
-			if( count($category) > 0 ){
+			$category = getCategory( $categories, $id );
+			if( $category ){
+				// add category to hierarchy array
+				array_push($hierarchy, $category);
 				
-				if( strlen($hierarchy) != 0 )
-					$hierarchy = " > ".$hierarchy;
-				$hierarchy = $category[0]['name'].$hierarchy;
-				$id = $category[0]['parent'];
+				// generate string
+				if( strlen($string) != 0 )
+					$string = " > " . $string;
+				$string = $category['name'] . $string;
 				
+				// set id to parent
+				$id = $category['parent'];
+				$level++;
+			} else {
+				$id = null;
 			}
 		}
 			
-		return $hierarchy;
+		return ['string' => $string, 'hierarchy' => $hierarchy, 'level' => $level];
+	}
+	
+	function getCategory($categories, $id){
+		foreach( $categories as $category ){
+			if( $category['id'] == $id ){
+				return $category;
+			}
+		}
+		
+		return null;
 	}
 	
 	

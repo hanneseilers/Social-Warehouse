@@ -37,6 +37,16 @@ function dbSQL($sql){
 	return $vReturn;
 }
 
+function dbSqlCache($sql){
+	if( isset($GLOBALS['sqlCache']) && isset($GLOBALS[$sql]) ){
+		return $GLOBALS['sqlCache'][$sql];
+	}
+	
+	$result = dbSQL($sql);
+	$GLOBALS['sqlCache'][$sql] = $result;
+	return $result;
+}
+
 // include sub php files
 include( "db_warehouses.php" );
 include( "db_categories.php" );

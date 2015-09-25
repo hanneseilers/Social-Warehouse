@@ -83,25 +83,35 @@
 	}
 	
 	function _getCategoryGenderStock($category, $male, $female, $baby){
-		$sql = "SELECT SUM(income) AS income, SUM(outgo) AS outgo, SUM(income)-SUM(outgo) AS total "
-				."FROM ".$GLOBALS['dbPrefix']."storages WHERE category=".$category
-				." AND ".($male ? "male" : "!male")
+		// get all gender stocks
+		$sql = "SELECT category, SUM(income) AS income, SUM(outgo) AS outgo, SUM(income)-SUM(outgo) AS total "
+				."FROM ".$GLOBALS['dbPrefix']."storages WHERE "
+				.($male ? "male" : "!male")
 				." AND ".($female ? "female" : "!female")
-				." AND ".($baby ? "baby" : "!baby");
-		$result = dbSQL($sql);
+				." AND ".($baby ? "baby" : "!baby")
+				." GROUP BY category";
+		$result = dbSqlCache($sql);
 		
 		// check for null results
 		if( gettype($result) == "array" ){
-			if( $result[0]['income'] == null )
-				$result[0]['income'] = 0;
-			if( $result[0]['outgo'] == null )
-				$result[0]['outgo'] = 0;
-			if( $result[0]['total'] == null || $result[0]['total'] < 0 )
-				$result[0]['total'] = 0;
 			
-			return $result[0];
+			// find category in result
+			foreach( $result as $entry ){
+				if( $entry['category'] == $category ){
+							
+					$entry['income'] = intval( $entry['income'] );
+					$entry['outgo'] = intval( $entry['outgo'] );
+					$entry['total'] = intval( $entry['total'] );
+					if( $entry['total'] < 0 )
+						$entry['total'] = 0;
+						
+					return $entry;
+					
+				}
+			}
+			
 		}
-		return false;
+		return array( 'income' => 0, 'outgo' => 0, 'total' => 0 );
 	}
 	
 	function db_getCategoryStockInfo($category){
