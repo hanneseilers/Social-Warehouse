@@ -26,7 +26,7 @@
 				print $GLOBALS['ERR'];
 		}
 		
-		if( $_GET['function'] == "getPaletteStockInfo" && isset($_GET['palette']) ){
+		if( $_GET['function'] == "getPaletteStockInfo" && isset($_GET['palette']) ){			
 			print json_encode( db_getPaletteStockInfo($_GET['palette']) );
 		}
 		
@@ -38,13 +38,20 @@
 			print json_encode( getRecursiveStockInfo( $_SESSION['warehouseinfo']['id'], $_GET['category']) );
 		}
 		
-		if( $_GET['function'] == "getStockInfo"
-				&& isset($_GET['category'])
-				&& isset($_GET['location'])
-				&& isset($_GET['palette']) ){
-			print json_encode( db_getStockInfo($_GET['category'],
-					$_GET['location'],
-					$_GET['palette']) );
+		if( $_GET['function'] == "getStockInfo" && isset($_GET['category']) ){
+			
+			if( isset($_GET['location']) && isset($_GET['palette']) )
+				print json_encode( db_getStockInfo($_GET['category'], $_GET['location'], $_GET['palette']) );
+			
+			else if( isset($_GET['location']) )
+				print json_encode( db_getStockInfo($_GET['category'], $_GET['location'], null) );
+			
+			else if( isset($_GET['palette']) )
+				print json_encode( db_getStockInfo($_GET['category'], null, $_GET['palette']) );
+		}
+		
+		if( $_GET['function'] == "getUnlocatedPalettesStockInfos" && isset($_GET['category']) ){
+			print json_encode( db_getUnlocatedPalettesStockInfo($_GET['category']) );
 		}
 	}
 ?>

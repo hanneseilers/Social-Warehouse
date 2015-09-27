@@ -84,6 +84,7 @@ $LANG = [
 	'palette_name_missing' => "Palette name missing!",
 	'palette_name_error' => "Palette is alreay there!!",
 	'palette_selection_missing' => "No palette selected.",
+	'unlocated_palettes' => "Unlocated palettes",
 		
 	'mail_registered_subject' => "Social-Warehouse: New Warehouse added.",
 	

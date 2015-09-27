@@ -1,29 +1,79 @@
-function showDemandStock(id){	
+function showDemandStock(id){
+	if( _categories.length == 0 ){
+		_loadCategories( _showDemandStock2, id );
+	} else {
+		_showDemandStock2(id);
+	}
+}
+
+function _showDemandStock2(id){	
 	if( document.getElementById( 'stock_info_' + id ).style.display != "table-row" ){
 		
 		// get stock details
 		if( document.getElementById( 'stock_loading_' + id ).style != "none" ){
+			var tableElement = document.getElementById( 'stock_details_table_' + id );
+			var lock = false;
 			
+			// add general stock data
 			get( {'function': 'getCategoryStockInfo', 'category': id}, function(data, status){
 				if( status == "success" ){
 					var stock = JSON.parse(data);
-					var tableElement = document.getElementById( 'stock_details_table_' + id )
-					deleteAllRows( tableElement );
 					
-					// add general stock data
-					_showStockOverview( tableElement, stock );
+					// wait until lock is release
+					while( lock );
+					lock = true;
 					
-					// add unlocated stock data
-					get( {'function': 'getStockInfo', 'category': id, 'location': 'NULL', 'palette': 'NULL'}, function(data, status){
-						if( status == "success" ){
-							var stock = JSON.parse(data);
-							addEmptyRow( tableElement );
-							_showStockUnlocated( tableElement, stock );
-							
-						} else _hideStockLoading(id);
-					} );
-				} else _hideStockLoading(id);
+					var rowIndex = getChildNodeIndex( document.getElementById( 'stock_details_overview_' + id ) ); 
+					_showStockOverview( tableElement, rowIndex, stock );
+					
+					// release lock
+					lock = false;
+				}
 			});
+			
+			// check if to load more details
+			if( !hasChildCategory( id ) ){
+				
+				// add unlocated loose stock data
+				get( {'function': 'getStockInfo', 'category': id, 'location': 'NULL', 'palette': 'NULL'}, function(data, status){
+					if( status == "success" ){
+						var stock = JSON.parse(data);
+						
+						// wait until lock is release
+						while( lock );
+						lock = true;
+						
+						var rowIndex = getChildNodeIndex( document.getElementById( 'stock_details_unlocated_loose_' + id ) )
+						insertEmptyRow( tableElement, rowIndex );
+						_showStockUnlocatedLoose( tableElement, rowIndex+1, stock );
+						
+						// release lock
+						lock = false;
+					}
+				} );
+				
+				// add unlocated palettes
+				get( {'function': 'getUnlocatedPalettesStockInfos', 'category': id, 'location': 'NULL'}, function(data, status){
+					if( status == "success" ){
+						var stock = JSON.parse(data);
+						
+						// wait until lock is release
+						while( lock );
+						lock = true;
+						
+						var rowIndex = getChildNodeIndex( document.getElementById( 'stock_details_unlocated_palette_' + id ) )
+						insertEmptyRow( tableElement, rowIndex );
+						_showStockUnlocatedPalettes( tableElement, rowIndex+1, stock );
+						
+						// release lock
+						lock = false;
+					}
+				} );
+				
+			}
+			
+			// show table
+			tableElement.style.display = "table";
 			
 		}
 		
@@ -39,9 +89,9 @@ function _hideStockLoading(id){
 	document.getElementById( 'stock_loading_' + id ).style.display = "none";
 }
 
-function insertStockInfo(tableElement, name, male, female, baby, unisex, asex){	
+function insertStockInfo(tableElement, position, name, male, female, baby, unisex, asex){	
 	// create new table row
-	var row = tableElement.insertRow(-1);
+	var row = tableElement.insertRow(position);
 	var cellName = row.insertCell(-1);
 	var cellMale = row.insertCell(-1);
 	var cellFemale = row.insertCell(-1);
@@ -58,42 +108,49 @@ function insertStockInfo(tableElement, name, male, female, baby, unisex, asex){
 	cellAsex.innerHTML = "<img src='img/asex_s.png' />" + asex + LANG('pieces_short');
 }
 
-function deleteAllRows(tableElement){
-	while(tableElement.hasChildNodes())
-	{
-		tableElement.removeChild(tableElement.firstChild);
-	}
+function insertEmptyRow(tableElement, position){
+	var row = tableElement.insertRow(position);
+	var cell = row.insertCell(0);
+	cell.innerHTML = "&#160;";
 }
 
-function addEmptyRow(tableElement){
-	var headerCell = tableElement.insertRow(-1).insertCell(-1);
-	headerCell.colSpan = 6;
-	headerCell.innerHTML = "&#160";
-}
-
-function _showStockOverview(tableElement, stock){
-	// add stock overview data
-	insertStockInfo(tableElement, LANG('total'),
-			stock['total']['male'], stock['total']['female'], stock['total']['baby'], stock['total']['unisex'], stock['total']['asex'] );
-	insertStockInfo(tableElement, LANG('income'),
-			stock['income']['male'], stock['income']['female'], stock['income']['baby'], stock['income']['unisex'], stock['income']['asex'] );
-	insertStockInfo(tableElement, LANG('outgo'),
-			stock['outgo']['male'], stock['outgo']['female'], stock['outgo']['baby'], stock['outgo']['unisex'], stock['outgo']['asex'] );
+function getChildNodeIndex(childNode){
+	var i = 0;
+	while( (childNode = childNode.previousSibling) != null ) 
+	  i++;
 	
-	// show table
-	tableElement.style.display = "table";
+	return i;
 }
 
-function _showStockUnlocated(tableElement, stock){
-	// add stock overview data	
-	var headerCell = tableElement.insertRow(-1).insertCell(-1);
+
+
+
+function _showStockOverview(tableElement, rowIndex, stock){	
+	insertStockInfo(tableElement, rowIndex, LANG('total'),
+			stock['total']['male'], stock['total']['female'], stock['total']['baby'], stock['total']['unisex'], stock['total']['asex'] );
+	insertStockInfo(tableElement, rowIndex+1, LANG('income'),
+			stock['income']['male'], stock['income']['female'], stock['income']['baby'], stock['income']['unisex'], stock['income']['asex'] );
+	insertStockInfo(tableElement, rowIndex+2, LANG('outgo'),
+			stock['outgo']['male'], stock['outgo']['female'], stock['outgo']['baby'], stock['outgo']['unisex'], stock['outgo']['asex'] );
+}
+
+function _showStockUnlocatedLoose(tableElement, rowIndex, stock){
+	var headerCell = tableElement.insertRow(rowIndex).insertCell(-1);
 	headerCell.className = "text_bold";
 	headerCell.colSpan = 6;
 	headerCell.innerHTML = LANG('unlocated_stock') + ":";
 	
-	insertStockInfo(tableElement, LANG('total'),
+	insertStockInfo(tableElement, rowIndex+1, LANG('loose_stock'),
 			stock['male']['total'], stock['female']['total'], stock['baby']['total'], stock['unisex']['total'], stock['asex']['total'] );
+}
+
+function _showStockUnlocatedPalettes(tableElement, rowIndex, stock){
+	for( var i=0; i<stock.length; i++ ){
 	
-	// show table
-	tableElement.style.display = "table";
+		insertStockInfo(tableElement, rowIndex+i, "#"+stock[i]['name'],
+				stock[i]['stock']['male']['total'], stock[i]['stock']['female']['total'],
+				stock[i]['stock']['baby']['total'], stock[i]['stock']['unisex']['total'],
+				stock[i]['stock']['asex']['total'] );
+		
+	}
 }

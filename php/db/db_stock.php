@@ -42,8 +42,6 @@
 	
 	function _dbGetStockInfo($category, $location, $palette, $male, $female, $baby){
 		if( $category == "NULL" ) $category = null;
-		if( $location == "NULL" ) $location = null;
-		if( $palette == "NULL" ) $palette = null;
 		
 		$sql = "SELECT category, location, palette, SUM(income) AS income, SUM(outgo) AS outgo, SUM(income)-SUM(outgo) AS total "
 				."FROM ".$GLOBALS['dbPrefix']."storages WHERE " 
@@ -54,25 +52,64 @@
 		$result = dbSqlCache($sql);
 		
 		// check for null results
-		if( gettype($result) == "array" ){
-			
-			// find category in result
-			foreach( $result as $entry ){
-				if( $entry['category'] == $category
-						&& $entry['location'] == $location
-						&& $entry['palette'] == $palette ){
-							
-					$entry['income'] = intval( $entry['income'] );
-					$entry['outgo'] = intval( $entry['outgo'] );
-					$entry['total'] = intval( $entry['total'] );
-					if( $entry['total'] < 0 )
-						$entry['total'] = 0;
-						
-					return $entry;
+		if( gettype($result) === "array" ){
 					
+			// find category, location, palette in result
+			foreach( $result as $entry ){
+							
+				// check where to search for
+				if( $entry['category'] == $category ){
+					
+					if( $location != null && $palette != null ){
+						
+						// location and palette set
+						$vLocation = $location;
+						$vPalette = $palette;
+						if( $location == "NULL" ) $vLocation = null;
+						if( $palette == "NULL" ) $vPalette = null;
+						
+						if( $entry['location'] == $vLocation && $entry['palette'] == $vPalette ){								
+							$entry['income'] = intval( $entry['income'] );
+							$entry['outgo'] = intval( $entry['outgo'] );
+							$entry['total'] = intval( $entry['total'] );
+							if( $entry['total'] < 0 )
+								$entry['total'] = 0;
+						
+							return $entry;							
+						}					
+					} else if( $location != null ){					
+						// only location and palette != null
+						$vLocation = $location;
+						if( $location == "NULL" ) $vLocation = null;
+							
+						if( $entry['location'] == $vLocation && $entry['palette'] != null ){								
+							$entry['income'] = intval( $entry['income'] );
+							$entry['outgo'] = intval( $entry['outgo'] );
+							$entry['total'] = intval( $entry['total'] );
+							if( $entry['total'] < 0 )
+								$entry['total'] = 0;
+								
+							return $entry;
+						}
+					} else if( $palette != null ){					
+						// only palette and location != null
+						$vPalette = $palette;
+						if( $palette == "NULL" ) $vPalette = null;
+							
+						if( $entry['location'] != null && $entry['palette'] == $vPalette ){								
+							$entry['income'] = intval( $entry['income'] );
+							$entry['outgo'] = intval( $entry['outgo'] );
+							$entry['total'] = intval( $entry['total'] );
+							if( $entry['total'] < 0 )
+								$entry['total'] = 0;
+								
+							return $entry;
+						}					
+					}
 				}
+					
 			}
-			
+				
 		}
 		return array( 'income' => 0, 'outgo' => 0, 'total' => 0 );
 	}
@@ -149,6 +186,35 @@
 		$sql = "SELECT category, SUM(income) AS income, SUM(outgo) AS outgo, SUM(income)-SUM(outgo) AS total "
 				."FROM ".$GLOBALS['dbPrefix']."storages WHERE palette=".$palette." GROUP BY category";
 		return dbSqlCache($sql);
+	}
+	
+	function db_getUnlocatedPalettesStockInfo($category){
+		$sql = "SELECT ".$GLOBALS['dbPrefix']."palettes.name AS paletteName, ".$GLOBALS['dbPrefix']."palettes.id AS paletteId"
+				." FROM ".$GLOBALS['dbPrefix']."storages JOIN ".$GLOBALS['dbPrefix']."palettes"
+				." ON ".$GLOBALS['dbPrefix']."storages.palette=".$GLOBALS['dbPrefix']."palettes.id"
+				." WHERE location IS NULL"
+				." GROUP BY PALETTE";
+		$palettes = dbSqlCache($sql);
+		
+		// get stock info for palettes
+		if( $palettes ){
+		
+			$stock = array();
+			$GLOBALS['show'] = true;
+			foreach( $palettes as $palette ){
+				array_push( $stock, array(
+						'id' => $palette['paletteId'],
+						'name' => $palette['paletteName'],
+						'stock' => db_getStockInfo($category, "NULL", $palette['paletteId'])
+				) );
+			}
+			unset($GLOBALS['show']);
+			
+			return $stock;
+				
+		}
+		
+		return false;
 	}
 	
 	function db_getLocationStockInfo($location){
