@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `sw_categories` (
   `warehouse` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `required` INT NULL,
-  `carton` VARCHAR(8) NULL,
+  `carton` TINYINT(1) NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   INDEX `fk_categories_groups_idx` (`warehouse` ASC),
   INDEX `fk_categories_categories1_idx` (`parent` ASC),
