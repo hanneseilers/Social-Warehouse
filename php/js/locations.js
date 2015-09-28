@@ -24,11 +24,12 @@ function _showLocations(){
 	
 	html += "<h1 id='scrollTarget'>" + LANG('locations') + ":</h1>";
 	html += LANG('location_select_tip');
-	html +="<div class='hightlimited'>"
+	html +="<div class='hightlimited' id='locationScrollWindow'>"
 	
 	// show locations
 	for( i=0; i < _locations.length; i++ ){
-		html += "\n<div class='groupitem " + (_location == _locations[i]['id'] ? "yellow" : "") + "'><div class='table'>"
+		html += "\n<div id='location_item_" + _locations[i]['id'] + "'"
+				+ " class='groupitem " + (_location == _locations[i]['id'] ? "yellow" : "") + "'><div class='table'>"
 			+ "<span class='group_left' onclick='selectLocation(" + _locations[i]['id'] + ")'>"
 			+ _locations[i]['name'] + "</span>"
 			+ "<span class='inline_text hidetext errortext' id='location_name_error_" + _locations[i]['id'] + "'>" + LANG('location_name_error') + "</span>"
@@ -52,7 +53,15 @@ function _showLocations(){
 	// show locations
 	showHtml(html);
 	
-	$.scrollTo( document.getElementById('scrollTarget') );
+	// scroll to selected location or to scrollTarget
+	scrollLocation = document.getElementById( 'location_item_' + _location );
+	scrollContainer = document.getElementById( 'locationScrollWindow' );
+	if( scrollLocation && scrollContainer ){
+		$(window).scrollTo( scrollContainer );
+		$(scrollContainer).scrollTo( scrollLocation );
+	}
+	else
+		$.scrollTo( document.getElementById('scrollTarget') );
 	
 }
 

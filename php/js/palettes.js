@@ -32,7 +32,7 @@ function _showPalettes(){
 	
 	html += "<h1 id='scrollTarget'>" + LANG('palettes') + ":</h1>";
 	html += LANG('palette_select_tip');
-	html += "<div class='hightlimited'>";
+	html += "<div class='hightlimited' id='paletteScrollWindow'>";
 	
 	
 	// show palettes
@@ -77,8 +77,11 @@ function _showPalettes(){
 	
 	// scroll to selected palette or to scrollTarget
 	scrollPalette = document.getElementById( 'paletteitem_' + _palette );
-	if( scrollPalette )
-		$.scrollTo( scrollPalette );
+	scrollContainer = document.getElementById( 'paletteScrollWindow' );
+	if( scrollPalette && scrollContainer ){
+		$(window).scrollTo( scrollContainer );
+		$(scrollContainer).scrollTo( scrollPalette );
+	}
 	else
 		$.scrollTo( document.getElementById('scrollTarget') );
 }
