@@ -38,7 +38,10 @@ function dbSQL($sql){
 }
 
 function dbSqlCache($sql){
-	if( isset($GLOBALS['sqlCache']) && isset($GLOBALS[$sql]) ){
+	if( !isset($GLOBALS['sqlCache']) )
+		$GLOBALS['sqlCache'] = [];
+	
+	if( isset($GLOBALS['sqlCache'][$sql]) ){
 		return $GLOBALS['sqlCache'][$sql];
 	}
 	
