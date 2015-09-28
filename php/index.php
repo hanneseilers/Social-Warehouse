@@ -22,19 +22,36 @@
 
 <meta charset="utf-8">
 </head>
-<body>
+
+<?php
+
+	// start/resume session
+	session_start();
+	
+	// create body tag depending if logged in or not
+	if( isset($_SESSION['warehouseinfo']) )
+		print "<body onload='javascript: startCacheTimer();'>";
+	else 
+		print "<body>";
+	
+	print "<span id='gc_maxtime' class='hidetext'>".ini_get("session.gc_maxlifetime")."</span>";
+?>
 
 <div class="mainframe">
 
 	<?php
-		session_start();
 		include( "db/db.php" );
 	
 		// include multilanguage support
 		include( "lang/lang.php" );
 		
+		// include timedout messaghe
+		if( isset($_GET['timeout']) && $_GET['timeout'] == 1 ){
+			print "<div class='red' id='timeout_message' onclick='javascript: hideTimedoutMessage();'>".LANG('session_timed_out')."</div>";
+		}
+		
 		// include content
-		include( "countries/countries.php" );	
+		include( "countries/countries.php" );
 		include( "header.php" );
 		
 		if( isset($_GET['demand']) ){

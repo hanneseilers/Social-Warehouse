@@ -22,37 +22,15 @@ function _showDemandStock3(id){
 			var vHasChild = hasChildCategory( id );
 			
 			// show stock details row
+			var vLastDisplay = document.getElementById( 'stock_info_' + id ).style.display;
 			document.getElementById( 'stock_info_' + id ).style.display = "table-row";
 			
 			// add general stock data
-			get( {'function': 'getCategoryStockInfo', 'category': id}, function(data, status){
-				if( status == "success" ){
-//					console.log( "\nGENERAL STOCK DATA" );
-//					console.log( data );
-					var stock = JSON.parse(data);
-					
-					// wait until lock is release
-					while( lock );
-					lock = true;
-					
-					var rowIndex = getChildNodeIndex( document.getElementById( 'stock_details_overview_' + id ) ); 
-					_showStockOverview( tableElement, rowIndex, stock );
-					
-					// release lock
-					lock = false;
-				}
-				
-				if( vHasChild )
-					_hideStockLoading( id );
-			});
-			
-			// check if to load more details
-			if( !vHasChild ){
-				
-				// add unlocated loose stock data
-				get( {'function': 'getStockInfo', 'category': id, 'location': 'NULL', 'palette': 'NULL'}, function(data, status){
+			if( vLastDisplay.length == 0 ){
+				// start if display
+				get( {'function': 'getCategoryStockInfo', 'category': id}, function(data, status){
 					if( status == "success" ){
-//						console.log( "\nUNLOCATED LOOSE DATA" );
+//						console.log( "\nGENERAL STOCK DATA" );
 //						console.log( data );
 						var stock = JSON.parse(data);
 						
@@ -60,80 +38,105 @@ function _showDemandStock3(id){
 						while( lock );
 						lock = true;
 						
-						var rowIndex = getChildNodeIndex( document.getElementById( 'stock_details_unlocated_loose_' + id ) )
-						insertEmptyRow( tableElement, rowIndex );
-						_showStockUnlocatedLoose( tableElement, rowIndex+1, stock );
-						
-						// release lock
-						lock = false;
-					}
-				} );
-				
-				// add unlocated palettes
-				get( {'function': 'getUnlocatedPalettesStockInfos', 'category': id, 'location': 'NULL'}, function(data, status){
-					if( status == "success" ){
-//						console.log( "\nUNLOCATED PALETTES DATA" );
-//						console.log( data );
-						var stock = JSON.parse(data);
-						
-						// wait until lock is release
-						while( lock );
-						lock = true;
-						
-						var rowIndex = getChildNodeIndex( document.getElementById( 'stock_details_unlocated_palette_' + id ) )
-						insertEmptyRow( tableElement, rowIndex );
-						_showStockUnlocatedPalettes( tableElement, rowIndex+1, stock );
+						var rowIndex = getChildNodeIndex( document.getElementById( 'stock_details_overview_' + id ) ); 
+						_showStockOverview( tableElement, rowIndex, stock );
 						
 						// release lock
 						lock = false;
 					}
 					
-					_hideStockLoading( id );
-				} );
+					if( vHasChild )
+						_hideStockLoading( id );
+				});
 				
-				// add locations
-				for( var i=0; i<_locations.length; i++ ){
-
-					get( {'function': 'getStockAtLocation', 'category': id, 'location': _locations[i]['id']}, function(data, status){
+				// check if to load more details
+				if( !vHasChild ){
+					
+					// add unlocated loose stock data
+					get( {'function': 'getStockInfo', 'category': id, 'location': 'NULL', 'palette': 'NULL'}, function(data, status){
 						if( status == "success" ){
-//							console.log( "\nLOCATED STOCK DATA" );
+//							console.log( "\nUNLOCATED LOOSE DATA" );
 //							console.log( data );
 							var stock = JSON.parse(data);
-								
-							// check if to add located stock
-							var numPalettes = Object.keys(stock['palettes']).length;
-							console.log( "palettes:" + numPalettes + " loose:" + stock['loose']['overall'] );
-							if( stock['loose']['overall'] > 0 || numPalettes > 0 ){
-								
-								// wait until lock is release
-								while( lock );
-								lock = true;
 							
-								// add located stock header
-								var location = getLocation( stock['request']['location'] );
-								var rowIndex = getChildNodeIndex( document.getElementById( 'stock_details_located' + id ) );
-								insertEmptyRow( tableElement, rowIndex );
-								_addStockLocatedHeader( tableElement, rowIndex+1, location['name'] );
-								rowIndex += 2;
-								
-								// show located loose stock
-								if( stock['loose']['overall'] > 0 ){
-									_showStockLocatedLoose( tableElement, rowIndex, stock['loose'], location['name'] );
-									rowIndex++;
-								}
-								
-								// show located palettes
-								if( numPalettes > 0 ){
-									insertEmptyRow( tableElement, rowIndex );
-									_showStockLocatedPalettes( tableElement, rowIndex+1, stock['palettes'] );
-								}
+							// wait until lock is release
+							while( lock );
+							lock = true;
 							
-								// release lock
-								lock = false;
-							}
+							var rowIndex = getChildNodeIndex( document.getElementById( 'stock_details_unlocated_loose_' + id ) )
+							insertEmptyRow( tableElement, rowIndex );
+							_showStockUnlocatedLoose( tableElement, rowIndex+1, stock );
+							
+							// release lock
+							lock = false;
 						}
 					} );
-				}
+					
+					// add unlocated palettes
+					get( {'function': 'getUnlocatedPalettesStockInfos', 'category': id, 'location': 'NULL'}, function(data, status){
+						if( status == "success" ){
+//							console.log( "\nUNLOCATED PALETTES DATA" );
+//							console.log( data );
+							var stock = JSON.parse(data);
+							
+							// wait until lock is release
+							while( lock );
+							lock = true;
+							
+							var rowIndex = getChildNodeIndex( document.getElementById( 'stock_details_unlocated_palette_' + id ) )
+							insertEmptyRow( tableElement, rowIndex );
+							_showStockUnlocatedPalettes( tableElement, rowIndex+1, stock );
+							
+							// release lock
+							lock = false;
+						}
+						
+						_hideStockLoading( id );
+					} );
+					
+					// add locations
+					for( var i=0; i<_locations.length; i++ ){
+	
+						get( {'function': 'getStockAtLocation', 'category': id, 'location': _locations[i]['id']}, function(data, status){
+							if( status == "success" ){
+//								console.log( "\nLOCATED STOCK DATA" );
+//								console.log( data );
+								var stock = JSON.parse(data);
+									
+								// check if to add located stock
+								var numPalettes = Object.keys(stock['palettes']).length;
+								if( stock['loose']['overall'] > 0 || numPalettes > 0 ){
+									
+									// wait until lock is release
+									while( lock );
+									lock = true;
+								
+									// add located stock header
+									var location = getLocation( stock['request']['location'] );
+									var rowIndex = getChildNodeIndex( document.getElementById( 'stock_details_located' + id ) );
+									insertEmptyRow( tableElement, rowIndex );
+									_addStockLocatedHeader( tableElement, rowIndex+1, location['name'] );
+									rowIndex += 2;
+									
+									// show located loose stock
+									if( stock['loose']['overall'] > 0 ){
+										_showStockLocatedLoose( tableElement, rowIndex, stock['loose'], location['name'] );
+										rowIndex++;
+									}
+									
+									// show located palettes
+									if( numPalettes > 0 ){
+										insertEmptyRow( tableElement, rowIndex );
+										_showStockLocatedPalettes( tableElement, rowIndex+1, stock['palettes'] );
+									}
+								
+									// release lock
+									lock = false;
+								}
+							}
+						} );
+					}
+				} // end if display
 				
 			}
 			

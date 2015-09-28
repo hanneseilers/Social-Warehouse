@@ -49,7 +49,10 @@ function login(id){
 function login_result(data, status, xhr){
 	data = data.split(";");
 	if( status == "success" && data.length > 0 && data[0] == "ok" ){		
-		location.reload();		
+		
+		var url = window.location.href;
+		window.location.href = url.replace("&timeout=1", "").replace("timeout=1", "");
+		
 	} else {
 		var id = data[1];
 		document.getElementById( 'warehouseloginfailed' + id ).style.display = "block";
@@ -60,8 +63,35 @@ function login_result(data, status, xhr){
 	}
 }
 
-function logout(){
-	get( {'function': 'logout'},	function(){location.reload();} );
+function logout(timeout){	
+	get( {'function': 'logout'},	function(){
+		// check if session timed out
+		if( timeout ){	
+			
+			// set url flag
+			var url = window.location.href;
+			url = url.replace("&timeout=1", "").replace("timeout=1", "");
+			
+			if( url.indexOf('?') == url.length-1 ) url = url.replace("?", "");
+			
+			if (url.indexOf('?') > -1) url += '&timeout=1';
+			else url += '?timeout=1';
+				
+			window.location.href = url;
+			
+		} else {
+			location.reload(true);
+		}
+	} );
+}
+
+function startCacheTimer(){
+	var timeout = parseInt(document.getElementById( 'gc_maxtime' ).innerHTML) - 60;
+	window.setTimeout( function(){ logout(true); }, timeout*1000 );
+}
+
+function hideTimedoutMessage(){
+	document.getElementById( 'timeout_message' ).style.display = 'none';
 }
 
 function setWarehouseId(id){

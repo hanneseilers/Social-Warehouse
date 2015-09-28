@@ -33,6 +33,7 @@ $LANG = [
 	'restrict_permissions' => "Restrict Permissions",
 	'disable_location_less' => "Disable stock without location",
 	'disable_palette_less' => "Disable stock without palette",
+	'session_timed_out' => "You were logged out, because of session timeout. (click to close message)",
 		
 	'loose_stock' => "Loose Stock",
 	'unlocated_stock' => "Unlocated Stock",
