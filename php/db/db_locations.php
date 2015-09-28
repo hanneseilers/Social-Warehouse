@@ -26,7 +26,7 @@
 	}
 	
 	function db_deleteLocation($warehouseId, $id){
-		$sql = "SELECT COUNT(id) AS num FROM ".$GLOBALS['dbPrefix']."location WHERE warehouse=".$warehouseId." AND id=".$id;
+		$sql = "SELECT COUNT(id) AS num FROM ".$GLOBALS['dbPrefix']."locations WHERE warehouse=".$warehouseId." AND id=".$id;
 		if( dbSQL($sql)[0]['num'] > 0 ){
 			// delete storages
 			$sql = "DELETE FROM ".$GLOBALS['dbPrefix']."storages WHERE location=".$id;
