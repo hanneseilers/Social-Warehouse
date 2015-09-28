@@ -55,7 +55,7 @@
 		
 		// add information about current stock
 		for( $i=0; $i < count($result); $i++ ){
-			$stockinfo = db_getStockInfo( $result[$i]['id'], $location, $palette );
+			$stockinfo = db_getStockInfo( $warehouseId, $result[$i]['id'], $location, $palette );
 			$result[$i]['stockinfo'] = $stockinfo;
 		}
 		

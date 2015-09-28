@@ -33,19 +33,92 @@
 		return $return;
 	}
 	
-	function db_getPalettesAtLocation( $category, $location ){
-		$sql = "SELECT SUM(income), SUM(outgo), ".$GLOBALS['dbPrefix']."palettes.id, ".$GLOBALS['dbPrefix']."palettes.name "
-				."FROM ".$GLOBALS['dbPrefix']."storages JOIN ".$GLOBALS['dbPrefix']."palettes WHERE ".$GLOBALS['dbPrefix']."storages.category=".$category." "
-				."AND ".$GLOBALS['dbPrefix']."storages.location=".$location." AND ".$GLOBALS['dbPrefix']."storages.palette=".$GLOBALS['dbPrefix']."palettes.id";
+	function db_getStockAtLocation( $warehouse, $category, $location ){
+		$response = array( 'request' => array('warehouse' => $warehouse, 'category' => $category, 'location' => $location) );
+		$palettes = array();
+		$loose = db_getStockInfo( $warehouse, $category, $location, "NULL" );
+		
+		// get palette stocks
+		$stockMale = _getPalettesGenderStockAtLocation( $warehouse, $category, $location, true, false, false );
+		$stockFemale = _getPalettesGenderStockAtLocation( $warehouse, $category, $location, false, true, false );
+		$stockBaby = _getPalettesGenderStockAtLocation( $warehouse, $category, $location, false, false, true );
+		$stockUnisex = _getPalettesGenderStockAtLocation( $warehouse, $category, $location, true, true, false );
+		$stockAsex = _getPalettesGenderStockAtLocation( $warehouse, $category, $location, false, false, false );
+		
+		// calculate entries
+		foreach( $stockMale as $entry ){
+			$palettes[$entry['id']]['name'] = $entry['name'];
+			$palettes[$entry['id']]['male'] = $entry['total'];
+		}
+		
+		foreach( $stockFemale as $entry ){
+			$palettes[$entry['id']]['name'] = $entry['name'];
+			$palettes[$entry['id']]['female'] = $entry['total'];
+		}
+		
+		foreach( $stockBaby as $entry ){
+			$palettes[$entry['id']]['name'] = $entry['name'];
+			$palettes[$entry['id']]['baby'] = $entry['total'];
+		}
+		
+		foreach( $stockUnisex as $entry ){
+			$palettes[$entry['id']]['name'] = $entry['name'];
+			$palettes[$entry['id']]['unisex'] = $entry['total'];
+		}
+		
+		foreach( $stockAsex as $entry ){
+			$palettes[$entry['id']]['name'] = $entry['name'];
+			$palettes[$entry['id']]['asex'] = $entry['total'];
+		}
+		
+		// add missing entries
+		foreach( array_keys($palettes) as $key ){
+			if( !isset($palettes[$key]['male']) ) $palettes[$key]['male'] = 0;
+			if( !isset($palettes[$key]['female']) ) $palettes[$key]['female'] = 0;
+			if( !isset($palettes[$key]['baby']) ) $palettes[$key]['baby'] = 0;
+			if( !isset($palettes[$key]['unisex']) ) $palettes[$key]['unisex'] = 0;
+			if( !isset($palettes[$key]['asex']) ) $palettes[$key]['asex'] = 0;
+		}
+		
+		// add loose and palettes stock
+		$response['loose'] = $loose;
+		$response['palettes'] = $palettes;
+		
+		return $response;
+	}
+	
+	function _getPalettesGenderStockAtLocation( $warehouse, $category, $location, $male, $female, $baby ){
+		$sql = "SELECT SUM(income)-SUM(outgo) AS total, "
+					.$GLOBALS['dbPrefix']."palettes.id, ".$GLOBALS['dbPrefix']."palettes.name"
+				." FROM ".$GLOBALS['dbPrefix']."storages"
+				." JOIN ".$GLOBALS['dbPrefix']."palettes"
+					." ON ".$GLOBALS['dbPrefix']."storages.palette=".$GLOBALS['dbPrefix']."palettes.id"
+				." WHERE "
+					.$GLOBALS['dbPrefix']."storages.warehouse=".$warehouse
+					." AND ".$GLOBALS['dbPrefix']."storages.category=".$category
+					." AND ".$GLOBALS['dbPrefix']."storages.location=".$location
+					." AND ".($male ? "male" : "!male")
+					." AND ".($female ? "female" : "!female")
+					." AND ".($baby ? "baby" : "!baby")
+				." GROUP BY ".$GLOBALS['dbPrefix']."storages.palette";
 		return dbSqlCache($sql);
 	}
 	
-	function _dbGetStockInfo($category, $location, $palette, $male, $female, $baby){
+	function _clearStockEntry($entry){
+		unset( $entry['category'] );
+		unset( $entry['location'] );
+		unset( $entry['palette'] );
+		unset( $entry['warehouse'] );
+		return $entry;
+	}
+	
+	function _dbGetStockInfo($warehouse, $category, $location, $palette, $male, $female, $baby){
 		if( $category == "NULL" ) $category = null;
 		
 		$sql = "SELECT category, location, palette, SUM(income) AS income, SUM(outgo) AS outgo, SUM(income)-SUM(outgo) AS total "
-				."FROM ".$GLOBALS['dbPrefix']."storages WHERE " 
-				.($male ? "male" : "!male")
+				."FROM ".$GLOBALS['dbPrefix']."storages WHERE "
+				." warehouse=".$warehouse
+				." AND ".($male ? "male" : "!male")
 				." AND ".($female ? "female" : "!female")
 				." AND ".($baby ? "baby" : "!baby")
 				." GROUP BY category, location, palette";
@@ -75,7 +148,7 @@
 							if( $entry['total'] < 0 )
 								$entry['total'] = 0;
 						
-							return $entry;							
+							return _clearStockEntry($entry);							
 						}					
 					} else if( $location != null ){					
 						// only location and palette != null
@@ -89,7 +162,7 @@
 							if( $entry['total'] < 0 )
 								$entry['total'] = 0;
 								
-							return $entry;
+							return _clearStockEntry($entry);
 						}
 					} else if( $palette != null ){					
 						// only palette and location != null
@@ -103,7 +176,7 @@
 							if( $entry['total'] < 0 )
 								$entry['total'] = 0;
 								
-							return $entry;
+							return _clearStockEntry($entry);
 						}					
 					}
 				}
@@ -114,12 +187,12 @@
 		return array( 'income' => 0, 'outgo' => 0, 'total' => 0 );
 	}
 	
-	function db_getStockInfo($category, $location, $palette){
-		$stockMale = _dbGetStockInfo( $category, $location, $palette, true, false, false );
-		$stockFemale = _dbGetStockInfo( $category, $location, $palette, false, true, false );
-		$stockBaby = _dbGetStockInfo( $category, $location, $palette, false, false, true );
-		$stockUnisex = _dbGetStockInfo( $category, $location, $palette, true, true, false );
-		$stockAsex = _dbGetStockInfo( $category, $location, $palette, false, false, false );
+	function db_getStockInfo($warehouse, $category, $location, $palette){
+		$stockMale = _dbGetStockInfo( $warehouse, $category, $location, $palette, true, false, false );
+		$stockFemale = _dbGetStockInfo( $warehouse, $category, $location, $palette, false, true, false );
+		$stockBaby = _dbGetStockInfo( $warehouse, $category, $location, $palette, false, false, true );
+		$stockUnisex = _dbGetStockInfo( $warehouse, $category, $location, $palette, true, true, false );
+		$stockAsex = _dbGetStockInfo( $warehouse, $category, $location, $palette, false, false, false );
 		
 		$overall = $stockMale['total'] + $stockFemale['total'] + $stockBaby['total'] + $stockUnisex['total'] + $stockAsex['total'];
 		
@@ -188,7 +261,7 @@
 		return dbSqlCache($sql);
 	}
 	
-	function db_getUnlocatedPalettesStockInfo($category){
+	function db_getUnlocatedPalettesStockInfo($warehouseId, $category){
 		$sql = "SELECT ".$GLOBALS['dbPrefix']."palettes.name AS paletteName, ".$GLOBALS['dbPrefix']."palettes.id AS paletteId"
 				." FROM ".$GLOBALS['dbPrefix']."storages JOIN ".$GLOBALS['dbPrefix']."palettes"
 				." ON ".$GLOBALS['dbPrefix']."storages.palette=".$GLOBALS['dbPrefix']."palettes.id"
@@ -205,7 +278,7 @@
 				array_push( $stock, array(
 						'id' => $palette['paletteId'],
 						'name' => $palette['paletteName'],
-						'stock' => db_getStockInfo($category, "NULL", $palette['paletteId'])
+						'stock' => db_getStockInfo( $warehouseId, $category, "NULL", $palette['paletteId'] )
 				) );
 			}
 			unset($GLOBALS['show']);
