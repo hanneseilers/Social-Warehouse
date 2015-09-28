@@ -36,30 +36,52 @@
 		}
 		
 		if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "getCategoryStockInfo" && isset($_GET['category']) ){
-			print json_encode( getRecursiveStockInfo( $_SESSION['warehouseinfo']['id'], $_GET['category']) );
+			$response = getRecursiveStockInfo( $_SESSION['warehouseinfo']['id'], $_GET['category'] );
+			$category = db_getCategory( $_SESSION['warehouseinfo']['id'], $_GET['category'] );
+			$request = [ 'warehouse' => $_SESSION['warehouseinfo']['id'], 'category' => $category[0] ];
+			
+			print json_encode( ['request' => $request, 'response' => $response] );
 		}
 		
 		if( $_GET['function'] == "getStockInfo" && isset($_GET['category']) ){
 			
+			$response = [];
+			$category = db_getCategory( $_SESSION['warehouseinfo']['id'], $_GET['category'] );
+			$request = [ 'warehouse' => $_SESSION['warehouseinfo']['id'],
+					'category' => $category[0],
+					'location' => ( isset($_GET['location']) ? $_GET['location'] : null ),
+					'palette' => ( isset($_GET['palette']) ? $_GET['palette'] : null ),
+			];
 			if( isset($_GET['location']) && isset($_GET['palette']) )
-				print json_encode( db_getStockInfo($_SESSION['warehouseinfo']['id'], $_GET['category'], $_GET['location'], $_GET['palette']) );
+				$response = db_getStockInfo( $_SESSION['warehouseinfo']['id'], $_GET['category'], $_GET['location'], $_GET['palette'] );
 			
 			else if( isset($_GET['location']) )
-				print json_encode( db_getStockInfo($_SESSION['warehouseinfo']['id'], $_GET['category'], $_GET['location'], null) );
+				$response = db_getStockInfo( $_SESSION['warehouseinfo']['id'], $_GET['category'], $_GET['location'], null );
 			
 			else if( isset($_GET['palette']) )
-				print json_encode( db_getStockInfo($_SESSION['warehouseinfo']['id'], $_GET['category'], null, $_GET['palette']) );
+				$response = db_getStockInfo( $_SESSION['warehouseinfo']['id'], $_GET['category'], null, $_GET['palette'] );
+			
+			print json_encode( ['request' => $request, 'response' => $response] );
 		}
 		
 		if( $_GET['function'] == "getUnlocatedPalettesStockInfos" && isset($_GET['category']) ){
-			print json_encode( db_getUnlocatedPalettesStockInfo($_SESSION['warehouseinfo']['id'], $_GET['category']) );
+			$response = db_getUnlocatedPalettesStockInfo($_SESSION['warehouseinfo']['id'], $_GET['category'] );
+			$category = db_getCategory( $_SESSION['warehouseinfo']['id'], $_GET['category'] );
+			$request = [ 'warehouse' => $_SESSION['warehouseinfo']['id'], 'category' => $category[0] ];
+			
+			print json_encode( ['request' => $request, 'response' => $response] );
 		}
 		
 		if( $_GET['function'] == "getStockAtLocation" && isset($_GET['category']) && isset($_GET['location']) ){
-			print json_encode( db_getStockAtLocation(
+			$response = db_getStockAtLocation(
 					$_SESSION['warehouseinfo']['id'],
 					$_GET['category'],
-					$_GET['location']) );
+					$_GET['location'] );
+			$category = db_getCategory( $_SESSION['warehouseinfo']['id'], $_GET['category'] );
+			$request = [ 'warehouse' => $_SESSION['warehouseinfo']['id'],
+					'category' => $category[0], 'location' => ( isset($_GET['location']) ? $_GET['location'] : null ) ];
+			
+			print json_encode( ['request' => $request, 'response' => $response] );
 		}
 	}
 ?>

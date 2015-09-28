@@ -70,5 +70,7 @@
 	</div>
 </div>
 
+<div class="hidetext red" id="error_message"></div>
+
 </body>
 </html>

@@ -146,7 +146,7 @@ function _loadLocationStockInfo(location){
 						document.getElementById( 'location_stock_' + location ).innerHTML =
 							document.getElementById( 'location_stock_' + location ).innerHTML
 							+ (i != 0 ? "<br />" : "")
-							+ hierarchy + " (" + stock[i]['total'] + LANG('pieces_short') + ")";
+							+ hierarchy + " (" + stock[i]['total'] + " " + getUnit(stock[i]) + ")";
 						
 					}
 					

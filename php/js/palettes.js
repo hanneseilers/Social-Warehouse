@@ -178,7 +178,7 @@ function _loadPaletteStockInfo(palette){
 							document.getElementById( 'palette_stock_' + palette ).innerHTML = document.getElementById( 'palette_stock_' + palette ).innerHTML
 								+ (i != 0 ? "<br />" : "")
 								+ hierarchy
-								+ " (" + stock[i]['total'] + LANG('pieces_short') + ")";
+								+ " (" + stock[i]['total'] + " " + getUnit(stock[i]) + ")";
 						}
 					}
 				}

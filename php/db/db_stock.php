@@ -35,7 +35,7 @@
 	}
 	
 	function db_getStockAtLocation( $warehouse, $category, $location ){
-		$response = array( 'request' => array('warehouse' => $warehouse, 'category' => $category, 'location' => $location) );
+		$response = array();
 		$palettes = array();
 		$loose = db_getStockInfo( $warehouse, $category, $location, "NULL" );
 		
@@ -197,7 +197,8 @@
 		
 		$overall = $stockMale['total'] + $stockFemale['total'] + $stockBaby['total'] + $stockUnisex['total'] + $stockAsex['total'];
 		
-		return array( 	'male' => $stockMale,
+		return array( 
+				'male' => $stockMale,
 				'female' => $stockFemale,
 				'baby' => $stockBaby,
 				'unisex' => $stockUnisex,
@@ -257,8 +258,11 @@
 	}
 	
 	function db_getPaletteStockInfo($palette){
-		$sql = "SELECT category, SUM(income) AS income, SUM(outgo) AS outgo, SUM(income)-SUM(outgo) AS total "
-				."FROM ".$GLOBALS['dbPrefix']."storages WHERE palette=".$palette." GROUP BY category";
+		$sql = "SELECT category, carton, SUM(income) AS income, SUM(outgo) AS outgo, SUM(income)-SUM(outgo) AS total "
+				."FROM ".$GLOBALS['dbPrefix']."storages"
+				." JOIN ".$GLOBALS['dbPrefix']."categories"
+					." ON ".$GLOBALS['dbPrefix']."storages.category=".$GLOBALS['dbPrefix']."categories.id"
+				." WHERE palette=".$palette." GROUP BY category";
 		return dbSqlCache($sql);
 	}
 	
@@ -292,8 +296,11 @@
 	}
 	
 	function db_getLocationStockInfo($location){
-		$sql = "SELECT category, SUM(income) AS income, SUM(outgo) AS outgo, SUM(income)-SUM(outgo) AS total "
-				."FROM ".$GLOBALS['dbPrefix']."storages WHERE location=".$location." GROUP BY category";
+		$sql = "SELECT category, carton, SUM(income) AS income, SUM(outgo) AS outgo, SUM(income)-SUM(outgo) AS total "
+				."FROM ".$GLOBALS['dbPrefix']."storages"
+				." JOIN ".$GLOBALS['dbPrefix']."categories"
+						." ON ".$GLOBALS['dbPrefix']."storages.category=".$GLOBALS['dbPrefix']."categories.id"
+				." WHERE location=".$location." GROUP BY category";
 		return dbSqlCache($sql);
 	}
 

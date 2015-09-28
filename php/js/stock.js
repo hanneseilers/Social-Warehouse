@@ -29,41 +29,47 @@ function addToStock(category){
 	
 }
 
-function updateColors(){		
-	// get colors
-	var defColor = getStyleRuleValue( 'background-color', '.button' );
-	var orange = getStyleRuleValue( 'background-color', '.orange' );
-	var blue = getStyleRuleValue( 'background-color', '.blue' );
-	var yellow = getStyleRuleValue( 'background-color', '.yellow' );
-	var purple = getStyleRuleValue( 'background-color', '.purple' );
-	
-	// reset button background
-	document.getElementById( 'button_male' ).style.backgroundColor = defColor;
-	document.getElementById( 'button_female' ).style.backgroundColor = defColor;
-	document.getElementById( 'button_baby' ).style.backgroundColor = defColor;
-	document.getElementById( 'income' ).parentElement.style.backgroundColor = defColor;
-	document.getElementById( 'outgo' ).parentElement.style.backgroundColor = defColor;
-	
-	// set color of selected options
-	if( _baby ){
-		document.getElementById( 'button_baby' ).style.backgroundColor = orange;
-	} else {
-		if( _male ){
-			document.getElementById( 'button_male' ).style.backgroundColor = blue;
+function updateColors(){
+	try{
+		
+		// get colors
+		var defColor = getStyleRuleValue( 'background-color', '.button' );
+		var orange = getStyleRuleValue( 'background-color', '.orange' );
+		var blue = getStyleRuleValue( 'background-color', '.blue' );
+		var yellow = getStyleRuleValue( 'background-color', '.yellow' );
+		var purple = getStyleRuleValue( 'background-color', '.purple' );
+		
+		// reset button background
+		document.getElementById( 'button_male' ).style.backgroundColor = defColor;
+		document.getElementById( 'button_female' ).style.backgroundColor = defColor;
+		document.getElementById( 'button_baby' ).style.backgroundColor = defColor;
+		document.getElementById( 'income' ).parentElement.style.backgroundColor = defColor;
+		document.getElementById( 'outgo' ).parentElement.style.backgroundColor = defColor;
+		
+		// set color of selected options
+		if( _baby ){
+			document.getElementById( 'button_baby' ).style.backgroundColor = orange;
+		} else {
+			if( _male ){
+				document.getElementById( 'button_male' ).style.backgroundColor = blue;
+			}
+			if( _female ){
+				document.getElementById( 'button_female' ).style.backgroundColor = purple;
+			}
 		}
-		if( _female ){
-			document.getElementById( 'button_female' ).style.backgroundColor = purple;
+		
+		if( _income_selected ){
+			document.getElementById( 'outgo' ).value = "";
+			document.getElementById( 'income' ).focus();
+			document.getElementById( 'income' ).parentElement.style.backgroundColor = yellow;
+		} else if( _outgo_selected ){
+			document.getElementById( 'income' ).value = "";
+			document.getElementById( 'outgo' ).focus();
+			document.getElementById( 'outgo' ).parentElement.style.backgroundColor = yellow;
 		}
-	}
-	
-	if( _income_selected ){
-		document.getElementById( 'outgo' ).value = "";
-		document.getElementById( 'income' ).focus();
-		document.getElementById( 'income' ).parentElement.style.backgroundColor = yellow;
-	} else if( _outgo_selected ){
-		document.getElementById( 'income' ).value = "";
-		document.getElementById( 'outgo' ).focus();
-		document.getElementById( 'outgo' ).parentElement.style.backgroundColor = yellow;
+		
+	} catch(err){
+		document.getElementById( 'error_message' ).innerHTML = err.message;
 	}
 }
 
@@ -88,6 +94,12 @@ function hasChildCategory(id){
 	}
 	
 	return false;
+}
+
+function getUnit(category){
+	if( category != null && category['carton'] != null && category['carton'] == 1 )
+		return LANG('cartons_short');
+	return LANG('pieces_short');
 }
 
 function getCategory(id){
@@ -179,7 +191,11 @@ function editCategory(id){
 		demand = 0;
 	}
 	
-	get( 	{'function': 'editCategory', 'id': id, 'name': base64_encode(name), 'demand': demand},
+	var carton = 0;
+	if( document.getElementById( 'cartons' ) )
+		carton = document.getElementById( 'cartons' ).checked;
+	
+	get( 	{'function': 'editCategory', 'id': id, 'name': base64_encode(name), 'demand': demand, 'carton': carton},
 			function(data, status){
 		_loadCategories( _showCategories, id );
 	});
@@ -240,7 +256,7 @@ function _showCategories(rootId){
 		html += "<div>"
 			+ "<a href='javascript: _showCategories();' class='button'>Stock</a> > "
 			+ getCategoryHierrachy(root['id'], true)
-			+ " (" + stockTotal + LANG('pieces_short') + ")"
+			+ " (" + stockTotal + " " + getUnit(root) + ")"
 			+ "</div>\n";		
 	}
 	
@@ -324,9 +340,14 @@ function _showCategories(rootId){
 		
 		// add category edit & delete form
 		html += "<div class='groupitem'><span class='group_left'>"
-			+ LANG('category_name') + ": <input type='text' id='categoryname' value='" + root['name'] + "' />"
-			+ (!hasChildCategory(root['id']) ? " " + LANG('demand') + ": <input type='text' id='demand' value='" + root['required'] + "' />" : "" )
-			+ "</span>";
+			+ LANG('category_name') + ": <input type='text' id='categoryname' value='" + root['name'] + "' />";
+		
+		if( !hasChildCategory(root['id']) ){ 
+			html += LANG('demand') + ": <input type='text' id='demand' value='" + root['required'] + "' /> ";
+		}
+		
+		html += "<input type='checkbox' id='cartons' " + (root['carton'] == 1 ? "checked" : "" )  + " /> " + LANG('category_count_in_cartons');
+		html += "</span>";
 		
 		html += "<a href='javascript: editCategory(" + root['id'] + ");' class='button green'>" + LANG('edit') + "</a> "
 			+ "<a href='javascript: deleteCategory(" + root['id'] + ");' class='button red'>"

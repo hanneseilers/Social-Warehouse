@@ -101,7 +101,7 @@
 				// print category name
 				print str_repeat( '&#160;&#160;&#160;&#160;', $hierarchyEntry['level'] )
 					.$hierarchyEntry['hierarchy'][0]['name']
-					." (". $stock['overall'] ." ". LANG('pieces_short') ." ". LANG('in_stock') .")"
+					." (". $stock['overall'] ." ". getUnit($category) ." ". LANG('in_stock') .")"
 					."</td>";
 					
 				// print details button and line end
