@@ -30,8 +30,6 @@ function _showDemandStock3(id){
 				// start if display
 				get( {'function': 'getCategoryStockInfo', 'category': id}, function(data, status){
 					if( status == "success" ){
-//						console.log( "\nGENERAL STOCK DATA" );
-//						console.log( data );
 						var stock = JSON.parse(data);
 						
 						// wait until lock is release
@@ -99,8 +97,6 @@ function _showDemandStock3(id){
 	
 						get( {'function': 'getStockAtLocation', 'category': id, 'location': _locations[i]['id']}, function(data, status){
 							if( status == "success" ){
-//								console.log( "\nLOCATED STOCK DATA" );
-//								console.log( data );
 								var stock = JSON.parse(data);
 									
 								// check if to add located stock
