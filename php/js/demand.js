@@ -84,24 +84,34 @@ function _showDemandStock3(id){
 					get( {'function': 'getStockAtLocation', 'category': id, 'location': _locations[i]['id']}, function(data, status){
 						if( status == "success" ){
 							var stock = JSON.parse(data);
+								
+							// check if to add located stock
+							if( stock['loose']['overall'] > 0 || Object.keys(stock['palettes']).length > 0 ){
+								
+								// wait until lock is release
+								while( lock );
+								lock = true;
 							
-							// wait until lock is release
-							while( lock );
-							lock = true;
+								// add located stock header
+								var location = getLocation( stock['request']['location'] );
+								var rowIndex = getChildNodeIndex( document.getElementById( 'stock_details_located' + id ) );
+								insertEmptyRow( tableElement, rowIndex );
+								_addStockLocatedHeader( tableElement, rowIndex+1, location['name'] );
+								
+								// show located loose stock
+								if( stock['loose']['overall'] > 0 )
+									_showStockLocatedLoose( tableElement, rowIndex+2, stock['loose'], location['name'] );
+								
+								// show located palettes
+								if( Object.keys(stock['palettes']).length > 0 ){
+									var rowIndex = getChildNodeIndex( document.getElementById( 'stock_details_located' + id ) )
+									insertEmptyRow( tableElement, rowIndex );
+									_showStockLocatedPalettes( tableElement, rowIndex+1, stock['palettes'] );
+								}
 							
-							// show located loose stock
-							var location = getLocation( stock['request']['location'] );
-							var rowIndex = getChildNodeIndex( document.getElementById( 'stock_details_located_loose_' + id ) )							
-							insertEmptyRow( tableElement, rowIndex );
-							_showStockLocatedLoose( tableElement, rowIndex+1, stock['loose'], location['name'] );
-							
-							// show located palettes
-							rowIndex = getChildNodeIndex( document.getElementById( 'stock_details_located_palette_' + id ) )							
-							insertEmptyRow( tableElement, rowIndex );
-							_showStockLocatedPalettes( tableElement, rowIndex+1, stock['palettes'] );
-							
-							// release lock
-							lock = false;
+								// release lock
+								lock = false;
+							}
 						}
 					} );
 				}
@@ -190,6 +200,13 @@ function _showStockUnlocatedPalettes(tableElement, rowIndex, stock){
 	}
 }
 
+function _addStockLocatedHeader( tableElement, rowIndex, locationName ){
+	var headerCell = tableElement.insertRow(rowIndex).insertCell(-1);
+	headerCell.className = "text_bold";
+	headerCell.colSpan = 6;
+	headerCell.innerHTML = "<hr />" + locationName + ":";
+}
+
 function _showStockLocatedPalettes(tableElement, rowIndex, stock){
 	var i = 0;
 	for( key in stock ){
@@ -202,12 +219,7 @@ function _showStockLocatedPalettes(tableElement, rowIndex, stock){
 	}
 }
 
-function _showStockLocatedLoose(tableElement, rowIndex, stock, locationName){
-	var headerCell = tableElement.insertRow(rowIndex).insertCell(-1);
-	headerCell.className = "text_bold";
-	headerCell.colSpan = 6;
-	headerCell.innerHTML = "<hr />" + locationName + ":";
-	
-	insertStockInfo(tableElement, rowIndex+1, LANG('loose_stock'),
+function _showStockLocatedLoose(tableElement, rowIndex, stock){	
+	insertStockInfo(tableElement, rowIndex, LANG('loose_stock'),
 			stock['male']['total'], stock['female']['total'], stock['baby']['total'], stock['unisex']['total'], stock['asex']['total'] );
 }

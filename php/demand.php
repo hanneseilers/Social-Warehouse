@@ -121,8 +121,7 @@
 						."<tr id='stock_details_overview_".$categoryId."'></tr>"
 						."<tr id='stock_details_unlocated_loose_".$categoryId."'></tr>"
 						."<tr id='stock_details_unlocated_palette_".$categoryId."'></tr>"
-						."<tr id='stock_details_located_loose_".$categoryId."'></tr>"
-						."<tr id='stock_details_located_palette_".$categoryId."'></tr>"
+						."<tr id='stock_details_located".$categoryId."'></tr>"
 					."</table>"
 						
 					."<div align='center' id='stock_loading_".$categoryId."'><img src='img/loading.gif' /></div>"
