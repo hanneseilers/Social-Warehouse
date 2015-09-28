@@ -24,6 +24,7 @@ function _showLocations(){
 	
 	html += "<h1 id='scrollTarget'>" + LANG('locations') + ":</h1>";
 	html += LANG('location_select_tip');
+	html +="<div class='hightlimited'>"
 	
 	// show locations
 	for( i=0; i < _locations.length; i++ ){
@@ -46,6 +47,7 @@ function _showLocations(){
 		// load stock info
 		_loadLocationStockInfo( _locations[i]['id'] );
 	}
+	html += "</div>";
 	
 	// show locations
 	showHtml(html);

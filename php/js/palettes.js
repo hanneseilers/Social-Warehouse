@@ -32,6 +32,7 @@ function _showPalettes(){
 	
 	html += "<h1 id='scrollTarget'>" + LANG('palettes') + ":</h1>";
 	html += LANG('palette_select_tip');
+	html += "<div class='hightlimited'>";
 	
 	
 	// show palettes
@@ -45,7 +46,7 @@ function _showPalettes(){
 			+ _palettes[i]['name'] + (vLocation ? " : " + vLocation['name'] : "")
 			+ (_palettes[i]['cleared'] == 1 ? " " + LANG('palette_cleared') : "")
 			+ "</span>"
-			+ "<span class='inline_text hidetextif( !_restricted ){'>" + LANG('palette_name') + ": "
+			+ "<span class='inline_text table_cell hidetextif( !_restricted ){'>" + LANG('palette_name') + ": "
 			+ "<input type='text' id='editpalette_" + _palettes[i]['id'] + "' /></span>"
 			+ " <a href='javascript: editPalette(" + _palettes[i]['id'] + ")' class='button green'>" + LANG('edit') + "</a>"
 			+ " <a href='javascript: showPaletteStock(" + _palettes[i]['id'] + ")' class='button orange'>" + LANG('details') + "</a>"
@@ -68,6 +69,8 @@ function _showPalettes(){
 		// load stock info
 		_loadPaletteStockInfo( _palettes[i]['id'] );
 	}
+	
+	html += "</div>";
 	
 	// show palettes
 	showHtml(html);
