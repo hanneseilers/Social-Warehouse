@@ -3,9 +3,9 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Table `sw_warehouses`
+-- Table`sw_warehouses`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sw_warehouses` (
+CREATE TABLE IF NOT EXISTS`sw_warehouses` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` TINYTEXT NOT NULL,
   `description` LONGTEXT NULL,
@@ -21,34 +21,35 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sw_categories`
+-- Table`sw_categories`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sw_categories` (
+CREATE TABLE IF NOT EXISTS`sw_categories` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `parent` INT NULL,
   `warehouse` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `required` INT NULL,
+  `unit` VARCHAR(8) NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_categories_groups_idx` (`warehouse` ASC),
   INDEX `fk_categories_categories1_idx` (`parent` ASC),
   CONSTRAINT `fk_categories_groups`
     FOREIGN KEY (`warehouse`)
-    REFERENCES `sw_warehouses` (`id`)
+    REFERENCES`sw_warehouses` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_categories_categories1`
     FOREIGN KEY (`parent`)
-    REFERENCES `sw_categories` (`id`)
+    REFERENCES`sw_categories` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sw_palettes`
+-- Table`sw_palettes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sw_palettes` (
+CREATE TABLE IF NOT EXISTS`sw_palettes` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `warehouse` INT NOT NULL,
   `name` MEDIUMTEXT NOT NULL,
@@ -57,16 +58,16 @@ CREATE TABLE IF NOT EXISTS `sw_palettes` (
   INDEX `fk_palettes_groups1_idx` (`warehouse` ASC),
   CONSTRAINT `fk_palettes_groups1`
     FOREIGN KEY (`warehouse`)
-    REFERENCES `sw_warehouses` (`id`)
+    REFERENCES`sw_warehouses` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sw_locations`
+-- Table`sw_locations`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sw_locations` (
+CREATE TABLE IF NOT EXISTS`sw_locations` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `warehouse` INT NOT NULL,
   `name` TINYTEXT NULL,
@@ -74,18 +75,19 @@ CREATE TABLE IF NOT EXISTS `sw_locations` (
   INDEX `fk_locations_warehouses1_idx` (`warehouse` ASC),
   CONSTRAINT `fk_locations_warehouses1`
     FOREIGN KEY (`warehouse`)
-    REFERENCES `sw_warehouses` (`id`)
+    REFERENCES`sw_warehouses` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sw_storages`
+-- Table`sw_storages`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sw_storages` (
+CREATE TABLE IF NOT EXISTS`sw_storages` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `category` INT NOT NULL,
+  `warehouse` INT NOT NULL DEFAULT 0,
   `location` INT NULL,
   `palette` INT NULL,
   `income` BIGINT NOT NULL,
@@ -97,19 +99,25 @@ CREATE TABLE IF NOT EXISTS `sw_storages` (
   INDEX `fk_storages_categories1_idx` (`category` ASC),
   INDEX `fk_storages_palettes1_idx` (`palette` ASC),
   INDEX `fk_storages_locations1_idx` (`location` ASC),
+  INDEX `fk_sw_storages_sw_warehouses1_idx` (`warehouse` ASC),
   CONSTRAINT `fk_storages_categories1`
     FOREIGN KEY (`category`)
-    REFERENCES `sw_categories` (`id`)
+    REFERENCES`sw_categories` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_storages_palettes1`
     FOREIGN KEY (`palette`)
-    REFERENCES `sw_palettes` (`id`)
+    REFERENCES`sw_palettes` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_storages_locations1`
     FOREIGN KEY (`location`)
-    REFERENCES `sw_locations` (`id`)
+    REFERENCES`sw_locations` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sw_storages_sw_warehouses1`
+    FOREIGN KEY (`warehouse`)
+    REFERENCES`sw_warehouses` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
