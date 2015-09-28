@@ -19,10 +19,16 @@ function _showDemandStock3(id){
 		if( document.getElementById( 'stock_loading_' + id ).style != "none" ){
 			var tableElement = document.getElementById( 'stock_details_table_' + id );
 			var lock = false;
+			var vHasChild = hasChildCategory( id );
+			
+			// show stock details row
+			document.getElementById( 'stock_info_' + id ).style.display = "table-row";
 			
 			// add general stock data
 			get( {'function': 'getCategoryStockInfo', 'category': id}, function(data, status){
 				if( status == "success" ){
+//					console.log( "\nGENERAL STOCK DATA" );
+//					console.log( data );
 					var stock = JSON.parse(data);
 					
 					// wait until lock is release
@@ -36,15 +42,18 @@ function _showDemandStock3(id){
 					lock = false;
 				}
 				
-				_hideStockLoading( id );
+				if( vHasChild )
+					_hideStockLoading( id );
 			});
 			
 			// check if to load more details
-			if( !hasChildCategory( id ) ){
+			if( !vHasChild ){
 				
 				// add unlocated loose stock data
 				get( {'function': 'getStockInfo', 'category': id, 'location': 'NULL', 'palette': 'NULL'}, function(data, status){
 					if( status == "success" ){
+//						console.log( "\nUNLOCATED LOOSE DATA" );
+//						console.log( data );
 						var stock = JSON.parse(data);
 						
 						// wait until lock is release
@@ -63,6 +72,8 @@ function _showDemandStock3(id){
 				// add unlocated palettes
 				get( {'function': 'getUnlocatedPalettesStockInfos', 'category': id, 'location': 'NULL'}, function(data, status){
 					if( status == "success" ){
+//						console.log( "\nUNLOCATED PALETTES DATA" );
+//						console.log( data );
 						var stock = JSON.parse(data);
 						
 						// wait until lock is release
@@ -76,6 +87,8 @@ function _showDemandStock3(id){
 						// release lock
 						lock = false;
 					}
+					
+					_hideStockLoading( id );
 				} );
 				
 				// add locations
@@ -83,10 +96,14 @@ function _showDemandStock3(id){
 
 					get( {'function': 'getStockAtLocation', 'category': id, 'location': _locations[i]['id']}, function(data, status){
 						if( status == "success" ){
+//							console.log( "\nLOCATED STOCK DATA" );
+//							console.log( data );
 							var stock = JSON.parse(data);
 								
 							// check if to add located stock
-							if( stock['loose']['overall'] > 0 || Object.keys(stock['palettes']).length > 0 ){
+							var numPalettes = Object.keys(stock['palettes']).length;
+							console.log( "palettes:" + numPalettes + " loose:" + stock['loose']['overall'] );
+							if( stock['loose']['overall'] > 0 || numPalettes > 0 ){
 								
 								// wait until lock is release
 								while( lock );
@@ -97,14 +114,16 @@ function _showDemandStock3(id){
 								var rowIndex = getChildNodeIndex( document.getElementById( 'stock_details_located' + id ) );
 								insertEmptyRow( tableElement, rowIndex );
 								_addStockLocatedHeader( tableElement, rowIndex+1, location['name'] );
+								rowIndex += 2;
 								
 								// show located loose stock
-								if( stock['loose']['overall'] > 0 )
-									_showStockLocatedLoose( tableElement, rowIndex+2, stock['loose'], location['name'] );
+								if( stock['loose']['overall'] > 0 ){
+									_showStockLocatedLoose( tableElement, rowIndex, stock['loose'], location['name'] );
+									rowIndex++;
+								}
 								
 								// show located palettes
-								if( Object.keys(stock['palettes']).length > 0 ){
-									var rowIndex = getChildNodeIndex( document.getElementById( 'stock_details_located' + id ) )
+								if( numPalettes > 0 ){
 									insertEmptyRow( tableElement, rowIndex );
 									_showStockLocatedPalettes( tableElement, rowIndex+1, stock['palettes'] );
 								}
@@ -121,9 +140,6 @@ function _showDemandStock3(id){
 			// show table
 			tableElement.style.display = "table";
 		}
-		
-		// show stock details row
-		document.getElementById( 'stock_info_' + id ).style.display = "table-row";
 		
 	} else {
 		document.getElementById( 'stock_info_' + id ).style.display = "none";
@@ -161,8 +177,10 @@ function insertEmptyRow(tableElement, position){
 
 function getChildNodeIndex(childNode){
 	var i = 0;
-	while( (childNode = childNode.previousSibling) != null ) 
-	  i++;
+	while( childNode != null ){
+		childNode = childNode.previousSibling;
+		i++;
+	}
 	
 	return i;
 }

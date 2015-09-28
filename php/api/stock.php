@@ -12,7 +12,8 @@
 				&& isset($_GET['female'])
 				&& isset($_GET['baby']) ){
 			
-			if( db_addToStock( $_GET['category'],
+			if( db_addToStock( $_SESSION['warehouseinfo']['id'], 
+					$_GET['category'],
 					$_GET['location'],
 					$_GET['palette'],
 					$_GET['in'],

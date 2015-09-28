@@ -1,6 +1,6 @@
 <?php
 
-	function db_addToStock($category, $location, $palette, $income, $outgo, $male, $female, $baby){
+	function db_addToStock($warehouse, $category, $location, $palette, $income, $outgo, $male, $female, $baby){
 		// check if to set location to palette location
 		if( $palette != "NULL" ){
 			db_validatePaletteLocations();
@@ -12,7 +12,8 @@
 		}
 		
 		// check if stock entry already available
-		$sql = "SELECT id FROM ".$GLOBALS['dbPrefix']."storages WHERE category=".$category
+		$sql = "SELECT id FROM ".$GLOBALS['dbPrefix']."storages WHERE warehouse=".$warehouse
+			." AND category=".$category
 			." AND location".($location == "NULL" ? " IS NULL" : "=".$location)
 			." AND palette".($palette == "NULL" ? " IS NULL" : "=".$palette)
 			." AND male=".$male." AND female=".$female." AND baby=".$baby;		
@@ -20,8 +21,8 @@
 		
 		// insert new
 		if( count($result) == 0 ){			
-			$sql = "INSERT INTO ".$GLOBALS['dbPrefix']."storages (category, location, palette, income, outgo, male, female, baby)"
-					." VALUES (".$category.", ".$location.", ".$palette.", ".$income.", ".$outgo.", ".$male.", ".$female.", ".$baby.")";
+			$sql = "INSERT INTO ".$GLOBALS['dbPrefix']."storages (warehouse, category, location, palette, income, outgo, male, female, baby)"
+					." VALUES (".$warehouse.", ".$category.", ".$location.", ".$palette.", ".$income.", ".$outgo.", ".$male.", ".$female.", ".$baby.")";
 			return dbSQL($sql);			
 		} 
 		
