@@ -64,7 +64,7 @@ $LANG = [
 	'category_count_in_cartons' => "In Kartons zählen",
 	'category_show_demand' => "Bedarf anzeigen",
 	'add_category' => "Kategorie hinzufügen",
-	'delete_category' => "Kategorie löschen",
+	'delete_category' => "Lösche Kategorie",
 	'delete_category_failed' => "Kategorie kann nicht gelöscht werden. Bitte zuerst Unterkategorien löschen!",
 	'edit_category' => "Kategorie bearbeiten",
 	
