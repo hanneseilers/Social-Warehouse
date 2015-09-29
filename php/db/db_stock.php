@@ -250,7 +250,15 @@
 		$stockAsex = _getCategoryGenderStock( $category, false, false, false );
 		
 		$overall = $stockMale['total'] + $stockFemale['total'] + $stockBaby['total'] + $stockUnisex['total'] + $stockAsex['total'];
-		$demand = $stockMale['required'] + $stockFemale['required'] + $stockBaby['required'] + $stockUnisex['required'] + $stockAsex['required'];
+		
+		$demands = array( $stockMale['required'], $stockFemale['required'], $stockBaby['required'], $stockUnisex['required'], $stockAsex['required'] );
+		$demand = 0;
+		foreach( $demands as $d ){
+			if( $d > 0 ){
+				$demand = $d;
+				break;
+			}
+		}
 		
 		return array( 	'male' => $stockMale,
 						'female' => $stockFemale,
