@@ -36,6 +36,9 @@ $LANG = [
 	'disable_palette_less' => "Disable stock without palette",
 	'session_timed_out' => "You were logged out, because of session timeout. (click to close message)",
 		
+	'link_url_demand' => "Link for sharing demand page",
+	'link_url_demand_limited' => "Link for sharing demand page with limited categories",
+		
 	'loose_stock' => "Loose Stock",
 	'unlocated_stock' => "Unlocated Stock",
 	'in_stock' => "in stock",

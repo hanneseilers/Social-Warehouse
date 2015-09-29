@@ -35,6 +35,9 @@ $LANG = [
 	'disable_location_less' => "Waren ohne Ort verbieten",
 	'disable_palette_less' => "Waren ohne Palette verbieten",
 	'session_timed_out' => "Sie wurden ausgeloggt da Ihre Sitzung abgelaufen ist. (Anklicken um Nachricht zu schließen)",
+	
+	'link_url_demand' => "Link zum Teilen der Bedarfsseite",
+	'link_url_demand_limited' => "Link zum Teilen der Bedarfsseite mit eingeschränkten Kategorien",
 		
 	'loose_stock' => "Loser Bestand",
 	'unlocated_stock' => "Ortsloser Bestand",

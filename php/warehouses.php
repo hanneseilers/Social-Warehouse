@@ -24,7 +24,7 @@ City: <input type="text" id="filtercity" onkeypress="filterCity();" />
 			print "<span class='inline_text hidetext'>".LANG('password').": ";
 			print "<input type='password' id='warehousepw".$vWarehouse['id']."' onkeypress='if(event.keyCode == 13) login(".$vWarehouse['id'].");' /></span>";
 			print "<img src='img/loading.gif' class='loadinggif' id='warehouseload".$vWarehouse['id']."' />";
-			print "<a href='?demand=".$vWarehouse['id']."' class='button yellow' id='warehousedemand".$vWarehouse['id']."' target='_blanc'>".LANG('demand')."</a>";
+			print "<a href='?demand=".$vWarehouse['id']."&limited=1' class='button yellow' id='warehousedemand".$vWarehouse['id']."' target='_blanc'>".LANG('demand')."</a>";
 			print "<a href='javascript: login(".$vWarehouse['id'].");' class='button green' id='warehouselogin".$vWarehouse['id']."'>".LANG('login')."</a></div>";
 		}
 		

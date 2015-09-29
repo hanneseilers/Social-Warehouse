@@ -13,7 +13,7 @@
 		
 		print "<span class='group_left text_bold'>".LANG('warehouse').": ".$name."</span>";
 		print "<span class='inline_text hidetext errortext' id='warehouse_name_error'>".LANG('warehouse_name_error')."</span>";
-		print "<span class='inline_text hidetext errortext' id='warehouse_name_missing'>".LANG('warehouse_name_missing')."</span>";
+		print "<span class='inline_text hidetext errortext' id='warehouse_name_missing'>".LANG('warehouse_name_missing')."</span>";		
 		
 		if( !isset($_SESSION['restricted']) || !$_SESSION['restricted'] ){
 			print "<a href='javascript: editWarehouse();' id='warehouse_edit' class='button green'>".LANG('edit')."</a> ";
@@ -109,6 +109,29 @@
 		<td colspan=4>
 			<a href="javascript: deleteWarehouse();" class="button block red"><?php print LANG('delete_warehouse'); ?></a>
 			<a href="javascript: setRestricted();" class="button block yellow"><?php print LANG('restrict_permissions'); ?></a>
+		</td>
+	</tr>
+	
+	<tr>
+		<td><br /></td>
+	</tr>
+	
+	<tr>
+		<td colspan=2>
+			<?php 
+				$url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."?demand=".$_SESSION['warehouseinfo']['id']."&limited=1";
+				$url = str_replace("??", "?", $url);
+				print LANG('link_url_demand_limited').":<br />";
+				print "<a href='".$url."' target='_blanc'>".$url."</a>";
+			?>
+		</td>
+		<td colspan=2>
+			<?php 
+				$url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."?demand=".$_SESSION['warehouseinfo']['id'];
+				$url = str_replace("??", "?", $url);
+				print LANG('link_url_demand').":<br />";
+				print "<a href='".$url."' target='_blanc'>".$url."</a><br />";
+			?>
 		</td>
 	</tr>
 	</table>
