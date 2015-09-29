@@ -22,7 +22,7 @@ $LANG = [
 	'optional' => "optional",
 	'password_wrong' => "Password wrong!",
 	'password_missing' => "Password missing!",
-	'passwords_not_equal' => "Passwort aren't equal!",
+	'passwords_not_equal' => "Password aren't equal!",
 	'male' => "Male",
 	'female' => "Female",
 	'children_baby' => "Children / Baby",
@@ -73,7 +73,7 @@ $LANG = [
 	'new_location' => "New Location",
 	'add_location' => "Add Location",
 	'location_name_missing' => "Location name missing!",
-	'location_name_error' => "Location is alreay there!!",
+	'location_name_error' => "Location is alreay there!",
 	'location_selection_missing' => "No location selected.",
 		
 	'palettes' => "Palettes",
@@ -85,7 +85,7 @@ $LANG = [
 	'palette_cleared' => "CLEARED",
 	'palette_location_remove' => "Remove Location",
 	'palette_name_missing' => "Palette name missing!",
-	'palette_name_error' => "Palette is alreay there!!",
+	'palette_name_error' => "Palette is alreay there!",
 	'palette_selection_missing' => "No palette selected.",
 	'unlocated_palettes' => "Unlocated palettes",
 		

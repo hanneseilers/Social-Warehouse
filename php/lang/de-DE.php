@@ -1,0 +1,102 @@
+<?php
+
+$LANG = [
+	'login' => "Einloggen",
+	'logout' => "Ausloggen",
+	'demand' => "Bedarf",
+	'edit' => "Bearbeiten",
+	'delete' => "Löschen",
+	'clear' => "Leeren",
+	'help' => "Hilfe",
+	'legend' => "Legende",
+	'details' => "Details",
+	'country' => "Land",
+	'city' => "Stadt",
+	'e-mail' => "E-Mail Adresse",
+	'password' => "Passwort",
+	'password_repeat' => "Passwort wiederholen",
+	'password_restricted' => "Passwort für eingeschränkten Zugang",
+	'password_restricted_repeat' => "Eingeschränktes Passwort wiederholen",
+	'description' => "Beschreibung",
+	'required' => "benötigt",
+	'optional' => "optional",
+	'password_wrong' => "Passwort falsch!",
+	'password_missing' => "Passwort fehlt!",
+	'passwords_not_equal' => "Die Passwörter sind nicht identisch!",
+	'male' => "männlich",
+	'female' => "weiblich",
+	'children_baby' => "Kinder / Baby",
+	'income' => "Eingang",
+	'outgo' => "Ausgang",
+	'total' => "Gesamt",
+	'pieces_short' => "Stk.",
+	'cartons_short' => "Kartons",
+	'restrict_permissions' => "Rechte einschränken",
+	'disable_location_less' => "Waren ohne Ort verbieten",
+	'disable_palette_less' => "Waren ohne Palette verbieten",
+	'session_timed_out' => "Sie wurden ausgeloggt da Ihre Sitzung abgelaufen ist. (Anklicken um Nachricht zu schließen)",
+		
+	'loose_stock' => "Loser Bestand",
+	'unlocated_stock' => "Ortsloser Bestand",
+	'in_stock' => "im Lager",
+	'add_to_loose_stock' => "Zu losem Bestand hinzufügen",
+	'add_to_palette' => "Hinzufügen zu Palette",
+	'email_error' => "Keine korrekte E-Mail Adresse!",
+		
+	'city_missing' => "Stadt fehlt!",
+	'stock' => "Lagerbestand",
+	'stock_details' => "Lager Details",
+	
+	'warehouse_name' => "Warenhausname",
+	'warehouse_name_missing' => "Warenhausname existiert bereits!",
+	'warehouse_name_error' => "Warenhaus existiert bereits!",
+	'warehouse' => "Warenhaus",
+	'warehouses' => "Warenhäuser",
+	'warehouse_demand' => "Warenhaus Bedarf",
+	'new_warehouse' => "Neues Warenhaus",
+	'add_warehouse' => "Warenhaus hinzufügen",
+	'delete_warehouse' => "Warenhaus löschen",
+		
+	'categories' => "Categories",
+	'category_name' => "Category name",
+	'category_name_missing' => "Enter category name!",
+	'category_name_error' => "Category is already there!",
+	'category_count_in_cartons' => "Count in cartons",
+	'add_category' => "Add Category",
+	'delete_category' => "Delete Category",
+	'delete_category_failed' => "Cannot delete category. Please delete sub-categories first!",
+	'edit_category' => "Edit Category",
+	
+	'locations' => "Standorte",
+	'location_name' => "Standortname",
+	'location_select_tip' => "Standort anklicken zum Auswählen.",
+	'new_location' => "Neuer Standort",
+	'add_location' => "Standort hinzufügen",
+	'location_name_missing' => "Standortname fehlt!",
+	'location_name_error' => "Standortname existiert bereits!",
+	'location_selection_missing' => "Kein Standort ausgewählt.",
+		
+	'palettes' => "Paletten",
+	'palette_name' => "Palettenbezeichnung",
+	'palette_select_tip' => "Palette anklicken zum Auswählen.",
+	'new_palette' => "Neue Palette",
+	'add_palette' => "Palette hinzufügen",
+	'move_palette' => "Palette verschieben nach",
+	'palette_cleared' => "GELEERT",
+	'palette_location_remove' => "Standort entfernen",
+	'palette_name_missing' => "Palettenbezeichnung fehlt!",
+	'palette_name_error' => "Palette existiert bereits!",
+	'palette_selection_missing' => "Keine Palette ausgewählt.",
+	'unlocated_palettes' => "Paletten ohne Standort",
+		
+	'mail_registered_subject' => "Social-Warehouse: Neues Warenhaus hinzugefügt.",
+	
+	/*
+	 * 1st % = warehouse name
+	 * 2nd % = website url
+	 */
+	'mail_registered_text' => "<p>Hi,<br/>Sie haben erfolgreich ihr neues Warenhaus<br /><br /><b>%</b><br /><br />auf % hinzugefügt.<br />Sie können sich jetzt mit Ihrem Passwort einloggen.</p><br />Mit besten Grüßen Ihr Social-Warehouse Administrator.",
+		
+]
+
+?>

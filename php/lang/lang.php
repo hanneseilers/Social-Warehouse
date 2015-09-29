@@ -2,7 +2,6 @@
 
 	// get language
 	$default_language = "en.php";
-	$local_language = "";
 	if( !empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) ){
 		$local_language = explode( ",", $_SERVER['HTTP_ACCEPT_LANGUAGE'] );
 		if( count($local_language) > 0 )
