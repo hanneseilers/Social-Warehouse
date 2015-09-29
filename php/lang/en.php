@@ -62,6 +62,7 @@ $LANG = [
 	'category_name_missing' => "Enter category name!",
 	'category_name_error' => "Category is already there!",
 	'category_count_in_cartons' => "Count in cartons",
+	'category_show_demand' => "Show demand",
 	'add_category' => "Add Category",
 	'delete_category' => "Delete Category",
 	'delete_category_failed' => "Cannot delete category. Please delete sub-categories first!",
