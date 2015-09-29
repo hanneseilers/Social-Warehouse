@@ -29,7 +29,7 @@
 	session_start();
 	
 	// create body tag depending if logged in or not
-	if( isset($_SESSION['warehouseinfo']) )
+	if( isset($_SESSION['warehouseinfo']) && !isset($_GET['demand']) )
 		print "<body onload='javascript: startCacheTimer();'>";
 	else 
 		print "<body>";
