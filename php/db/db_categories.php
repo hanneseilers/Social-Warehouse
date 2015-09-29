@@ -18,8 +18,13 @@
 	}
 	
 	function db_getCategory($warehouseId, $id){
-		$sql = "SELECT id, name, parent, required, carton, showDemand FROM ".$GLOBALS['dbPrefix']."categories WHERE warehouse=".$warehouseId." AND id=".$id;
-		return dbSQL($sql);
+		$categories = db_getCategories( $warehouseId, "NULL", "NULL", false, false);
+		foreach( $categories as $category ){
+			if( $category['id'] == $id )
+				return $category;
+		}
+		
+		return null;
 	}
 	
 	function db_hasChildCategory($warehouseId, $id){
@@ -56,18 +61,20 @@
  		return dbSQL($sql);
 	}
 
-	function db_getCategories($warehouseId, $location, $palette, $withDemandVisibleOnly=false){
+	function db_getCategories($warehouseId, $location, $palette, $withDemandVisibleOnly=false, $addStock=true){
 		$where = "warehouse=".$warehouseId;
 		if( $withDemandVisibleOnly )
 			$where = $where . " AND showDemand";
 			
 		$sql = "SELECT id, name, parent, required, carton, showDemand FROM ".$GLOBALS['dbPrefix']."categories WHERE ".$where." ORDER BY name ASC";
-		$result = dbSQL($sql);
+		$result = dbSqlCache($sql);
 		
 		// add information about current stock
-		for( $i=0; $i < count($result); $i++ ){
-			$stockinfo = db_getStockInfo( $warehouseId, $result[$i]['id'], $location, $palette );
-			$result[$i]['stockinfo'] = $stockinfo;
+		if( $addStock ){
+			for( $i=0; $i < count($result); $i++ ){
+				$stockinfo = db_getStockInfo( $warehouseId, $result[$i]['id'], $location, $palette );
+				$result[$i]['stockinfo'] = $stockinfo;
+			}
 		}
 		
 		return $result;

@@ -207,17 +207,13 @@
 		);
 	}
 	
-	function _getCategoryGenderStock($category, $male, $female, $baby){
+	function _getCategoryGenderStock($warehouse, $category, $male, $female, $baby){
 		// get all gender stocks
-		$sql = "SELECT category, required, SUM(income) AS income, SUM(outgo) AS outgo, SUM(income)-SUM(outgo) AS total "
+		$sql = "SELECT category, male, female, baby, SUM(income) AS income, SUM(outgo) AS outgo, SUM(income)-SUM(outgo) AS total "
 				."FROM ".$GLOBALS['dbPrefix']."storages"
 				." JOIN ".$GLOBALS['dbPrefix']."categories"
 					." ON ".$GLOBALS['dbPrefix']."storages.category=".$GLOBALS['dbPrefix']."categories.id"
-				." WHERE "
-				.($male ? "male" : "!male")
-				." AND ".($female ? "female" : "!female")
-				." AND ".($baby ? "baby" : "!baby")
-				." GROUP BY category";
+				." GROUP BY category, male, female, baby";
 		$result = dbSqlCache($sql);
 		
 		// check for null results
@@ -225,7 +221,10 @@
 			
 			// find category in result
 			foreach( $result as $entry ){
-				if( $entry['category'] == $category ){
+				if( $entry['category'] == $category
+						&& $male == $entry['male']
+						&& $female == $entry['female']
+						&& $baby == $entry['baby'] ){
 							
 					$entry['income'] = intval( $entry['income'] );
 					$entry['outgo'] = intval( $entry['outgo'] );
@@ -239,26 +238,19 @@
 			}
 			
 		}
-		return array( 'income' => 0, 'outgo' => 0, 'total' => 0, 'required' => 0 );
+		return array( 'income' => 0, 'outgo' => 0, 'total' => 0);
 	}
 	
-	function db_getCategoryStockInfo($category){
-		$stockMale = _getCategoryGenderStock( $category, true, false, false );
-		$stockFemale = _getCategoryGenderStock( $category, false, true, false );
-		$stockBaby = _getCategoryGenderStock( $category, false, false, true );
-		$stockUnisex = _getCategoryGenderStock( $category, true, true, false );
-		$stockAsex = _getCategoryGenderStock( $category, false, false, false );
-		
+	function db_getCategoryStockInfo($warehouse, $category){
+		$stockMale = _getCategoryGenderStock( $warehouse, $category, true, false, false );
+		$stockFemale = _getCategoryGenderStock( $warehouse, $category, false, true, false );
+		$stockBaby = _getCategoryGenderStock( $warehouse, $category, false, false, true );
+		$stockUnisex = _getCategoryGenderStock( $warehouse, $category, true, true, false );
+		$stockAsex = _getCategoryGenderStock( $warehouse, $category, false, false, false );
+		$categoryObj = db_getCategory( $warehouse, $category );
+
 		$overall = $stockMale['total'] + $stockFemale['total'] + $stockBaby['total'] + $stockUnisex['total'] + $stockAsex['total'];
-		
-		$demands = array( $stockMale['required'], $stockFemale['required'], $stockBaby['required'], $stockUnisex['required'], $stockAsex['required'] );
-		$demand = 0;
-		foreach( $demands as $d ){
-			if( $d > 0 ){
-				$demand = $d;
-				break;
-			}
-		}
+		$demand = $categoryObj['required'];
 		
 		return array( 	'male' => $stockMale,
 						'female' => $stockFemale,

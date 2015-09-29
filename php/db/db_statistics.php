@@ -57,7 +57,7 @@
 		$not_visitted = array( $categoryId );
 		
 		while( ($id = array_pop($not_visitted)) ){
-			$stock = db_getCategoryStockInfo( $id );			
+			$stock = db_getCategoryStockInfo( $warehouseId, $id );			
 			array_push( $visited, $id );
 
 			if( gettype($stock) == "array"
