@@ -21,8 +21,9 @@
 			print json_encode( db_getCategories($_SESSION['warehouseinfo']['id'], $_GET['location'], $_GET['palette']) );
 		}
 		
-		if( $_GET['function'] == "editCategory" && isset($_GET['id']) && isset($_GET['name']) && isset($_GET['demand']) && isset($_GET['carton']) ){
-			if( db_editCategory($_GET['id'], base64_decode($_GET['name']), $_GET['demand'], $_GET['carton']) )
+		if( $_GET['function'] == "editCategory" && isset($_GET['id']) && isset($_GET['name'])
+				&& isset($_GET['demand']) && isset($_GET['carton']) && isset($_GET['showDemand']) ){
+			if( db_editCategory($_GET['id'], base64_decode($_GET['name']), $_GET['demand'], $_GET['carton'], $_GET['showDemand']) )
 				print $GLOBALS['OK'];
 			else
 				print $GLOBALS['ERR'];

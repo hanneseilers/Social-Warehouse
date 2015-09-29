@@ -41,7 +41,11 @@
 		if( isset($_GET['demand']) ){
 			
 			// get sorted category hierarchy
-			$categories = db_getCategories( $warehouse['id'], "NULL", "NULL" );
+			$withDemandOnly = false;
+			if( isset($_GET['limited']) && $_GET['limited'] == 1 )
+				$withDemandOnly = true;
+				
+			$categories = db_getCategories( $warehouse['id'], "NULL", "NULL", $withDemandOnly );
 			$hierarchieStrings = getCategoryHierarchyStrings( $categories );
 			array_multisort( $hierarchieStrings, SORT_ASC );
 			$table_closed = true;
@@ -94,11 +98,17 @@
 				}
 				
 				// print line start
-				print "<tr class='".($highlight ? "highlight" : "")."'>"
-					."<td class='centertext'><img src='img/star-".$img1.".png' /><img src='img/star-".$img2.".png' /></td>"
-					."<td class='".($hierarchyEntry['level'] == 0 ? "text_bold" : "")." td_max'>";
+				print "<tr class='".($highlight ? "highlight" : "")."'>";
+				
+				// print demand stars
+				print "<td class='centertext'>";
+				if( $category['showDemand'] ){
+					print "<img src='img/star-".$img1.".png' /><img src='img/star-".$img2.".png' />";
+				}
+				print "</td>";
 				
 				// print category name
+				print"<td class='".($hierarchyEntry['level'] == 0 ? "text_bold" : "")." td_max'>";
 				print str_repeat( '&#160;&#160;&#160;&#160;', $hierarchyEntry['level'] )
 					.$hierarchyEntry['hierarchy'][0]['name']
 					." (". $stock['overall'] ." ". getUnit($category) ." ". LANG('in_stock') .")"

@@ -18,7 +18,7 @@
 	}
 	
 	function db_getCategory($warehouseId, $id){
-		$sql = "SELECT id, name, parent, required, carton FROM ".$GLOBALS['dbPrefix']."categories WHERE warehouse=".$warehouseId." AND id=".$id;
+		$sql = "SELECT id, name, parent, required, carton, showDemand FROM ".$GLOBALS['dbPrefix']."categories WHERE warehouse=".$warehouseId." AND id=".$id;
 		return dbSQL($sql);
 	}
 	
@@ -56,8 +56,12 @@
  		return dbSQL($sql);
 	}
 
-	function db_getCategories($warehouseId, $location, $palette){
-		$sql = "SELECT id, name, parent, required, carton FROM ".$GLOBALS['dbPrefix']."categories WHERE warehouse=".$warehouseId. " ORDER BY name ASC";
+	function db_getCategories($warehouseId, $location, $palette, $withDemandVisibleOnly=false){
+		$where = "warehouse=".$warehouseId;
+		if( $withDemandVisibleOnly )
+			$where = $where . " AND showDemand";
+			
+		$sql = "SELECT id, name, parent, required, carton, showDemand FROM ".$GLOBALS['dbPrefix']."categories WHERE ".$where." ORDER BY name ASC";
 		$result = dbSQL($sql);
 		
 		// add information about current stock
@@ -74,8 +78,8 @@
 		return dbSQL($sql);		
 	}
 	
-	function db_editCategory($id, $name, $required, $carton){
-		$sql = "UPDATE ".$GLOBALS['dbPrefix']."categories SET name='".$name."', required=".$required.", carton=".$carton." WHERE id=".$id;
+	function db_editCategory($id, $name, $required, $carton, $showDemand){
+		$sql = "UPDATE ".$GLOBALS['dbPrefix']."categories SET name='".$name."', required=".$required.", carton=".$carton.", showDemand=".$showDemand." WHERE id=".$id;
 		return dbSQL($sql);
 	}
 

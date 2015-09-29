@@ -195,7 +195,11 @@ function editCategory(id){
 	if( document.getElementById( 'cartons' ) )
 		carton = document.getElementById( 'cartons' ).checked;
 	
-	get( 	{'function': 'editCategory', 'id': id, 'name': base64_encode(name), 'demand': demand, 'carton': carton},
+	var showDemand = 0;
+	if( document.getElementById( 'showDemand' ) )
+		showDemand = document.getElementById( 'showDemand' ).checked;
+	
+	get( 	{'function': 'editCategory', 'id': id, 'name': base64_encode(name), 'demand': demand, 'carton': carton, 'showDemand': showDemand},
 			function(data, status){
 		_loadCategories( _showCategories, id );
 	});
@@ -262,6 +266,9 @@ function _showCategories(rootId){
 	
 	// add add-category form
 	if( !_restricted ){
+		// add spacer
+		html += "<div class='hspacer'></div>";
+		
 		html += "<div class='groupitem'><span class='group_left'>"
 			+ LANG('category_name') + ": <input type='text' id='addcategory' onkeypress='if(event.keyCode == 13) addCategory(" + rootId + ");' /></span>" 
 			+ "<a href='javascript: addCategory(" + rootId + ");' class='button'>" + LANG('add_category') + "</a></div>";
@@ -271,7 +278,8 @@ function _showCategories(rootId){
 	if( locationLess && paletteLess ){
 	
 		// show options to add storage
-		if( addIncomeOutgo ){		
+		if( addIncomeOutgo ){
+			console.log("incomeoutgo");
 			// show gender buttons
 			html += "<div class='table'>"
 				+ "<a href='javascript: _male = !_male; _baby = false; updateColors();' id='button_male' class='button button4 table_cell'><img src='img/male.png' /><br />" + LANG('male') + "</a>"
@@ -340,14 +348,11 @@ function _showCategories(rootId){
 		
 		// add category edit & delete form
 		html += "<div class='groupitem'><span class='group_left'>"
-			+ LANG('category_name') + ": <input type='text' id='categoryname' value='" + root['name'] + "' />";
-		
-		if( !hasChildCategory(root['id']) ){ 
-			html += LANG('demand') + ": <input type='text' id='demand' value='" + root['required'] + "' /> ";
-		}
-		
-		html += "<input type='checkbox' id='cartons' " + (root['carton'] == 1 ? "checked" : "" )  + " /> " + LANG('category_count_in_cartons');
-		html += "</span>";
+			+ LANG('category_name') + ": <input type='text' id='categoryname' value='" + root['name'] + "' size=10 /> "
+			+ LANG('demand') + ": <input type='number' id='demand' value='" + root['required'] + "' /> " + getUnit(root) + " "
+			+ "<input type='checkbox' id='cartons' " + (root['carton'] == 1 ? "checked" : "" )  + " /> " + LANG('category_count_in_cartons') + " "
+			+ "<input type='checkbox' id='showDemand' " + (root['showDemand'] == 1 ? "checked" : "" )  + " /> " + LANG('category_show_demand')
+			+ "</span>";
 		
 		html += "<a href='javascript: editCategory(" + root['id'] + ");' class='button green'>" + LANG('edit') + "</a> "
 			+ "<a href='javascript: deleteCategory(" + root['id'] + ");' class='button red'>"
