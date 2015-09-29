@@ -209,8 +209,11 @@
 	
 	function _getCategoryGenderStock($category, $male, $female, $baby){
 		// get all gender stocks
-		$sql = "SELECT category, SUM(income) AS income, SUM(outgo) AS outgo, SUM(income)-SUM(outgo) AS total "
-				."FROM ".$GLOBALS['dbPrefix']."storages WHERE "
+		$sql = "SELECT category, required, SUM(income) AS income, SUM(outgo) AS outgo, SUM(income)-SUM(outgo) AS total "
+				."FROM ".$GLOBALS['dbPrefix']."storages"
+				." JOIN ".$GLOBALS['dbPrefix']."categories"
+					." ON ".$GLOBALS['dbPrefix']."storages.category=".$GLOBALS['dbPrefix']."categories.id"
+				." WHERE "
 				.($male ? "male" : "!male")
 				." AND ".($female ? "female" : "!female")
 				." AND ".($baby ? "baby" : "!baby")
@@ -236,7 +239,7 @@
 			}
 			
 		}
-		return array( 'income' => 0, 'outgo' => 0, 'total' => 0 );
+		return array( 'income' => 0, 'outgo' => 0, 'total' => 0, 'required' => 0 );
 	}
 	
 	function db_getCategoryStockInfo($category){
@@ -247,13 +250,15 @@
 		$stockAsex = _getCategoryGenderStock( $category, false, false, false );
 		
 		$overall = $stockMale['total'] + $stockFemale['total'] + $stockBaby['total'] + $stockUnisex['total'] + $stockAsex['total'];
+		$demand = $stockMale['required'] + $stockFemale['required'] + $stockBaby['required'] + $stockUnisex['required'] + $stockAsex['required'];
 		
 		return array( 	'male' => $stockMale,
 						'female' => $stockFemale,
 						'baby' => $stockBaby,
 						'unisex' => $stockUnisex,
 						'asex' => $stockAsex,
-						'overall' => $overall
+						'overall' => $overall,
+						'demand' => $demand
 		);
 	}
 	

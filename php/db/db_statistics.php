@@ -52,6 +52,7 @@
 		$outgo = array( 'female' => 0, 'male' => 0, 'baby' => 0, 'unisex' => 0, 'asex' => 0 );
 		$total = array( 'female' => 0, 'male' => 0, 'baby' => 0, 'unisex' => 0, 'asex' => 0 );
 		$overall = 0;
+		$demand = 0;
 		$visited = array();
 		$not_visitted = array( $categoryId );
 		
@@ -76,6 +77,7 @@
 				$outgo['asex'] += $stock['asex']['outgo'];
 				
 				$overall += $stock['overall'];
+				$demand += $stock['demand'];
 				
 				// search for sub categories
 				$subcategories = db_getSubCategories( $warehouseId, $id );
@@ -95,7 +97,7 @@
 		$total['unisex'] = $income['unisex'] - $outgo['unisex'];
 		$total['asex'] = $income['asex'] - $outgo['asex'];
 		
-		return array( 'income' => $income, 'outgo' => $outgo, 'total' => $total, 'overall' => $overall );
+		return array( 'income' => $income, 'outgo' => $outgo, 'total' => $total, 'overall' => $overall, 'demand' => $demand );
 	}
 
 ?>
