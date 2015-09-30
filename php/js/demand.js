@@ -61,9 +61,14 @@ function _showDemandStock3(id){
 							while( lock );
 							lock = true;
 							
+							// add unlocated header
 							var rowIndex = getChildNodeIndex( document.getElementById( 'stock_details_unlocated_loose_' + id ) )
 							insertEmptyRow( tableElement, rowIndex );
-							_showStockUnlocatedLoose( tableElement, rowIndex+1, stock['response'], stock['request']['category'] );
+							_addUnlocatedHeader( tableElement, rowIndex+1 );							
+							
+							// show loose stock
+							if( stock['response']['obverall'] > 0 )
+								_showStockUnlocatedLoose( tableElement, rowIndex+2, stock['response'], stock['request']['category'] );
 							
 							// release lock
 							lock = false;
@@ -198,23 +203,29 @@ function _showStockOverview(tableElement, rowIndex, stock, category){
 			stock['outgo']['male'], stock['outgo']['female'], stock['outgo']['baby'], stock['outgo']['unisex'], stock['outgo']['asex'], category );
 }
 
-function _showStockUnlocatedLoose(tableElement, rowIndex, stock, category){
+function _addUnlocatedHeader(tableElement, rowIndex){
 	var headerCell = tableElement.insertRow(rowIndex).insertCell(-1);
 	headerCell.className = "text_bold";
 	headerCell.colSpan = 6;
 	headerCell.innerHTML = "<hr />" + LANG('unlocated_stock') + ":";
-	
-	insertStockInfo(tableElement, rowIndex+1, LANG('loose_stock'),
+}
+
+function _showStockUnlocatedLoose(tableElement, rowIndex, stock, category){	
+	insertStockInfo(tableElement, rowIndex, LANG('loose_stock'),
 			stock['male']['total'], stock['female']['total'], stock['baby']['total'], stock['unisex']['total'], stock['asex']['total'], category );
 }
 
 function _showStockUnlocatedPalettes(tableElement, rowIndex, stock, category){
+	var y = 0;
 	for( var i=0; i<stock.length; i++ ){
 	
-		insertStockInfo(tableElement, rowIndex+i, "#"+stock[i]['name'],
-				stock[i]['stock']['male']['total'], stock[i]['stock']['female']['total'],
-				stock[i]['stock']['baby']['total'], stock[i]['stock']['unisex']['total'],
-				stock[i]['stock']['asex']['total'], category );
+		if( stock[i]['stock']['overall'] > 0 ){
+			insertStockInfo(tableElement, rowIndex+y, "#"+stock[i]['name'],
+					stock[i]['stock']['male']['total'], stock[i]['stock']['female']['total'],
+					stock[i]['stock']['baby']['total'], stock[i]['stock']['unisex']['total'],
+					stock[i]['stock']['asex']['total'], category );
+			y++;
+		}
 		
 	}
 }
