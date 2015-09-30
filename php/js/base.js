@@ -7,9 +7,11 @@ var _location = null;
 var _palettes = [];
 var _palette = null
 var _restricted = false;
+var _cacheTimeoutTimer = null;
 
 get = function (data, callback){
 	$.get( "api/api.php", data, callback );
+	resetCacheTimeout();
 }
 
 function login(id){
@@ -87,7 +89,12 @@ function logout(timeout){
 
 function startCacheTimer(){
 	var timeout = parseInt(document.getElementById( 'gc_maxtime' ).innerHTML) - 60;
-	window.setTimeout( function(){ logout(true); }, timeout*1000 );
+	_cacheTimeoutTimer = window.setTimeout( function(){ logout(true); }, timeout*1000 );
+}
+
+function resetCacheTimeout(){
+	window.clearTimeout( _cacheTimeoutTimer );
+	startCacheTimer();
 }
 
 function hideTimedoutMessage(){
