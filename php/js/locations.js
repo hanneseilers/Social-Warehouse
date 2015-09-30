@@ -44,9 +44,6 @@ function _showLocations(){
 				
 		html += "</div><div class='hidetext'><span class='table_cell' id='location_stock_" + _locations[i]['id'] + "' class='tinytext'></span></div>"
 			+ "</div>";
-		
-		// load stock info
-		_loadLocationStockInfo( _locations[i]['id'] );
 	}
 	html += "</div>";
 	
@@ -139,15 +136,36 @@ function _loadLocationStockInfo(location){
 				document.getElementById( 'location_stock_' + location ).innerHTML = "";
 				if( status == "success" ){
 					
+					console.log(data);
 					stock = JSON.parse(data);
-					for( var i=0; i < stock.length; i++ ) {
-						
-						hierarchy = getCategoryHierrachy( stock[i]['category'] )
+					
+					// show categories
+					if( stock['categories'] != null ){
 						document.getElementById( 'location_stock_' + location ).innerHTML =
 							document.getElementById( 'location_stock_' + location ).innerHTML
-							+ (i != 0 ? "<br />" : "")
-							+ hierarchy + " (" + stock[i]['total'] + " " + getUnit(stock[i]) + ")";
-						
+							+ "<b>" + LANG('categories') + ":</b><br />";
+						for( var i=0; i < stock['categories'].length; i++ ) {
+							var vLocation = stock['categories'][i]
+							hierarchy = getCategoryHierrachy( vLocation['category'] )
+							document.getElementById( 'location_stock_' + location ).innerHTML =
+								document.getElementById( 'location_stock_' + location ).innerHTML
+								+ (i != 0 ? "<br />" : "")
+								+ hierarchy + " (" + vLocation['total'] + " " + getUnit(vLocation) + ")";							
+						}
+					}
+					
+					if( stock['palettes'] != null ){
+						document.getElementById( 'location_stock_' + location ).innerHTML =
+							document.getElementById( 'location_stock_' + location ).innerHTML
+							+ "<div class='hspacer'></div>"
+							+ "<b>" + LANG('palettes') + ":</b><br />";
+							
+						for( var i=0; i < stock['palettes'].length; i++ ) {		
+							var vPalette = stock['palettes'][i];
+							document.getElementById( 'location_stock_' + location ).innerHTML =
+								document.getElementById( 'location_stock_' + location ).innerHTML
+								+ (i != 0 ? "<br />#" : "#") + vPalette['name'];							
+						}
 					}
 					
 				}
@@ -158,6 +176,7 @@ function _loadLocationStockInfo(location){
 function showLocationStock(vLocation){
 	if( document.getElementById( 'location_stock_' + vLocation ).parentElement.style.display != "block" ){
 		document.getElementById( 'location_stock_' + vLocation ).parentElement.style.display = "block";
+		_loadLocationStockInfo( vLocation );
 	} else {
 		document.getElementById( 'location_stock_' + vLocation ).parentElement.style.display = "none"; 
 	}

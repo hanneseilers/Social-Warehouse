@@ -31,7 +31,7 @@
 			print json_encode( db_getPaletteStockInfo($_GET['palette']) );
 		}
 		
-		if( $_GET['function'] == "getLocationStockInfo" && isset($_GET['location']) ){
+		if( isset($_SESSION['warehouseinfo']) &&$_GET['function'] == "getLocationStockInfo" && isset($_GET['location']) ){
 			print json_encode( db_getLocationStockInfo($_GET['location']) );
 		}
 		

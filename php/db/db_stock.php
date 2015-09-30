@@ -306,6 +306,20 @@
 				." JOIN ".$GLOBALS['dbPrefix']."categories"
 						." ON ".$GLOBALS['dbPrefix']."storages.category=".$GLOBALS['dbPrefix']."categories.id"
 				." WHERE location=".$location." GROUP BY category";
+		$categories = dbSqlCache($sql);
+		$palettes = db_getPalettesAtLocation( $location );
+		return array( 'categories' => $categories, 'palettes' => $palettes );
+	}
+	
+	function db_getPalettesAtLocation($location){
+		$sql = "SELECT ".$GLOBALS['dbPrefix']."palettes.name, ".$GLOBALS['dbPrefix']."palettes.id"
+				." FROM ".$GLOBALS['dbPrefix']."palettes"
+				." JOIN ".$GLOBALS['dbPrefix']."storages"
+					." ON ".$GLOBALS['dbPrefix']."palettes.id=".$GLOBALS['dbPrefix']."storages.palette"
+				." JOIN ".$GLOBALS['dbPrefix']."locations"
+					." ON ".$GLOBALS['dbPrefix']."storages.location=".$GLOBALS['dbPrefix']."locations.id"
+				." WHERE ".$GLOBALS['dbPrefix']."storages.location=".$location
+				." GROUP BY ".$GLOBALS['dbPrefix']."palettes.name";
 		return dbSqlCache($sql);
 	}
 
