@@ -38,7 +38,7 @@
 		if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "getCategoryStockInfo" && isset($_GET['category']) ){
 			$response = getRecursiveStockInfo( $_SESSION['warehouseinfo']['id'], $_GET['category'] );
 			$category = db_getCategory( $_SESSION['warehouseinfo']['id'], $_GET['category'] );
-			$request = [ 'warehouse' => $_SESSION['warehouseinfo']['id'], 'category' => $category[0] ];
+			$request = [ 'warehouse' => $_SESSION['warehouseinfo']['id'], 'category' => $category ];
 			
 			print json_encode( ['request' => $request, 'response' => $response] );
 		}
@@ -48,7 +48,7 @@
 			$response = [];
 			$category = db_getCategory( $_SESSION['warehouseinfo']['id'], $_GET['category'] );
 			$request = [ 'warehouse' => $_SESSION['warehouseinfo']['id'],
-					'category' => $category[0],
+					'category' => $category,
 					'location' => ( isset($_GET['location']) ? $_GET['location'] : null ),
 					'palette' => ( isset($_GET['palette']) ? $_GET['palette'] : null ),
 			];
@@ -67,7 +67,7 @@
 		if( $_GET['function'] == "getUnlocatedPalettesStockInfos" && isset($_GET['category']) ){
 			$response = db_getUnlocatedPalettesStockInfo($_SESSION['warehouseinfo']['id'], $_GET['category'] );
 			$category = db_getCategory( $_SESSION['warehouseinfo']['id'], $_GET['category'] );
-			$request = [ 'warehouse' => $_SESSION['warehouseinfo']['id'], 'category' => $category[0] ];
+			$request = [ 'warehouse' => $_SESSION['warehouseinfo']['id'], 'category' => $category ];
 			
 			print json_encode( ['request' => $request, 'response' => $response] );
 		}
@@ -79,7 +79,7 @@
 					$_GET['location'] );
 			$category = db_getCategory( $_SESSION['warehouseinfo']['id'], $_GET['category'] );
 			$request = [ 'warehouse' => $_SESSION['warehouseinfo']['id'],
-					'category' => $category[0], 'location' => ( isset($_GET['location']) ? $_GET['location'] : null ) ];
+					'category' => $category, 'location' => ( isset($_GET['location']) ? $_GET['location'] : null ) ];
 			
 			print json_encode( ['request' => $request, 'response' => $response] );
 		}
