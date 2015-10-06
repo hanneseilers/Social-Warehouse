@@ -1,21 +1,9 @@
-function showPalettes(warehouseId){
-	setWarehouseId( warehouseId );
-	_loadRestricted( showPalettes_2 );	
-}
-
-function showPalettes_2(){
-	_loadCategories( showPalettes_3 );	
-}
-
-function showPalettes_3(){
-	_loadLocations( showPalettes_4 );
-}
-
-function showPalettes_4(){
-	_loadPalettes( _showPalettes );
-}
-
-function _showPalettes(){
+function showPalettes(){
+	
+	document.getElementById( 'loading' ).style.display = 'block';
+	document.getElementById( 'datacontent' ).style.display = 'none';
+	
+	_tap = 3;
 	
 	// get set location info
 	var gLocation = getLocation( _location );
@@ -42,7 +30,7 @@ function _showPalettes(){
 		
 		// create html
 		html += "\n<div id='paletteitem_" + _palettes[i]['id'] + "' class='groupitem " + (_palette == _palettes[i]['id'] ? "yellow" : "") + "'><div class='table'>"
-			+ "<span class='group_left text_bold' onclick='selectPalette(" + _palettes[i]['id'] + ")'>"
+			+ "<span class='group_left text_bold' onclick='selectPalette(" + _palettes[i]['id'] + ", true)'>"
 			+ _palettes[i]['name'] + (vLocation ? " : " + vLocation['name'] : "")
 			+ (_palettes[i]['cleared'] == 1 ? " " + LANG('palette_cleared') : "")
 			+ "</span>"
@@ -72,7 +60,7 @@ function _showPalettes(){
 		html += "</div></div>";
 		
 		// load stock info
-		_loadPaletteStockInfo( _palettes[i]['id'] );
+		//_loadPaletteStockInfo( _palettes[i]['id'] );
 	}
 	
 	html += "</div>";
@@ -105,11 +93,19 @@ function editPalette(id){
 	var name = document.getElementById( 'editpalette_' + id ).value.trim()
 	var vPalette = getPalette(id);
 	
+	if( name.startsWith('%%') ){
+		if( vPalette )
+			document.getElementById( 'editpalette_' + id ).value = vPalette['name'];
+		else
+			document.getElementById( 'editpalette_' + id ).value = "";
+		return;
+	}
+	
 	if( name.length > 0 ){
 		get( 	{'function': 'editPalette', 'id': id, 'name': base64_encode(name)},
 				function(data, status){
 					if( status == "success" && data == "ok" ){
-						_loadPalettes( _showPalettes );
+						_loadPalettes( showPalettes );
 						document.getElementById( 'editpalette_' + id ).parentElement.style.display = "none";
 					}
 		});
@@ -119,16 +115,18 @@ function editPalette(id){
 	}
 }
 
-function selectPalette(id){
+function selectPalette(id, show){
 	if( _palette == id ){
 		_palette = null;
 	} else {
 		_palette = id;
 		palette = getPalette(id);
-		_location = palette['location'];
+		if( palette )
+			_location = palette['location'];
 	}
 	
-	_showPalettes();
+	if( show )
+		showPalettes();
 }
 
 function addPalette(){
@@ -136,13 +134,19 @@ function addPalette(){
 	document.getElementById( 'palette_name_error' ).style.display = "none";
 	
 	var name = document.getElementById( 'addPalette' ).value.trim();
+	
+	if( name.startsWith('%%') ){
+		document.getElementById( 'addPalette' ).value = "";
+		return;
+	}
+	
 	if( name.length > 0 ){
 		get( 	{'function': 'addPalette', 'name': base64_encode(name)},
 				function(data, status){
 			data = data.split(';');
 			if( status == "success" && data.length > 1 && data[0] == "ok" ){
 				_palette = Number(data[1]);
-				_loadPalettes( _showPalettes );
+				_loadPalettes( showPalettes );
 			} else {
 				document.getElementById( 'palette_name_error' ).style.display = "table-cell";
 			}
@@ -153,17 +157,24 @@ function addPalette(){
 }
 
 function deletePalette(id){
-	get( {'function': 'deletePalette', 'id': id}, function(){ _loadPalettes( _showPalettes ); });
+	get( {'function': 'deletePalette', 'id': id}, function(){ _loadPalettes( showPalettes ); });
 }
 
 function clearPalette(id){
-	get( {'function': 'clearPalette', 'id': id}, function(){ _loadPalettes( _showPalettes ); });
+	get( {'function': 'clearPalette', 'id': id}, function(){ _loadPalettes( showPalettes ); });
 }
 
-function movePalette(palette){
+function movePalette(palette, callback){
 	get( {'function': 'movePalette', 'palette': palette, 'location': (_location ? _location : "NULL")},
 			function(data, status){
-				showPalettes( _warehouseId );
+				_loadPalettes( function(callback){
+					
+					if( callback )
+						callback();
+					if( _tap == 3 )
+						showPalettes( _warehouseId );
+					
+				}, callback );
 			});
 }
 
@@ -192,6 +203,7 @@ function _loadPaletteStockInfo(palette){
 
 function showPaletteStock(palette){
 	if( document.getElementById( 'palette_stock_' + palette ).parentElement.style.display != "block" ){
+		_loadPaletteStockInfo( palette );
 		document.getElementById( 'palette_stock_' + palette ).parentElement.style.display = "block";
 		document.getElementById( 'palette_move_' + palette ).style.display = "block";
 	} else {

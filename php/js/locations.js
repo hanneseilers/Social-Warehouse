@@ -1,17 +1,9 @@
-function showLocations($warehouseId){
-	setWarehouseId($warehouseId);
-	_loadRestricted( showLocations_2 );
-}
-
-function showLocations_2(){
-	_loadCategories( showLocations_3 );
-}
-
-function showLocations_3(){
-	_loadLocations( _showLocations );
-}
-
-function _showLocations(){
+function showLocations(){
+	
+	document.getElementById( 'loading' ).style.display = 'block';
+	document.getElementById( 'datacontent' ).style.display = 'none';
+	
+	_tap = 2;
 	
 	// show form to add location
 	var html = "<h1>" + LANG('add_location') + ":</h1>\n"
@@ -30,7 +22,7 @@ function _showLocations(){
 	for( i=0; i < _locations.length; i++ ){
 		html += "\n<div id='location_item_" + _locations[i]['id'] + "'"
 				+ " class='groupitem " + (_location == _locations[i]['id'] ? "yellow" : "") + "'><div class='table'>"
-			+ "<span class='group_left' onclick='selectLocation(" + _locations[i]['id'] + ")'>"
+			+ "<span class='group_left' onclick='selectLocation(" + _locations[i]['id'] + ", true)'>"
 			+ _locations[i]['name'] + "</span>"
 			+ "<span class='inline_text hidetext errortext' id='location_name_error_" + _locations[i]['id'] + "'>" + LANG('location_name_error') + "</span>"
 			+ "<span class='inline_text hidetext'>" + LANG('location_name') + ": "
@@ -59,7 +51,6 @@ function _showLocations(){
 	}
 	else
 		$.scrollTo( document.getElementById('scrollTarget') );
-	
 }
 
 function getLocation(id){
@@ -75,8 +66,16 @@ function getLocation(id){
 }
 
 function editLocation(id){
-	name = document.getElementById( 'editlocation_' + id ).value.trim()
-	var vLocation = getLocation(id);
+	name = new String( document.getElementById( 'editlocation_' + id ).value.trim() );
+	
+	var vLocation = getLocation(id);	
+	if( name.startsWith('%%') ){
+		if( vLocation )
+			document.getElementById( 'editlocation_' + id ).value = vLocation['name'];
+		else
+			document.getElementById( 'editlocation_' + id ).value = "";
+		return;
+	}
 	
 	document.getElementById( 'location_name_error_' + id ).style.display = "none";
 	
@@ -84,7 +83,7 @@ function editLocation(id){
 		get( 	{'function': 'editLocation', 'id': id, 'name': base64_encode(name)},
 				function(data, status){
 					if( status == "success" && data == "ok" ){
-						_loadLocations( _showLocations );
+						_loadLocations( showLocations );
 						document.getElementById( 'editlocation_' + id ).parentElement.style.display = "none";
 					} else {
 						document.getElementById( 'location_name_error_' + id ).style.display = "table-cell";
@@ -96,26 +95,33 @@ function editLocation(id){
 	}
 }
 
-function selectLocation(id){
+function selectLocation(id, show){
 	if( _location == id ){
 		_location = null;
 	} else {
 		_location = id;
 	}
 	
-	_showLocations();
+	if( show )
+		showLocations();
 }
 
 function addLocation(){
 	document.getElementById( 'location_name_missing' ).style.display = "none";
 	document.getElementById( 'location_name_error' ).style.display = "none";
 	
-	var name = document.getElementById( 'addLocation' ).value.trim();
+	var name = new String( document.getElementById( 'addLocation' ).value.trim());
+	
+	if( name.startsWith('%%') ){
+		document.getElementById( 'addLocation' ).value = "";
+		return;
+	}
+	
 	if( name.length > 0 ){
 		get( 	{'function': 'addLocation', 'name': base64_encode(name)},
 				function(data, status){
 			if( status == "success" && data == "ok" ){
-				_loadLocations( _showLocations );
+				_loadLocations( showLocations );
 			} else {
 				document.getElementById( 'location_name_error' ).style.display = "table-cell";
 			}
@@ -126,7 +132,7 @@ function addLocation(){
 }
 
 function deleteLocation(id){
-	get( {'function': 'deleteLocation', 'id': id}, function(){ _loadLocations( _showLocations ); });
+	get( {'function': 'deleteLocation', 'id': id}, function(){ _loadLocations( showLocations ); });
 }
 
 function _loadLocationStockInfo(location){
@@ -135,8 +141,6 @@ function _loadLocationStockInfo(location){
 
 				document.getElementById( 'location_stock_' + location ).innerHTML = "";
 				if( status == "success" ){
-					
-					console.log(data);
 					stock = JSON.parse(data);
 					
 					// show categories

@@ -8,10 +8,77 @@ var _palettes = [];
 var _palette = null
 var _restricted = false;
 var _cacheTimeoutTimer = null;
+var _tap = 0;
+
+var _barcodeCache = "";
+var _barcodeEnabled = false;
 
 get = function (data, callback){
 	$.get( "api/api.php", data, callback );
 	resetCacheTimeout();
+}
+
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
+
+String.prototype.startsWith = function (str){
+    return this.indexOf(str) === 0;
+  };
+
+function registerBarcodeScanner(){
+	document.addEventListener("keypress", checkForBarcode, true);
+	console.debug( 'Registered barcode keylogger' );
+}
+
+function checkForBarcode(key){
+	if( event ){
+		// set barcode cache
+		var key = String.fromCharCode( event.keyCode );
+		if( _barcodeCache.length == 0 && key == '%' ){
+			_barcodeEnabled = true;
+		}
+		
+		if( _barcodeEnabled ){
+			// add key to barcode cache
+			_barcodeCache += key
+		
+			// analyse cache
+			if( _barcodeCache.startsWith( '%%SW' ) && _barcodeCache.endsWith( '%%' ) ){
+				var command = _barcodeCache.substr( 2, _barcodeCache.length-4 );				
+				
+				if( command.startsWith('SWP') ){
+					
+					// select palette
+					var paletteId = command.substr( 3, command.length-1 );
+					console.debug( "Palette " + paletteId + " scanned" );
+					selectPalette( paletteId, (_tap == 3) );
+					updateStockLocation();
+					
+				} else if( command.startsWith('SWL') ){
+					
+					// select location
+					var locationId = command.substr( 3, command.length-1 );
+					console.debug( "Location " + locationId + " scanned" );
+					selectLocation( locationId, (_tap == 2) );
+					updateStockLocation();
+					
+				} else if( command = "MVP" ){
+					
+					// move palette				
+					if( _palette != null && _location != null ){
+						movePalette( _palette, updateStockLocation );
+						console.debug( "Moved palette " + _palette + " to " + _location + " scanned" );
+					}
+					
+				}
+				
+				_barcodeCache = "";
+				_barcodeEnabled = false;
+			}
+			
+		}
+	}
 }
 
 function login(id){
@@ -101,16 +168,47 @@ function hideTimedoutMessage(){
 	document.getElementById( 'timeout_message' ).style.display = 'none';
 }
 
-function setWarehouseId(id){
-	_warehouseId = id;
-	document.getElementById( 'loading' ).style.display = 'block';
-	document.getElementById( 'datacontent' ).style.display = 'none';
-}
-
 function showHtml(html){
 	document.getElementById( 'loading' ).style.display = 'none';
 	document.getElementById( 'datacontent' ).style.display = 'block';
 	document.getElementById( 'datacontent' ).innerHTML = html;
+}
+
+
+
+function loadData(warehouseId){
+	document.getElementById( 'loading' ).style.display = 'block';
+	document.getElementById( 'datacontent' ).style.display = 'none';
+	
+	registerBarcodeScanner();
+	
+	console.debug( 'Loading warehouse ' + warehouseId );
+	_warehouseId = warehouseId;
+	_loadWarehouse( loadData_1 );
+	
+}
+
+function loadData_1(){
+	console.debug( 'Loading categories' );
+	_loadRestricted( loadData_2 );	
+}
+
+function loadData_2(){
+	console.debug( 'Loading categories' );
+	_loadCategories( loadData_3 );
+}
+
+function loadData_3(){
+	console.debug( 'Loading locations' );
+	_loadLocations( loadData_4 );
+}
+
+function loadData_4(){
+	console.debug( 'Loading palettes' );
+	_loadPalettes();
+	
+	document.getElementById( 'loading' ).style.display = 'none';
+	document.getElementById( 'datacontent' ).style.display = 'block';
 }
 
 function _loadWarehouse(callback, arg){

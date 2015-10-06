@@ -108,6 +108,9 @@
 	<tr>
 		<td colspan=4>
 			<a href="javascript: deleteWarehouse();" class="button block red"><?php print LANG('delete_warehouse'); ?></a>
+			<?php print
+				"<a href='genbarcode.php?warehouseID=".$id."' target='_blanc' class='button'>".LANG('print')." ".LANG('barcodes')."</a>";
+			?>
 			<a href="javascript: setRestricted();" class="button block yellow"><?php print LANG('restrict_permissions'); ?></a>
 		</td>
 	</tr>

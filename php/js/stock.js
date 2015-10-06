@@ -8,6 +8,12 @@ function addToStock(category){
 	var income = document.getElementById( 'income' ).value;
 	var outgo = document.getElementById( 'outgo' ).value;
 	
+	if( income.startsWith('%%') || outgo.startsWith('%%') ){
+		document.getElementById( 'income' ).value = "";
+		document.getElementById( 'income' ).value = "";
+		return;
+	}
+	
 	get( {	'function': 'addToStock',
 			'category': category,
 			'location': (_location ? _location : "NULL"),
@@ -23,7 +29,7 @@ function addToStock(category){
 				if( status == "success" && data == "ok" ){
 					document.getElementById( 'income' ).value = "";
 					document.getElementById( 'income' ).value = "";
-					_loadCategories( _showCategories, category );
+					_loadCategories( showCategories, category );
 				}
 			});
 	
@@ -71,19 +77,6 @@ function updateColors(){
 	} catch(err){
 		document.getElementById( 'error_message' ).innerHTML = err.message;
 	}
-}
-
-function showStock(warehouseId){
-	setWarehouseId( warehouseId );
-	_loadRestricted( showStock_2, null );	
-}
-
-function showStock_2(){
-	_loadWarehouse( showStock_3, null );
-}
-
-function showStock_3(){
-	_loadCategories( _showCategories, null );
 }
 
 function hasChildCategory(id){
@@ -136,7 +129,7 @@ function getCategoryHierrachy(id, links){
 			hierarchy = " > " + hierarchy;
 		}
 		hierarchy = 
-			(links ? "<a href='javascript: _showCategories(" + id + ");' class='button' >" : "")
+			(links ? "<a href='javascript: showCategories(" + id + ");' class='button' >" : "")
 			+ category['name']
 			+ (links ? "</a>" : "")
 			+ hierarchy;
@@ -151,17 +144,23 @@ function addCategory(parent){
 	if( _warehouseId > 0 ){
 		
 		name = document.getElementById( 'addcategory' ).value;
+		
+		if( name.startsWith('%%') ){
+			document.getElementById( 'addcategory' ).value = "";
+			return;
+		}
+		
 		if( name.length > 0 ){
 			get( {'function': 'addCategory', 'name': base64_encode(name), 'parent': (parent ? parent : "NULL")}, function(data, status){
 				if( status == "success" && data == "ok" ){
 					_rootId = parent;
-					_loadCategories( _showCategories, parent );
+					_loadCategories( showCategories, parent );
 				} else {
-					alert( LANG('category_name_error') )
+					console.error( LANG('category_name_error') )
 				}
 			} );
 		} else {
-			alert( LANG('category_name_missing') );
+			console.error( LANG('category_name_missing') );
 		}
 	}
 }
@@ -176,16 +175,26 @@ function deleteCategory(id){
 					alert( LANG('delete_category_failed') );
 					_rootId = id;
 				}
-				_loadCategories( _showCategories );
+				_loadCategories( showCategories );
 	});
 }
 
 function editCategory(id){
 	var name = document.getElementById( 'categoryname' ).value.trim();
 	
-	var demand = 0;
-	if( document.getElementById( 'demand' ) )
+	if( name.startsWith('%%') ){
+		document.getElementById( 'categoryname' ).value;
+		return;
+	}
+	
+	var demand = 0;	
+	if( document.getElementById( 'demand' ) ){
 		demand = document.getElementById( 'demand' ).value;
+		if( typeof x === "string" || x instanceof String ){
+			document.getElementById( 'demand' ).value = 0;
+			demand = 0;
+		}
+	}
 	
 	if( demand.length == 0 ){
 		demand = 0;
@@ -201,11 +210,45 @@ function editCategory(id){
 	
 	get( 	{'function': 'editCategory', 'id': id, 'name': base64_encode(name), 'demand': demand, 'carton': carton, 'showDemand': showDemand},
 			function(data, status){
-		_loadCategories( _showCategories, id );
+		_loadCategories( showCategories, id );
 	});
 }
 
-function _showCategories(rootId){
+function updateStockLocation(){
+	
+	// get dome lement
+	var element = document.getElementById( 'scrollTarget' );
+	
+	if( _tap == 1 ){
+		
+		// get location data
+		var vLocation = null;
+		if( _location ){
+			vLocation = getLocation( _location ); 
+		}
+		
+		// get palette data
+		var vPalette = null;
+		if( _palette ){
+			vPalette = getPalette( _palette ); 
+		}
+		
+		// update stock location
+		element.innerHTML = LANG('categories')
+			+ (vLocation ? ": " + vLocation['name'] : "" )
+			+ (vPalette ? " #" + vPalette['name'] : "" );
+		
+	}
+	
+}
+
+function showCategories(rootId){
+	document.getElementById( 'loading' ).style.display = 'block';
+	document.getElementById( 'datacontent' ).style.display = 'none';
+	
+	_tap = 1;
+	
+	// check root id
 	if( typeof rootId == undefined ){
 		rootId = _rootId;
 	}
@@ -246,10 +289,7 @@ function _showCategories(rootId){
 	}
 	
 	// create html
-	var html = "<h1 id='scrollTarget'>" + LANG('categories')
-		+ (vLocation ? ": " + vLocation['name'] : "" )
-		+ (vPalette ? " #" + vPalette['name'] : "" )
-		+ "</h1>";
+	var html = "<h1 id='scrollTarget'>" + LANG('categories') + "</h1>";
 	
 	// create root category
 	if( root != null ){
@@ -258,7 +298,7 @@ function _showCategories(rootId){
 		
 		// create html
 		html += "<div>"
-			+ "<a href='javascript: _showCategories();' class='button'>Stock</a> > "
+			+ "<a href='javascript: showCategories();' class='button'>Stock</a> > "
 			+ getCategoryHierrachy(root['id'], true)
 			+ " (" + stockTotal + " " + getUnit(root) + ")"
 			+ "</div>\n";		
@@ -279,7 +319,6 @@ function _showCategories(rootId){
 	
 		// show options to add storage
 		if( addIncomeOutgo ){
-			console.log("incomeoutgo");
 			// show gender buttons
 			html += "<div class='table'>"
 				+ "<a href='javascript: _male = !_male; _baby = false; updateColors();' id='button_male' class='button button4 table_cell'><img src='img/male.png' /><br />" + LANG('male') + "</a>"
@@ -290,9 +329,9 @@ function _showCategories(rootId){
 			// show in and out fields
 			html += "<div class='table'>"
 				+ "<span class='button button3 table_cell biginput'>" + LANG('income') + "<br />"
-				+ "<input id='income'  type='number' onfocus='_income_selected = true; _outgo_selected = false; updateColors();' onkeypress='if(event.keyCode == 13) addToStock(" + root['id'] + ");' /></span>"
+				+ "<input id='income'  type='text' onfocus='_income_selected = true; _outgo_selected = false; updateColors();' onkeypress='if(event.keyCode == 13) addToStock(" + root['id'] + ");' /></span>"
 				+ "<span class='button button3 table_cell biginput'>" + LANG('outgo') + "<br />"
-				+ "<input id='outgo'  type='number' onfocus='_income_selected = false; _outgo_selected = true; updateColors();' onkeypress='if(event.keyCode == 13) addToStock(" + root['id'] + ");' /></span>"
+				+ "<input id='outgo'  type='text' onfocus='_income_selected = false; _outgo_selected = true; updateColors();' onkeypress='if(event.keyCode == 13) addToStock(" + root['id'] + ");' /></span>"
 				+ "<a href='javascript: addToStock(" + root['id'] + ");' id='button_add' class='button button3 table_cell biginput green'>"
 				+ (!vPalette ? LANG('add_to_loose_stock') : LANG('add_to_palette') + "<br />" + vPalette['name']) + "</a>";
 				
@@ -321,7 +360,7 @@ function _showCategories(rootId){
 			}
 			
 			// set link
-			var href = "_showCategories(" + _categories[i]['id'] + ");";
+			var href = "showCategories(" + _categories[i]['id'] + ");";
 			
 			// add button
 			html += "\t<a href='javascript: " + href + "' class='button button"+ vClass
@@ -362,6 +401,7 @@ function _showCategories(rootId){
 	
 	// show data
 	showHtml(html);
+	updateStockLocation();
 	
 	// update buttons and inputs
 	if( addIncomeOutgo ){

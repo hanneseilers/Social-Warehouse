@@ -26,7 +26,7 @@ if( isset($warehouseID) ){
 }
 
 if( isset($paletteName) ){
-	print "<p style='font-size: 48pt; font-weight: bold;'>".base64_decode($paletteName)."</p>";
+	print "<span style='font-size: 100pt; font-weight: bold;'>".base64_decode($paletteName)."</span>";
 }
 
 if( isset($paletteID) ){
@@ -38,16 +38,16 @@ if( isset($paletteID) ){
 	$bc->barcode_text_size = 5;
 	
 	// set barcode bar thickness (thick bars)
-	$bc->barcode_bar_thick = 8;
+	$bc->barcode_bar_thick = 4;
 	
 	// set barcode bar thickness (thin bars)
-	$bc->barcode_bar_thin = 4;
+	$bc->barcode_bar_thin = 2;
 	
 	// save new barcode 
 	$bc->draw('barcode.gif');
 	
 	// show image
-	print "<p><img src='barcode.gif' /></p>";
+	print "<br /><img src='barcode.gif' />";
 	
 }
 
