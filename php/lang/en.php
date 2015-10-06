@@ -19,6 +19,7 @@ $LANG = [
 	'password_restricted_repeat' => "Repeat restricted access password",
 	'description' => "Description",
 	'required' => "required",
+	'print' => "Print",
 	'optional' => "optional",
 	'password_wrong' => "Password wrong!",
 	'password_missing' => "Password missing!",

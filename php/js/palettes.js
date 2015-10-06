@@ -50,6 +50,11 @@ function _showPalettes(){
 			+ "<input type='text' id='editpalette_" + _palettes[i]['id'] + "' /></span>"
 			+ " <a href='javascript: editPalette(" + _palettes[i]['id'] + ")' class='button green'>" + LANG('edit') + "</a>"
 			+ " <a href='javascript: showPaletteStock(" + _palettes[i]['id'] + ")' class='button orange'>" + LANG('details') + "</a>"
+			+ " <a href='barcode.php?"
+				+ "paletteID=" + _palettes[i]['id']
+				+ "&paletteName=" + base64_encode( _palettes[i]['name'] )
+				+ "&warehouseID=" + _warehouseId
+			+ "' target='_blanc' class='button'>" + LANG('print') + "</a>"
 			+ (_palettes[i]['cleared'] == 0 ? " <a href='javascript: clearPalette(" + _palettes[i]['id'] + ")' class='button red'>" + LANG('clear') + "</a>" : "")
 			+ "</div>";
 		

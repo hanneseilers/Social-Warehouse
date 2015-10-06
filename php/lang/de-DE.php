@@ -20,6 +20,7 @@ $LANG = [
 	'description' => "Beschreibung",
 	'required' => "benötigt",
 	'optional' => "optional",
+	'print' => "Drucken",
 	'password_wrong' => "Passwort falsch!",
 	'password_missing' => "Passwort fehlt!",
 	'passwords_not_equal' => "Die Passwörter sind nicht identisch!",
