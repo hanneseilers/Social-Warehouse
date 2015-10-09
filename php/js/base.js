@@ -31,11 +31,11 @@ function registerBarcodeScanner(){
 	console.debug( 'Registered barcode keylogger' );
 }
 
-function checkForBarcode(key){
+function checkForBarcode(event){
 	if( event ){
 		// set barcode cache
 		var key = String.fromCharCode( event.keyCode );
-		if( _barcodeCache.length == 0 && key == '%' ){
+		if( _barcodeCache.length == 0 && key == '+' ){
 			_barcodeEnabled = true;
 		}
 		
@@ -44,7 +44,7 @@ function checkForBarcode(key){
 			_barcodeCache += key
 		
 			// analyse cache
-			if( _barcodeCache.startsWith( '%%SW' ) && _barcodeCache.endsWith( '%%' ) ){
+			if( _barcodeCache.startsWith( '++SW' ) && _barcodeCache.endsWith( '++' ) ){
 				var command = _barcodeCache.substr( 2, _barcodeCache.length-4 );				
 				
 				if( command.startsWith('SWP') ){
@@ -52,6 +52,11 @@ function checkForBarcode(key){
 					// select palette
 					var paletteId = command.substr( 3, command.length-1 );
 					console.debug( "Palette " + paletteId + " scanned" );
+					
+					// check if to reset
+					if( paletteId == 0 )
+						paletteId = null;
+					
 					selectPalette( paletteId, (_tap == 3) );
 					updateStockLocation();
 					
@@ -60,6 +65,11 @@ function checkForBarcode(key){
 					// select location
 					var locationId = command.substr( 3, command.length-1 );
 					console.debug( "Location " + locationId + " scanned" );
+					
+					// check if to reset
+					if( locationId == 0 )
+						locationId = null;
+					
 					selectLocation( locationId, (_tap == 2) );
 					updateStockLocation();
 					

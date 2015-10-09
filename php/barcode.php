@@ -32,7 +32,7 @@ if( isset($paletteName) ){
 if( isset($paletteID) ){
 	
 	// set Barcode39 object 
-	$bc = new Barcode39( "%%swp".$paletteID."%%" ); 
+	$bc = new Barcode39( "++SWP".$paletteID."++" ); 
 	
 	// set text size
 	$bc->barcode_text_size = 5;
@@ -44,10 +44,10 @@ if( isset($paletteID) ){
 	$bc->barcode_bar_thin = 2;
 	
 	// save new barcode 
-	$bc->draw('barcode.gif');
+	$bc->draw('cache/barcode_'.$paletteID.'.gif');
 	
 	// show image
-	print "<br /><img src='barcode.gif' />";
+	print "<br /><img src='cache/barcode_".$paletteID.".gif' />";
 	
 }
 
