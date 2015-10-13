@@ -8,11 +8,14 @@ function addToStock(category){
 	var income = document.getElementById( 'income' ).value;
 	var outgo = document.getElementById( 'outgo' ).value;
 	
-	if( income.startsWith('%%') || outgo.startsWith('%%') ){
+	if( income.startsWith('++') || outgo.startsWith('++') ){
 		document.getElementById( 'income' ).value = "";
 		document.getElementById( 'income' ).value = "";
 		return;
 	}
+	
+	document.getElementById( 'income' ).value = "";
+	document.getElementById( 'income' ).value = "";
 	
 	get( {	'function': 'addToStock',
 			'category': category,
@@ -26,10 +29,8 @@ function addToStock(category){
 			},
 			
 			function (data, status){
-				if( status == "success" && data == "ok" ){
-					document.getElementById( 'income' ).value = "";
-					document.getElementById( 'income' ).value = "";
-					_loadCategories( showCategories, category );
+				if( status == "success" && data == "ok" ){					
+					_loadCategories( updateUnits, category );
 				}
 			});
 	
@@ -242,6 +243,32 @@ function updateStockLocation(){
 	
 }
 
+function updateUnits(rootId){
+	
+	_tap = 1;
+	
+	// check root id
+	if( typeof rootId == undefined ){
+		rootId = _rootId;
+	}
+	
+	// get category root
+	var root = getCategory(rootId);
+	
+	// create root category
+	if( root != null ){
+		// get stock info including all sub categories
+		var stockTotal = getRecursiveStockTotal( root['id'] );
+		
+		// create html
+		var element = document.getElementById( 'stock_breadcrumps' );
+		element.innerHTML = "<a href='javascript: showCategories();' class='button'>Stock</a> > "
+			+ getCategoryHierrachy(root['id'], true)
+			+ " (" + stockTotal + " " + getUnit(root) + ")";		
+	}
+	
+}
+
 function showCategories(rootId){
 	document.getElementById( 'loading' ).style.display = 'block';
 	document.getElementById( 'datacontent' ).style.display = 'none';
@@ -297,7 +324,7 @@ function showCategories(rootId){
 		var stockTotal = getRecursiveStockTotal( root['id'] );
 		
 		// create html
-		html += "<div>"
+		html += "<div id='stock_breadcrumps'>"
 			+ "<a href='javascript: showCategories();' class='button'>Stock</a> > "
 			+ getCategoryHierrachy(root['id'], true)
 			+ " (" + stockTotal + " " + getUnit(root) + ")"
