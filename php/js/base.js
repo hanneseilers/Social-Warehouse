@@ -35,7 +35,8 @@ function checkForBarcode(event){
 	if( event ){
 		// set barcode cache
 		var key = String.fromCharCode( event.keyCode );
-		if( _barcodeCache.length == 0 && key == '+' ){
+		
+		if( _barcodeCache.length == 0 && key == 'S' ){
 			_barcodeEnabled = true;
 		}
 		
@@ -44,13 +45,13 @@ function checkForBarcode(event){
 			_barcodeCache += key
 		
 			// analyse cache
-			if( _barcodeCache.startsWith( '++SW' ) && _barcodeCache.endsWith( '++' ) ){
-				var command = _barcodeCache.substr( 2, _barcodeCache.length-4 );				
+			if( _barcodeCache.startsWith( 'SW' ) && _barcodeCache.endsWith( 'SW' ) && _barcodeCache.length > 2 ){
+				var command = _barcodeCache.substr( 2, _barcodeCache.length-4 );
 				
-				if( command.startsWith('SWP') ){
+				if( command.startsWith('P') ){
 					
 					// select palette
-					var paletteId = command.substr( 3, command.length-1 );
+					var paletteId = command.substr( 1, command.length-1 );
 					console.debug( "Palette " + paletteId + " scanned" );
 					
 					// check if to reset
@@ -60,10 +61,10 @@ function checkForBarcode(event){
 					selectPalette( paletteId, (_tap == 3) );
 					updateStockLocation();
 					
-				} else if( command.startsWith('SWL') ){
+				} else if( command.startsWith('L') ){
 					
 					// select location
-					var locationId = command.substr( 3, command.length-1 );
+					var locationId = command.substr( 1, command.length-1 );
 					console.debug( "Location " + locationId + " scanned" );
 					
 					// check if to reset
@@ -73,7 +74,7 @@ function checkForBarcode(event){
 					selectLocation( locationId, (_tap == 2) );
 					updateStockLocation();
 					
-				} else if( command = "MVP" ){
+				} else if( command = "P" ){
 					
 					// move palette				
 					if( _palette != null && _location != null ){

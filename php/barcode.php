@@ -32,7 +32,7 @@ if( isset($paletteName) ){
 if( isset($paletteID) ){
 	
 	// set Barcode39 object 
-	$bc = new Barcode39( "++SWP".$paletteID."++" ); 
+	$bc = new Barcode39( "SWP".$paletteID."SW" ); 
 	
 	// set text size
 	$bc->barcode_text_size = 5;

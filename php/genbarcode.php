@@ -25,7 +25,7 @@ if( isset($_GET['warehouseID']) ){
 		
 		$first = true;
 		foreach( $locations as $location ){
-			$bc = new Barcode39( "++SWL".$location['id']."++" );
+			$bc = new Barcode39( "SWL".$location['id']."SW" );
 			$bc->draw( 'cache/barcode_location_'.$location['id'].'.gif' );
 			
 			if( $first )
@@ -37,7 +37,7 @@ if( isset($_GET['warehouseID']) ){
 		}
 		
 		// create reset code
-		$bc = new Barcode39( "++SWL0++" );
+		$bc = new Barcode39( "SWL0SW" );
 		$bc->draw( 'cache/barcode_location_0.gif' );
 		
 		if( $first )
@@ -50,10 +50,10 @@ if( isset($_GET['warehouseID']) ){
 	
 	// show palette
 	
-	$bc = new Barcode39( "++SWP0++" );
+	$bc = new Barcode39( "SWP0SW" );
 	$bc->draw( 'cache/barcode_palette_0.gif' );
 	
-	$bc = new Barcode39( "++SWMVP++" );
+	$bc = new Barcode39( "SWMVPSW" );
 	$bc->draw( 'cache/barcode_palette_move.gif' );
 	
 	print "<p><b>".LANG('palettes')."</b></p>";

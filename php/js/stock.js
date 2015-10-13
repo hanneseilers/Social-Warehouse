@@ -8,7 +8,7 @@ function addToStock(category){
 	var income = document.getElementById( 'income' ).value;
 	var outgo = document.getElementById( 'outgo' ).value;
 	
-	if( income.startsWith('++') || outgo.startsWith('++') ){
+	if( income.startsWith('SW') || outgo.startsWith('SW') ){
 		document.getElementById( 'income' ).value = "";
 		document.getElementById( 'income' ).value = "";
 		return;
