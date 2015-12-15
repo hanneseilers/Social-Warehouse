@@ -2,20 +2,18 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
-CREATE SCHEMA IF NOT EXISTS `Social-Warehouse` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `Social-Warehouse` ;
 
 -- -----------------------------------------------------
--- Table `Social-Warehouse`.`sw_warehouses`
+-- Table `sw_warehouses`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`sw_warehouses` (
+CREATE TABLE IF NOT EXISTS `sw_warehouses` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` TINYTEXT NOT NULL,
-  `description` LONGTEXT NULL,
+  `description` TEXT NULL,
   `country` TINYTEXT NOT NULL,
   `city` TINYTEXT NOT NULL,
-  `password` MEDIUMTEXT NOT NULL,
-  `passwordRestricted` MEDIUMTEXT NULL,
+  `password` TINYTEXT NOT NULL,
+  `passwordRestricted` TINYTEXT NULL,
   `mail` TEXT NOT NULL,
   `disableLocationLess` TINYINT(1) NOT NULL DEFAULT 0,
   `disablePaletteLess` TINYINT(1) NOT NULL DEFAULT 0,
@@ -24,35 +22,39 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Social-Warehouse`.`sw_categories`
+-- Table `sw_categories`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`sw_categories` (
+CREATE TABLE IF NOT EXISTS `sw_categories` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `parent` INT NULL,
   `warehouse` INT NOT NULL,
-  `name` VARCHAR(45) NOT NULL,
+  `name` TINYTEXT NOT NULL,
   `demand` INT NULL,
-  `countInCartons` TINYINT(1) NULL DEFAULT 0,
+  `male` TINYINT(1) NULL DEFAULT 0,
+  `female` TINYINT(1) NULL DEFAULT 0,
+  `baby` TINYINT(1) NULL DEFAULT 0,
+  `summer` TINYINT(1) NULL DEFAULT 0,
+  `winter` TINYINT(1) NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   INDEX `fk_categories_groups_idx` (`warehouse` ASC),
   INDEX `fk_categories_categories1_idx` (`parent` ASC),
   CONSTRAINT `fk_categories_groups`
     FOREIGN KEY (`warehouse`)
-    REFERENCES `Social-Warehouse`.`sw_warehouses` (`id`)
+    REFERENCES `sw_warehouses` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_categories_categories1`
     FOREIGN KEY (`parent`)
-    REFERENCES `Social-Warehouse`.`sw_categories` (`id`)
+    REFERENCES `sw_categories` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Social-Warehouse`.`sw_locations`
+-- Table `sw_locations`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`sw_locations` (
+CREATE TABLE IF NOT EXISTS `sw_locations` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `warehouse` INT NOT NULL,
   `name` TINYTEXT NULL,
@@ -60,17 +62,18 @@ CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`sw_locations` (
   INDEX `fk_locations_warehouses1_idx` (`warehouse` ASC),
   CONSTRAINT `fk_locations_warehouses1`
     FOREIGN KEY (`warehouse`)
-    REFERENCES `Social-Warehouse`.`sw_warehouses` (`id`)
+    REFERENCES `sw_warehouses` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Social-Warehouse`.`sw_palettes`
+-- Table `sw_palettes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`sw_palettes` (
+CREATE TABLE IF NOT EXISTS `sw_palettes` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `number` INT NOT NULL,
   `warehouse` INT NOT NULL,
   `location` INT NULL,
   PRIMARY KEY (`id`),
@@ -78,21 +81,21 @@ CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`sw_palettes` (
   INDEX `fk_sw_palettes_sw_locations1_idx` (`location` ASC),
   CONSTRAINT `fk_palettes_groups1`
     FOREIGN KEY (`warehouse`)
-    REFERENCES `Social-Warehouse`.`sw_warehouses` (`id`)
+    REFERENCES `sw_warehouses` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_sw_palettes_sw_locations1`
     FOREIGN KEY (`location`)
-    REFERENCES `Social-Warehouse`.`sw_locations` (`id`)
+    REFERENCES `sw_locations` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Social-Warehouse`.`sw_cartons`
+-- Table `sw_cartons`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`sw_cartons` (
+CREATE TABLE IF NOT EXISTS `sw_cartons` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `warehouse` INT NOT NULL DEFAULT 0,
   `palette` INT NULL,
@@ -103,26 +106,26 @@ CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`sw_cartons` (
   INDEX `fk_sw_cartons_sw_locations1_idx` (`location` ASC),
   CONSTRAINT `fk_sw_storages_sw_warehouses1`
     FOREIGN KEY (`warehouse`)
-    REFERENCES `Social-Warehouse`.`sw_warehouses` (`id`)
+    REFERENCES `sw_warehouses` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_sw_cartons_sw_palettes1`
     FOREIGN KEY (`palette`)
-    REFERENCES `Social-Warehouse`.`sw_palettes` (`id`)
+    REFERENCES `sw_palettes` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_sw_cartons_sw_locations1`
     FOREIGN KEY (`location`)
-    REFERENCES `Social-Warehouse`.`sw_locations` (`id`)
+    REFERENCES `sw_locations` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Social-Warehouse`.`sw_sessions`
+-- Table `sw_sessions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`sw_sessions` (
+CREATE TABLE IF NOT EXISTS `sw_sessions` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `warehouse` INT NOT NULL,
   `restricted` TINYINT(1) NOT NULL DEFAULT 1,
@@ -131,34 +134,36 @@ CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`sw_sessions` (
   INDEX `fk_Sessions_sw_warehouses1_idx` (`warehouse` ASC),
   CONSTRAINT `fk_Sessions_sw_warehouses1`
     FOREIGN KEY (`warehouse`)
-    REFERENCES `Social-Warehouse`.`sw_warehouses` (`id`)
+    REFERENCES `sw_warehouses` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Social-Warehouse`.`sw_stock`
+-- Table `sw_stock`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Social-Warehouse`.`sw_stock` (
+CREATE TABLE IF NOT EXISTS `sw_stock` (
   `category` INT NOT NULL,
   `carton` INT NOT NULL,
   `male` TINYINT(1) NOT NULL DEFAULT 0,
   `female` TINYINT(1) NOT NULL DEFAULT 0,
   `baby` TINYINT(1) NOT NULL DEFAULT 0,
+  `summer` TINYINT(1) NOT NULL DEFAULT 0,
+  `winter` TINYINT(1) NOT NULL DEFAULT 0,
   `income` INT NOT NULL DEFAULT 0,
   `outgo` INT NOT NULL DEFAULT 0,
-  PRIMARY KEY (`category`, `carton`, `male`, `female`, `baby`),
+  PRIMARY KEY (`category`, `carton`, `male`, `female`, `baby`, `summer`, `winter`),
   INDEX `fk_sw_categories_has_sw_cartons_sw_cartons1_idx` (`carton` ASC),
   INDEX `fk_sw_categories_has_sw_cartons_sw_categories1_idx` (`category` ASC),
   CONSTRAINT `fk_sw_categories_has_sw_cartons_sw_categories1`
     FOREIGN KEY (`category`)
-    REFERENCES `Social-Warehouse`.`sw_categories` (`id`)
+    REFERENCES `sw_categories` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_sw_categories_has_sw_cartons_sw_cartons1`
     FOREIGN KEY (`carton`)
-    REFERENCES `Social-Warehouse`.`sw_cartons` (`id`)
+    REFERENCES `sw_cartons` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
