@@ -1,309 +1,130 @@
-var _warehouseId = 0;
-var _rootId = null;
-var _warehouse = null;
-var _categories = [];
-var _locations = [];
-var _location = null;
-var _palettes = [];
-var _palette = null
-var _restricted = false;
-var _cacheTimeoutTimer = null;
-var _tap = 0;
+var _sessionTimeoutTimer;
+var _statusMessageTimer;
 
-var _barcodeCache = "";
-var _barcodeEnabled = false;
-
-get = function (data, callback){
-	$.get( "api/api.php", data, callback );
+/**
+ * Function to receive data from api
+ * @param f			API function name
+ * @param data		Data array
+ * @param callback	Callback function
+ */
+get = function (f, data, callback){
+	data = {'data': data};
+	data.f = f;
+	
+	// check for session ID
+	if( Main.getInstance().session != null )
+		data.sessionId = Main.getInstance().session.id;
+		
+	// encode and send data
+	json = base64_encode( JSON.stringify( data ) );
+	$.get( "api/api.php", {'data': json}, function( data, status ){
+		if( status == 'success' ){
+			try{
+				callback( JSON.parse(data) );
+			} catch(err){
+				console.error(err);
+				console.error(data);
+			}
+		} else {
+			callback( null );
+		}
+	} );
 	resetCacheTimeout();
 }
 
+/**
+ * New string prototype functions
+ */
 String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
 String.prototype.startsWith = function (str){
     return this.indexOf(str) === 0;
-  };
+};
 
-function registerBarcodeScanner(){
-	document.addEventListener("keypress", checkForBarcode, true);
-	console.debug( 'Registered barcode keylogger' );
+String.prototype.paddingLeft = function (paddingLength, paddingSequence) {
+   var string = new String(this);
+   var count = paddingLength - string.length;
+   while( count > 0 ){
+	   count -= 1;
+	   string = paddingSequence + string;
+   }
+   return String(string);
+};
+
+/**
+ * Starts a timer that automatically calls a callback,
+ * before session gets timed out.
+ * @param callback	Callback function
+ * @param before	Seconds before session times out,
+ * 					at that the callback should be called.
+ */
+function startSessionTimer(callback, before){
+	var timeout = parseInt(document.getElementById( 'session_maxtime' ).innerHTML) - (before != undefined ? before : 0);
+	_sessionTimeoutTimer = window.setTimeout( callback, timeout*1000 );
 }
 
-function checkForBarcode(event){
-	if( event ){
-		// set barcode cache
-		var key = String.fromCharCode( event.keyCode );
-		
-		if( _barcodeCache.length == 0 && key == 'S' ){
-			_barcodeEnabled = true;
-		}
-		
-		if( _barcodeEnabled ){
-			// add key to barcode cache
-			_barcodeCache += key
-		
-			// analyse cache
-			if( _barcodeCache.startsWith( 'SW' ) && _barcodeCache.endsWith( 'SW' ) && _barcodeCache.length > 2 ){
-				var command = _barcodeCache.substr( 2, _barcodeCache.length-4 );
-				
-				if( command.startsWith('P') ){
-					
-					// select palette
-					var paletteId = command.substr( 1, command.length-1 );
-					console.debug( "Palette " + paletteId + " scanned" );
-					
-					// check if to reset
-					if( paletteId == 0 )
-						paletteId = null;
-					
-					selectPalette( paletteId, (_tap == 3) );
-					updateStockLocation();
-					
-				} else if( command.startsWith('L') ){
-					
-					// select location
-					var locationId = command.substr( 1, command.length-1 );
-					console.debug( "Location " + locationId + " scanned" );
-					
-					// check if to reset
-					if( locationId == 0 )
-						locationId = null;
-					
-					selectLocation( locationId, (_tap == 2) );
-					updateStockLocation();
-					
-				} else if( command = "P" ){
-					
-					// move palette				
-					if( _palette != null && _location != null ){
-						movePalette( _palette, updateStockLocation );
-						console.debug( "Moved palette " + _palette + " to " + _location + " scanned" );
-					}
-					
-				}
-				
-				_barcodeCache = "";
-				_barcodeEnabled = false;
-			}
-			
-		}
-	}
+/**
+ * Resets the session timeout timer.
+ * @param callback	Callback function
+ * @param before	Seconds before session times out,
+ * 					at that the callback should be called.
+ */
+function resetCacheTimeout(callback, before){
+	window.clearTimeout( _sessionTimeoutTimer );
+	startSessionTimer(callback, before);
 }
 
-function login(id){
+/**
+ * Shows a status message for 3 seconds.
+ * @param message	Message to show
+ * @param color		String of color of message background. Default is yellow.
+ */
+function showStatusMessage(message, color){
+	var status = document.getElementById( 'status_message' );
+	window.clearTimeout( _statusMessageTimer );
+	status.innerHTML = message;
+	status.style.display = 'block';
 	
-	var vPasswordInput = document.getElementById( 'warehousepw' + id );	
+	if( typeof color != 'string' )
+		color = 'yellow';
 	
-	// hide all password inputs
-	var vElements = document.getElementsByClassName('loginpw');
-	document.getElementById( 'warehouseloginfailed' + id ).style.display = "none";
-	for( var i=0; i < vElements.length; i++ ){
-		vElements[i].style.display = "none";
+	if( !color.startsWith('#') )
+		color = getStyleRuleValue( 'background-color', '.'+color );
 		
-
-		if( vElements[i].lastChild != vPasswordInput )
-			vElements[i].lastChild.value = "";
-	}
+	status.style.backgroundColor = color;
 	
-	if( !vPasswordInput.value.length ){		
-		// show selected entry
-		vPasswordInput.parentElement.style.display = "table-cell";
-		vPasswordInput.focus();
+	_statusMessageTimer = window.setTimeout( hideStatusMessage, 3000 );
+}
+
+/**
+ * Shows a error message for 3 seconds.
+ * @param message	Message to show
+ */
+function showErrorMessage(message){
+	showStatusMessage( message, "lightred" );
+}
+
+/**
+ * Hides the status message
+ */
+function hideStatusMessage(){
+	document.getElementById( 'status_message' ).style.display = 'none';
+}
+
+/**
+ * Loads the main functions
+ */
+function load(){
+	
+	var vMain = Main.getInstance();
+	
+	// check for session cookie
+	if( Cookies.get('sessionID') == null ){
+		vMain.showWarehouses();						// no session > show warehouse list
 	} else {
-		
-		// show wait
-		document.getElementById( 'warehouselogin' + id ).style.display = "none";
-		document.getElementById( 'warehousedemand' + id ).style.display = "none";
-		document.getElementById( 'warehouseload' + id ).style.display = "table-cell";
-		vPasswordInput.parentElement.style.display = 'none';
-		
-		// check if password ok
-		var vPassword = MD5( vPasswordInput.value );
-		get( {'function': 'checkLogin', 'warehouse': id, 'pw': vPassword}, login_result );
-		
+		vMain.login( Cookies.get('sessionID') );	// session found > try to login
 	}
-}
-
-function login_result(data, status, xhr){
-	data = data.split(";");
-	if( status == "success" && data.length > 0 && data[0] == "ok" ){		
-		
-		var url = window.location.href;
-		window.location.href = url.replace("&timeout=1", "").replace("timeout=1", "");
-		
-	} else {
-		var id = data[1];
-		document.getElementById( 'warehouseloginfailed' + id ).style.display = "block";
-		document.getElementById( 'warehousepw' + id ).parentElement.style.display = "table-cell";
-		document.getElementById( 'warehouselogin' + id ).style.display = "table-cell";
-		document.getElementById( 'warehousedemand' + id ).style.display = "table-cell";
-		document.getElementById( 'warehouseload' + id ).style.display = "none";
-	}
-}
-
-function logout(timeout){	
-	get( {'function': 'logout'},	function(){
-		// check if session timed out
-		if( timeout ){	
-			
-			// set url flag
-			var url = window.location.href;
-			url = url.replace("&timeout=1", "").replace("timeout=1", "");
-			
-			if( url.indexOf('?') == url.length-1 ) url = url.replace("?", "");
-			
-			if (url.indexOf('?') > -1) url += '&timeout=1';
-			else url += '?timeout=1';
-				
-			window.location.href = url;
-			
-		} else {
-			location.reload(true);
-		}
-	} );
-}
-
-function startCacheTimer(){
-	var timeout = parseInt(document.getElementById( 'gc_maxtime' ).innerHTML) - 60;
-	_cacheTimeoutTimer = window.setTimeout( function(){ logout(true); }, timeout*1000 );
-}
-
-function resetCacheTimeout(){
-	window.clearTimeout( _cacheTimeoutTimer );
-	startCacheTimer();
-}
-
-function hideTimedoutMessage(){
-	document.getElementById( 'timeout_message' ).style.display = 'none';
-}
-
-function showHtml(html){
-	document.getElementById( 'loading' ).style.display = 'none';
-	document.getElementById( 'datacontent' ).style.display = 'block';
-	document.getElementById( 'datacontent' ).innerHTML = html;
-}
-
-
-
-function loadData(warehouseId){
-	document.getElementById( 'loading' ).style.display = 'block';
-	document.getElementById( 'datacontent' ).style.display = 'none';
 	
-	registerBarcodeScanner();
-	
-	console.debug( 'Loading warehouse ' + warehouseId );
-	_warehouseId = warehouseId;
-	_loadWarehouse( loadData_1 );
-	
-}
-
-function loadData_1(){
-	console.debug( 'Loading categories' );
-	_loadRestricted( loadData_2 );	
-}
-
-function loadData_2(){
-	console.debug( 'Loading categories' );
-	_loadCategories( loadData_3 );
-}
-
-function loadData_3(){
-	console.debug( 'Loading locations' );
-	_loadLocations( loadData_4 );
-}
-
-function loadData_4(){
-	console.debug( 'Loading palettes' );
-	_loadPalettes();
-	
-	document.getElementById( 'loading' ).style.display = 'none';
-	document.getElementById( 'datacontent' ).style.display = 'block';
-}
-
-function _loadWarehouse(callback, arg){
-	get( {	'function': 'getWarehouse', 'id': (_warehouseId ? _warehouseId : "NULL") },
-		function(data, status){
-			if( status == "success" ){
-				_warehouse = JSON.parse(data);
-			}
-			
-			if( callback ){
-				if( arg ){
-					callback(arg);
-				} else {
-					callback()
-				}
-			}
-		} );
-}
-
-function _loadCategories(callback, arg){
-	get( {	'function': 'getCategories',
-			'location': (_location ? _location : "NULL"),
-			'palette': (_palette ? _palette : "NULL")},
-			function(data, status){
-				if( status == "success" ){
-					_categories = JSON.parse(data);
-				}
-				
-				if( callback ){
-					if( arg ){
-						callback(arg);
-					} else {
-						callback()
-					}
-				}
-			} );
-}
-
-function _loadLocations(callback, arg){
-	get( {'function': 'getLocations'}, function(data, status){
-		if( status == "success" ){
-			_locations = JSON.parse(data);
-		}
-		
-		if( callback ){
-			if( arg ){
-				callback(arg);
-			} else {
-				callback()
-			}
-		}
-	} );
-}
-
-function _loadPalettes(callback, arg){
-	get( {'function': 'getPalettes'}, function(data, status){
-		if( status == "success" ){
-			_palettes = JSON.parse(data);
-		}
-		
-		if( callback ){
-			if( arg ){
-				callback(arg);
-			} else {
-				callback()
-			}
-		}
-	} );
-}
-
-function _loadRestricted(callback, arg){
-	get( {'function': 'checkRestricted'}, function(data, status){
-		if( status == "success" && data == "ok" ){
-			_restricted = true;
-		} else {
-			_restricted = false;
-		}
-		
-		if( callback ){
-			if( arg ){
-				callback(arg);
-			} else {
-				callback()
-			}
-		}
-	} );
 }

@@ -54,8 +54,10 @@ class Login extends Request{
 	 */
 	public static function isInstance($object){
 		if( parent::isInstance($object)
-				&& property_exists($object, 'warehouseId')
-				&& property_exists($object, 'pw') )
+				&& $object->f == 'login'
+				&& property_exists($object, 'data')
+				&& property_exists($object->data, 'warehouseId')
+				&& property_exists($object->data, 'pw') )
 			return true;
 		return false;
 	}	

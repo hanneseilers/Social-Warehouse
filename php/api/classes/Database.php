@@ -86,18 +86,24 @@ class Database{
 					// create variables to bind
 					$row = array();
 					$vMetaData = $vStatement->result_metadata();
-					while( ($field = $vMetaData->fetch_field()) ){
-						$var = $field->name;
-						$$var = null;
-						$row[$field->name] = & $$var;
-					}
-					
-					// bind result variables
-					call_user_func_array( array($vStatement, 'bind_result'), $row );
-					
-					// fetch results
-					while( $vStatement->fetch() ){
-						array_push( $vResult, $row );
+					if( gettype($vMetaData) != 'boolean' ){
+						while( ($field = $vMetaData->fetch_field()) ){
+							$var = $field->name;
+							$$var = null;
+							$row[$field->name] = & $$var;
+							
+						}
+						
+						// bind result variables
+						call_user_func_array( array($vStatement, 'bind_result'), $row );
+						
+						// fetch results
+						while( $vStatement->fetch() ){
+							if( $identifier == 'getCategories' ){
+								var_dump( $vResult );
+							}
+							array_push( $vResult, $row );
+						}
 					}
 					
 				}

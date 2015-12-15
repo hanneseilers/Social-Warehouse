@@ -21,7 +21,7 @@ class Session{
 	 */
 	public function __construct($id=null, $create=false, $restricted=true){
 		// validate sessions
-		Session::validateSessions();
+		//Session::validateSessions();
 		
 		// create new session or update from database
 		if( $create )
@@ -49,7 +49,7 @@ class Session{
 	 * Updated session (keep alive).
 	 */
 	public function update(){
-		$sql = "UPDATE ".Database.getTableName('sessions')." SET lastUpdate=NOW()";
+		$sql = "UPDATE ".Database::getTableName('sessions')." SET lastUpdate=NOW()";
 		Database::getInstance()->sql( 'updateSession', $sql, '', [], false );
 	}
 	

@@ -12,9 +12,10 @@ class Category{
 	public $warehouseId = 0;
 	public $name = null;
 	public $demand = 0;
-	public $countInCartons = false;
+	public $male = false;
+	public $female = false;
+	public $baby = false; 
 	
-	public $children = array();
 	/**
 	 * Constructor
 	 * @param integer $id			Category ID, null to create new one, -1 for doeing nothing.
@@ -35,13 +36,15 @@ class Category{
 	public function edit(){
 		if( $this->id > 0 && $this->warehouseId > 0
 				&& is_string($this->name) && strlen($this->name) > 0 ){
-			$sql = "UPDATE ".Database::getTableName('categories')." SET parent=?, warehouse=?, name=?, demand=?, countInCartons=? WHERE id=?";
-			$response = Database::getInstance()->sql( 'editCategory', $sql, 'iisiii', [
+			$sql = "UPDATE ".Database::getTableName('categories')." SET parent=?, warehouse=?, name=?, demand=?, male=?, female=?, baby=? WHERE id=?";
+			$response = Database::getInstance()->sql( 'editCategory', $sql, 'iisiiiii', [
 					$this->parent,
 					$this->warehouseId,
 					$this->name,
 					$this->demand,
-					$this->countInCartons,
+					$this->male,
+					$this->female,
+					$this->baby,
 					$this->id
 			], false );
 			
@@ -88,13 +91,15 @@ class Category{
 		$sql = "SELECT * FROM ".Database::getTableName('categories')." WHERE warehouse=? AND id=?";
 		$response = Database::getInstance()->sql( 'getCategory', $sql, 'ii', [$warehouseId, $id], !$update );
 		if( $response && count($response) > 0 ){
-			$response = $response[0];
+			$response = $response[0];			
 			$this->id = $response['id'];
 			$this->parent = $response['parent'];
 			$this->warehouseId = $response['warehouse'];
 			$this->name = $response['name'];
 			$this->demand = $response['demand'];
-			$this->countInCartons = $response['countInCartons'];
+			$this->male = $response['male'];
+			$this->female = $response['female'];
+			$this->baby = $response['baby'];
 		}
 	}
 	
@@ -126,7 +131,9 @@ class Category{
 				$category->warehouseId = $entry['warehouse'];
 				$category->name = $entry['name'];
 				$category->demand = $entry['demand'];
-				$category->countInCartons = $entry['countInCartons'];
+				$category->male = $entry['male'];
+				$category->female = $entry['female'];
+				$category_baby = $entry['baby'];
 				array_push( $categories, $category );
 			}
 		}

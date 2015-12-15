@@ -6,7 +6,7 @@
  *
  */
 class Logout extends Request{
-	protected $sid = "";
+	protected $sessionId = "";
 	
 	/**
 	 * Constructor
@@ -14,7 +14,7 @@ class Logout extends Request{
 	 */
 	public function __construct($session){
 		parent::__construct( "logout" );
-		$this->sid = $session;
+		$this->sessionId = $session;
 	}
 	
 	/**
@@ -22,7 +22,7 @@ class Logout extends Request{
 	 * @return true if session destroyed, false otherwise.
 	 */
 	public function logout(){
-		$session = new Session( $this->sid );
+		$session = new Session( $this->sessionId );
 		if( $session->sessionId > 0 )
 			return $session->destroy();
 		return false;
@@ -35,7 +35,8 @@ class Logout extends Request{
 	 */
 	public static function isInstance($object){
 		if( parent::isInstance($object)
-				&& property_exists($object, 'sid') )
+				&& $object->f == 'logout'
+				&& property_exists($object, 'sessionId') )
 			return true;
 		return false;
 	}

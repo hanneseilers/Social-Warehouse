@@ -45,11 +45,27 @@ class Location{
 	/**
 	 * Deletes location
 	 */
-	function delete(){
+	public function delete(){
 		// Delete location
 		$sql = "DELETE FROM ".Database::getTableName('locations')." WHERE warehouse=? AND id=?";
-		$response = Database::getInstance()->sql( 'deleteLocation', $sql, 'ii', [$this->warehouseId, $this->id] );
+		$response = Database::getInstance()->sql( 'deleteLocation', $sql, 'ii', [$this->warehouseId, $this->id], false );
 		return is_array( $response );
+	}
+	
+	/**
+	 * Gets cartons from palette
+	 */
+	public function getCartons(){
+		$cartons = array();
+		$sql = "SELECT * FROM ".Database::getTableName('cartons')." WHERE warehouse=? AND location=?";
+		$response = Database::getInstance()->sql( "getLocationCartons", $sql, 'ii', [$this->warehouseId, $this->id], false );
+		if( is_array($response) ){
+			foreach( $response as $entry ){
+				$carton = new Carton( $entry['id'], $this->warehouseId, null, null, true );
+				array_push( $cartons, $carton );
+			}
+		}
+		return $cartons;
 	}
 	
 	/**
@@ -77,7 +93,7 @@ class Location{
 			$response = $response[0];
 			$this->id = $id;
 			$this->name = $response['name'];
-			$this->warehouse = $response['warehouse'];
+			$this->warehouseId = $response['warehouse'];
 		}
 	}
 	
@@ -87,7 +103,7 @@ class Location{
 	 */
 	public static function getLocations($warehouseId){
 		$locations = array();
-		$sql = "SELECT * FROM ".Database::getTableName('locations')." WHERE warehouse=?";
+		$sql = "SELECT * FROM ".Database::getTableName('locations')." WHERE warehouse=? ORDER BY name";
 		$response = Database::getInstance()->sql( 'getLocations', $sql, 'i', [$warehouseId] );
 		
 		if( is_array($response) ){

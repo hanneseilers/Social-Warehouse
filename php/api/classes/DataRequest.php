@@ -6,7 +6,7 @@
  *
  */
 class DataRequest extends Request{
-	protected  $sessionId = 0;
+	protected $sessionId = 0;
 	protected $data = null;
 	
 	/**
@@ -22,18 +22,24 @@ class DataRequest extends Request{
 	}
 	
 	public function process(){
-		// check if session is active
+		// check if session is active		
 		$session = new Session( $this->sessionId );
 		if( $session->sessionId > 0 ){
+			
+			// update session
+			$session->update();
 			
 			// process restricted functions
 			switch( $this->f ){					
 				case 'checkLogin':
-					return Login::checkLogin($session->sessionId);
+					return Login::checkLogin($session->sessionId);					
+					
+				case 'getSession':
+					return $session;
 					
 				case 'getWarehouse':
 					if( isset($this->data->update) ){
-						$warehouse = new Warehouse( $session->warehouseId, true );
+						$warehouse = new Warehouse( $session->warehouseId, $this->data->update );
 					} else 
 						$warehouse = new Warehouse( $session->warehouseId );
 					
@@ -61,7 +67,7 @@ class DataRequest extends Request{
 						// update database entry
 						return $warehouse->edit();
 					}					
-					return false;
+					break;
 					
 				case 'deleteWarehouse':
 					if( !$session->restricted ){
@@ -71,7 +77,7 @@ class DataRequest extends Request{
 							return $session->destroy();
 						
 					}
-					return false;
+					break;
 					
 				case 'addCategory':
 					if( !$session->restricted && isset($this->data->name) ){
@@ -82,33 +88,34 @@ class DataRequest extends Request{
 						if( $category->edit() )
 							return $category->id;
 					}
-					return false;
+					break;
 					
 				case 'getCategory':
 					if( isset($this->data->id) && isset($this->data->update) )
 						return new Category( $this->data->id, $session->warehouseId, $this->data->update );
 					elseif( isset($this->data->id) )
 						return new Category( $this->data->id, $session->warehouseId );
-					return false;
+					break;
 					
 					
 				case 'deleteCategory':
 					if( !$session->restricted && isset($this->data->id) ){
 						$category = new Category( $this->data->id, $session->warehouseId );
-						$category->delete();
+						return $category->delete();
 					}
+					break;
 					
-				case 'editCtageory':
+				case 'editCategory':
 					if( !$session->restricted && isset($this->data->id) ){
 						$data = $this->data;
 						$category = new Category( $this->data->id, $session->warehouseId );
 						
 						if( isset($data->name) ) $category->name = $data->name;
 						if( isset($data->demand) ) $category->demand = $data->demand;
-						if( isset($data->countInCartons) ) $category->countInCartons = $data->countInCartons;
+						if( isset($data->parent) ) $category->parent = $data->parent;
 						return $category->edit();
 					}
-					return false;
+					break;
 					
 				case 'getCategories':
 					if( isset($this->data->parent) )
@@ -122,65 +129,160 @@ class DataRequest extends Request{
 						$location->name = $this->data->name;
 						if( $location->edit() )
 							return $location->id;
+						return true;
 					}
-					return false;
+					break;
 					
 				case 'getLocation':
 					if( isset($this->data->id) && isset($this->data->update) )
 						return new Location( $this->data->id, $session->warehouseId, $this->data->update );
 					elseif( isset($this->data->id) )
 						return new Location( $this->data->id, $session->warehouseId );
-					return false;
+					break;
 					
 				case 'deleteLocation':
 					if( !$session->restricted && isset($this->data->id) ){
-						$location = new Location( $id, $session->warehouseId );
-						$location.delete();
+						$location = new Location( $this->data->id, $session->warehouseId );
+						return $location->delete();
 					}
+					break;
 					
 				case 'editLocation':
-					if( !$session->restricted && isset($this->data->id) && isset($data->name) ){
+					if( !$session->restricted && isset($this->data->id) && isset($this->data->name) ){
 						$location = new Location( $this->data->id, $session->warehouseId );
 						$location->name = $this->data->name;
 						return $location->edit();
 					}
-					return false;
+					break;
 					
 				case 'getLocations':
 					return Location::getLocations( $session->warehouseId );
 					
 				case 'addPalette':
-					if( !$session->restricted ){
-						$palette = new Palette( null, $session->warehouseId );
-						if( isset($this->data->location) ) $palette->locationId = $this->data->location;
-						if( $palette->edit() )
-							return $palette->id;
-					}
+					$palette = new Palette( null, $session->warehouseId );
+					if( isset($this->data->locationId) ) $palette->locationId = $this->data->locationId;
+					if( $palette->edit() )
+						return $palette->id;
+					break;
 					
 				case 'getPalette':
 					if( isset($this->data->id) && isset($this->data->update) )
 						return new Palette( $this->data->id, $session->warehouseId, $this->data->update );
 					elseif( isset($this->data->id) )
 						return new Palette( $this->data->id, $session->warehouseId );
-					return false;
+					break;
 					
 				case 'deletePalette':
-					if( !$session->restricted && isset($this->data->id) ){
-						$palette = new Palette( $id, $session->warehouseId );
-						$palette.delete();
+					if( isset($this->data->id) ){
+						$palette = new Palette( $this->data->id, $session->warehouseId );
+						return $palette->delete();
 					}
+					break;
 					
 				case 'editPalette':
-					if( !$session->restricted && isset($this->data->id) && isset($this->data->locationId) ){
+					if( isset($this->data->id) ){
 						$palette = new Palette( $this->data->id, $session->warehouseId );
-						$palette->locationId = $this->data->locationId;
+						if( isset($this->data->locationId) ) $palette->locationId = $this->data->locationId;
 						return $palette->edit();
 					}
-					return false;
+					break;
 					
 				case 'getPalettes':
 					return Palette::getPalettes( $session->warehouseId );
-			}
+					
+					
+				case 'getCarton':
+					if( isset($this->data->id) && isset($this->data->update) )
+						return new Carton( $this->data->id, $session->warehouseId, null, null, $this->data->update );
+					elseif( isset($this->data->id) )
+						return new Carton( $this->data->id, $session->warehouseId );
+					break;
+					
+				case 'addCarton':
+					$locationId = null;
+					$paletteId = null;
+					
+					if( isset($this->data->location) )
+						$locationId = $this->data->location;
+					if( isset($this->data->palette) )
+						$paletteId = $this->data->palette;
+					$carton = new Carton( null, $session->warehouseId, $locationId, $paletteId );
+					return $carton->id;
+				
+				case 'deleteCarton':
+					if( isset($this->data->id) ){
+						$carton = new Carton( $this->data->id, $session->warehouseId );
+						return $carton->delete();
+					}
+					break;
+					
+				case 'editCarton':
+					if( isset($this->data->id)  ){
+						$carton = new Carton( $this->data->id, $session->warehouseId );
+						if( isset($this->data->location) ) $carton->locationId = $this->data->location;
+						else $carton->locationId = null;
+						if( isset($this->data->palette) ) $carton->paletteId = $this->data->palette;
+						else $carton->paletteId = null;
+						return $carton->edit();
+					}
+					break;
+					
+				case 'addArticle':
+					if( isset($this->data->carton)
+					&& isset($this->data->category)
+					&& isset($this->data->amount) ){
+						return Stock::addArticle(
+							$this->data->carton,
+							$this->data->category,
+							(isset($this->data->male) ? $this->data->male : false),
+							(isset($this->data->female) ? $this->data->female : false),
+							(isset($this->data->baby) ? $this->data->baby : false),
+							(isset($this->data->winter) ? $this->data->winter : false),
+							(isset($this->data->summer) ? $this->data->summer : false),
+							($this->data->amount >= 0 ? $this->data->amount : 0),
+							($this->data->amount < 0 ? $this->data->amount : 0)
+						);
+					}
+					break;
+					
+				case 'getStock':
+					return Stock::getStock(
+						$session->warehouseId,
+						(isset($this->data->carton) ? $this->data->carton : null),
+						(isset($this->data->category) ? $this->data->category : null),
+						(isset($this->data->palette) ? $this->data->palette : null),
+						(isset($this->data->location) ? $this->data->location : null),
+						(isset($this->data->male) ? $this->data->male : false),
+						(isset($this->data->female) ? $this->data->female : false),
+						(isset($this->data->baby) ? $this->data->male : false),
+						(isset($this->data->summer) ? $this->data->male : false),
+						(isset($this->data->winter) ? $this->data->male : false),
+						(isset($this->data->details) ? $this->data->details : false)
+					);
+					
+				case 'getBarcodeUri':
+					if( isset($this->data->text) ){
+						
+						// create barcode object
+						$bc = new Barcode39( $this->data->text );
+						if( isset($this->data->textSize) ) $bc->barcode_text_size = $this->data->textSize;
+						if( isset($this->data->barThin) ) $bc->barcode_bar_thin = $this->data->barThin;
+						if( isset($this->data->barThick) ) $bc->barcode_bar_thick = $this->data->barThick;
+						
+						// generate barcode image
+						$img = "barcode_".mt_rand(0, 100).".png";
+						$bc->draw( $img );
+						
+						// get data uri
+						$uri = Barcode39::getDataURI( $img );
+						unlink( $img );
+						
+						return $uri;
+						
+					}
+					break;
+					
+				}
 			
 		} else {
 			
@@ -210,8 +312,7 @@ class DataRequest extends Request{
 						
 						return $warehouse->edit();
 					}
-					
-					return false;
+					break;
 			}
 			
 		}
@@ -225,9 +326,7 @@ class DataRequest extends Request{
 	 * @return true if is DataRequest class object, false otherwise.
 	 */
 	public static function isInstance($object){
-		if( parent::isInstance($object)
-				&& property_exists($object, 'sessionId')
-				&& property_exists($object, 'data') )
+		if( parent::isInstance($object) )
 			return true;
 		return false;
 	}

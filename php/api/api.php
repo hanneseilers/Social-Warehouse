@@ -2,7 +2,8 @@
 	/*
 	 * API calls
 	 * Set GET parameter function to call api function.
-	 */	 
+	 */
+	include_once '../Log.php';
 	include_once 'classloader.php';
 
 	// check if data was send
@@ -22,15 +23,20 @@
 		$response = null;
 		$request = null;
 		if( Login::isInstance($data) ){
-			$request = new Login( $data->warehouseId, $data->pw );
+			$request = new Login( $data->data->warehouseId, $data->data->pw );
 			$response = $request->login();
 				
 		} elseif( Logout::isInstance($data) ){
-			$request = new Logout( $data->sid );
+			$request = new Logout( $data->sessionId );
 			$response = $request->logout();
 				
 		} elseif( DataRequest::isInstance($data) ) {
-			$request = new DataRequest( $data->sessionId, $data->f, $data->data );
+			if( isset($data->sessionId) && isset($data->data) )
+				$request = new DataRequest( $data->sessionId, $data->f, $data->data );
+			elseif( isset($data->sessionId) )
+				$request = new DataRequest( $data->sessionId, $data->f );
+			else 
+				$request = new DataRequest( 0, $data->f );
 			$response = $request->process();
 		}
 		
