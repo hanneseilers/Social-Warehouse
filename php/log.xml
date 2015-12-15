@@ -1,0 +1,9 @@
+<configuration xmlns="http://logging.apache.org/log4php/">
+	<appender name="myAppender" class="LoggerAppenderEcho">
+		<param name="htmlLineBreaks" value="true" />
+	</appender>
+	<root>
+		<level value="DEBUG" />
+		<appender_ref ref="myAppender" />
+	</root>
+</configuration>

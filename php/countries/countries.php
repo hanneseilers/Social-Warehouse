@@ -4,8 +4,14 @@
 	 * Get list of countries from:
 	 * http://countrylist.net/de/
 	 */
+	 
+	include_once '../Log.php';
 
-	function getCountries($file){
+	function getCountries($file=null){
+		if( $file == null )
+			$file = realpath(dirname(__FILE__)).'/countries';
+		
+		Log::debug( 'Loading countries from '.getcwd().'/'.$file );
 		$f = file( $file );
 		$countries = array();
 		foreach( $f as $country ){

@@ -2,79 +2,39 @@
 	/*
 	 * API calls
 	 * Set GET parameter function to call api function.
-	 */
+	 */	 
+	include_once 'classloader.php';
 
-	session_start();
-	include( "../db/db.php" );
-	include( "../db/db_statistics.php" );
+	// check if data was send
+	if( isset($_GET['data']) )
+		print api( $_GET['data'] );		
 	
-	$GLOBALS['OK'] = "ok";
-	$GLOBALS['ERR'] = "err";
-	$GLOBALS['SEP'] = ";";
-	
-	// include sup api fiels
-	include( "categories.php" );
-	include( "warehouses.php" );
-	include( "locations.php" );
-	include( "palettes.php" );
-	include( "stock.php" );
-	
-	/*
-	 * Saves warehouse into php session.
+	/**
+	 * Function to process api request.
+	 * @param string $data	Base64 encoded json string with api request data.
 	 */
-	function _updateWarehouseInfo($id){
-		$_SESSION['warehouseinfo'] = db_getWarehouseInfo( $id )[0];
-	}
-	
-	function _setRestricted(){
-		$_SESSION['restricted'] = true;
-	}
-	
-	/* 
-	 * check if login data is valid.
-	 * warehouse = id
-	 * pw = md5 password
-	 * @return = <status>;<warehouse-id>
-	*/
-	if( $_GET['function'] == "checkLogin" ){
-		if( db_checkWarehouseLogin($_GET['warehouse'], $_GET['pw']) ){
-			_updateWarehouseInfo( $_GET['warehouse'] );
-			print $GLOBALS['OK'];
-		} else if( db_checkWarehouseLoginRestricted($_GET['warehouse'], $_GET['pw']) ){
-			_updateWarehouseInfo( $_GET['warehouse'] );
-			_setRestricted();
-			print $GLOBALS['OK'];
-		} else {
-			print $GLOBALS['ERR'];
+	function api($data){		
+		// decode json data from get
+		$data = base64_decode( $data );
+		$data = json_decode( $data );
+		
+		// convert to login, logout or data request
+		$response = null;
+		$request = null;
+		if( Login::isInstance($data) ){
+			$request = new Login( $data->warehouseId, $data->pw );
+			$response = $request->login();
+				
+		} elseif( Logout::isInstance($data) ){
+			$request = new Logout( $data->sid );
+			$response = $request->logout();
+				
+		} elseif( DataRequest::isInstance($data) ) {
+			$request = new DataRequest( $data->sessionId, $data->f, $data->data );
+			$response = $request->process();
 		}
 		
-		print $GLOBALS['SEP'].$_GET['warehouse'];
-	}
-	
-	/*
-	 * Logout and destory session.
-	 */
-	if( $_GET['function'] == "logout" ){
-		session_destroy();
-	}
-	
-	/*
-	 * Checks if access is restricted.
-	 */
-	if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "checkRestricted" ){
-		if( isset($_SESSION['restricted']) && $_SESSION['restricted'] ){
-			print $GLOBALS['OK'];
-		} else {
-			print $GLOBALS['ERR'];
-		}
-	}
-
-	/*
-	 * Restricts access.
-	 */
-	if( isset($_SESSION['warehouseinfo']) && $_GET['function'] == "setRestricted" ){
-		_setRestricted();
-		print $GLOBALS['OK'];
+		return json_encode( array('request' => $request, 'response' => $response) );
 	}
 	
 ?>
