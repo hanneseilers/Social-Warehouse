@@ -12,16 +12,10 @@
 <script src="js/md5.js"></script>
 <script src="js/base64.js"></script>
 <script src="js/lang.js"></script>
-<script src="js/base.js"></script>
-<script src="js/demand.js"></script>
-<script src="js/warehouses.js"></script>
-<script src="js/locations.js"></script>
-<script src="js/palettes.js"></script>
-<script src="js/stock.js"></script>
-<script src="js/statistics.js"></script>
 
 <meta charset="utf-8">
 </head>
+<body onLoad="javascript: load();">
 
 <?php
 
@@ -39,38 +33,24 @@
 
 <div class="mainframe">
 
-	<?php
-		include( "db/db.php" );
-	
+	<?php		
 		// include multilanguage support
 		include( "lang/lang.php" );
 		
 		// include timedout messaghe
 		if( isset($_GET['timeout']) && $_GET['timeout'] == 1 ){
-			print "<div class='red' id='timeout_message' onclick='javascript: hideTimedoutMessage();'>".LANG('session_timed_out')."</div>";
+			print "<div class='hidetext' id='status_message' onclick='javascript: hideStatusMessage();'></div>";
 		}
 		
 		// include content
-		include( "countries/countries.php" );
 		include( "header.php" );
-		
-		if( isset($_GET['demand']) ){
-			include( "demand.php" );
-		}else if( !isset($_SESSION['warehouseinfo']) || $_SESSION['warehouseinfo'] == null ){
-			include( "warehouses.php" );
-			include( "register.php" );
-		} else {
-			include( "warehouseheader.php" );
-			include( "showdata.php" );
-		}
 	?>
-
+	<div id="content"></div>
 	<div class="footer">
 		Spendenverwaltung, published under GPLv2 by <a href="http://www.hanneseilers.de">Hannes Eilers</a>
 	</div>
 </div>
 
-<div class="hidetext red" id="error_message"></div>
-
+<span id='gc_maxtime' class='hidetext'>1800</span>
 </body>
 </html>
