@@ -3,7 +3,7 @@
 		<param name="htmlLineBreaks" value="true" />
 	</appender>
 	<root>
-		<level value="DEBUG" />
+		<level value="ERROR" />
 		<appender_ref ref="myAppender" />
 	</root>
 </configuration>

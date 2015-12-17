@@ -26,6 +26,7 @@ function Palette(id, number, locationId, warehouseId){
 			var btnPrint = document.createElement( 'a' );
 			var btnDiscard = document.createElement( 'a' );
 			var btnMove = document.createElement( 'a' );
+			var btnStock = document.createElement( 'a' );
 			
 			// add classes
 			this.domElement.className = 'groupitem' + (this.selected ? ' yellow' : '');
@@ -33,12 +34,14 @@ function Palette(id, number, locationId, warehouseId){
 			btnPrint.className = 'button table_cell';
 			btnMove.className = 'button table_cell';
 			btnDiscard.className = 'button table_cell red';
+			btnStock.className = 'button';
 			
 			// add content
 			left.innerHTML = "#" + this.number + (location ? " : "+location.name : "");
 			btnPrint.innerHTML = "<img src='img/action/print.png' />";
 			btnMove.innerHTML = "<img src='img/action/move.png' />";
 			btnDiscard.innerHTML = "<img src='img/action/discard.png' />";
+			btnStock.innerHTML = "<img src='img/action/about.png' />";
 			
 			btnPrint.title = LANG( 'palette_btn_print_tooltip' );
 			btnMove.title =  LANG( 'palette_btn_move_tooltip' );
@@ -50,11 +53,13 @@ function Palette(id, number, locationId, warehouseId){
 			btnPrint.addEventListener( 'click', function(){ self.print(); } );
 			btnMove.addEventListener( 'click', function(){ self.move(); } )
 			btnDiscard.addEventListener( 'click', function(){ self.discard(); } );
+			btnStock.addEventListener( 'click', function(){ self.showStock(); } );
 			
 			// add elements
 			this.domElement.appendChild( left );
 			this.domElement.appendChild( btnPrint );
 			this.domElement.appendChild( btnMove );
+			this.domElement.appendChild( btnStock );
 			this.domElement.appendChild( btnDiscard );
 			
 		}
@@ -167,6 +172,94 @@ function Palette(id, number, locationId, warehouseId){
 		
 		this._update();
 		
+	}
+	
+	/**
+	 * Shows stock on palette
+	 */
+	this.showStock = function(){
+		var dom = document.createElement( 'div' );
+		dom.innerHTML = "<img src='img/loading.gif' /> " + LANG('loading');
+		
+		// show overlay
+		var overlay = new Overlay( dom, LANG('close'), null, function(){ overlay.hide(); }, null );
+		overlay.show();
+		
+		// load stock data
+		get( 'getStock', {'palette': this.id}, function(data){
+			if( data && data.response ){
+				dom.innerHTML = "";
+				var highlight = false;
+				
+				for( var i=0; i<data.response.length; i++ ){
+					
+					var entry = data.response[i];
+					var category = Category.getCategories( entry.category );
+					
+					if( category.length > 0 ){						
+						category = category[0];
+					
+						// create elements
+						var domEntry = document.createElement( 'div' );
+						var domLeft = document.createElement( 'span' );
+						var txtAmount = document.createElement( 'span' );
+						var txtCategory = document.createElement( 'span' );
+						var domRight = document.createElement( 'span' );
+						var imgMale = document.createElement( 'img' );
+						var imgFemale = document.createElement( 'img' );
+						var imgBaby = document.createElement( 'img' );
+						var imgWinter = document.createElement( 'img' );
+						var imgSummer = document.createElement( 'img' );
+						
+						// set classes
+						domEntry.className = 'table';
+						if( highlight )
+							domEntry.className = 'table highlight';
+						domLeft.className = 'group_left';
+						domRight.className = 'table_cell';
+						txtAmount.className = 'table_cell';
+						txtCategory.className = 'table_cell';
+						
+						// set content
+						txtAmount.innerHTML = "<span class='monospace'>" + String(entry.amount).paddingLeft(5, '&nbsp;') + "x </span>";
+						txtCategory.innerHTML = "<span class='monospace'>" + category.getParentsString() + "</span>";
+						imgMale.src = 'img/none_s.png';
+						imgFemale.src = 'img/none_s.png';
+						imgBaby.src = 'img/none_s.png';
+						imgWinter.src = 'img/none_s.png';
+						imgSummer.src = 'img/none_s.png';
+						
+						// add to content
+						domLeft.appendChild( txtAmount );
+						domLeft.appendChild( txtCategory );
+						domEntry.appendChild( domLeft );
+						domEntry.appendChild( domRight );
+						
+						// add images
+						if( entry.male ) imgMale.src = 'img/male_s.png';
+						if( entry.female ) imgFemale.src = 'img/female_s.png';
+						if( entry.baby ) imgBaby.src = 'img/baby_s.png';
+						if( entry.winter ) imgWinter.src = 'img/winter_s.png';
+						if( entry.summer ) imgSummer.src = 'img/summer_s.png';
+						domRight.appendChild( imgMale );
+						domRight.appendChild( imgFemale );
+						domRight.appendChild( imgBaby );
+						domRight.appendChild( imgWinter );
+						domRight.appendChild( imgSummer );
+						
+						dom.appendChild( domEntry );
+						
+						highlight = !highlight;
+						
+					}
+					
+				}
+				
+			} else {
+				dom.innerHTML = LANG('stock_no_data');
+				dom.className = 'errortext';
+			}			
+		} );
 	}
 	
 	/**

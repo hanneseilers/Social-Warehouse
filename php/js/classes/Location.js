@@ -192,8 +192,6 @@ function Location(id, name, warehouseId){
 					var entry = data.response[i];
 					var category = Category.getCategories( entry.category );
 					
-					console.log( entry );
-					
 					if( category.length > 0 ){						
 						category = category[0];
 					

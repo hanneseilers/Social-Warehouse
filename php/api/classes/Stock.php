@@ -25,17 +25,21 @@ class Stock{
 				$in = "(";
 				$palette = new Palette( $paletteId, $warehouseId );
 				$cartonIds = $palette->getCartons();
-				foreach( $cartonIds as $carton ){
-					if( strlen($in) > 1 )
-						$in = $in.",?";
-					else
-						$in = $in."?";
-					
-					$attributes = $attributes.'i';
-					array_push( $data, $carton->id );
+				if( count($cartonIds) > 0 ){
+					foreach( $cartonIds as $carton ){
+						if( strlen($in) > 1 )
+							$in = $in.",?";
+						else
+							$in = $in."?";
+						
+						$attributes = $attributes.'i';
+						array_push( $data, $carton->id );
+					}
+					$in = $in.")";
+					$where = Stock::addToWhere( $where, "carton IN ".$in );
+				} else {
+					return false;
 				}
-				$in = $in.")";
-				$where = Stock::addToWhere( $where, "carton IN ".$in );
 				
 			}
 			
