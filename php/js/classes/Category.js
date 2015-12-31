@@ -1,4 +1,4 @@
-function Category(id, name, parentId, demand, male, female, baby, summer, winter){
+function Category(id, name, parentId, demand, male, female, children, baby, summer, winter){
 	
 	this.id = id;
 	this.name = name;
@@ -6,6 +6,7 @@ function Category(id, name, parentId, demand, male, female, baby, summer, winter
 	this.demand = (demand ? demand : 0);
 	this.male = (male ? true : false );
 	this.female = (female ? true : false );
+	this.children = (children ? true : false);
 	this.baby = (baby ? true : false );
 	this.summer = (summer ? true : false );
 	this.winter = (winter ? true : false );
@@ -55,6 +56,7 @@ function Category(id, name, parentId, demand, male, female, baby, summer, winter
 			'demand': this.demand,
 			'male': this.male,
 			'female': this.female,
+			'children': this.children,
 			'baby': this.baby,
 			'summer': this.summer,
 			'winter': this.winter
@@ -229,6 +231,7 @@ Category.load = function(callback){
 							categories[i].demand,
 							categories[i].male,
 							categories[i].female,
+							categories[i].children,
 							categories[i].baby,
 							categories[i].summer,
 							categories[i].winter);

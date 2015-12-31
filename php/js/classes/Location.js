@@ -184,73 +184,7 @@ function Location(id, name, warehouseId){
 		// load stock data
 		get( 'getStock', {'location': this.id}, function(data){
 			if( data && data.response ){
-				dom.innerHTML = "";
-				var highlight = false;
-				
-				for( var i=0; i<data.response.length; i++ ){
-					
-					var entry = data.response[i];
-					var category = Category.getCategories( entry.category );
-					
-					if( category.length > 0 ){						
-						category = category[0];
-					
-						// create elements
-						var domEntry = document.createElement( 'div' );
-						var domLeft = document.createElement( 'span' );
-						var txtAmount = document.createElement( 'span' );
-						var txtCategory = document.createElement( 'span' );
-						var domRight = document.createElement( 'span' );
-						var imgMale = document.createElement( 'img' );
-						var imgFemale = document.createElement( 'img' );
-						var imgBaby = document.createElement( 'img' );
-						var imgWinter = document.createElement( 'img' );
-						var imgSummer = document.createElement( 'img' );
-						
-						// set classes
-						domEntry.className = 'table';
-						if( highlight )
-							domEntry.className = 'table highlight';
-						domLeft.className = 'group_left';
-						domRight.className = 'table_cell';
-						txtAmount.className = 'table_cell';
-						txtCategory.className = 'table_cell';
-						
-						// set content
-						txtAmount.innerHTML = "<span class='monospace'>" + String(entry.amount).paddingLeft(5, '&nbsp;') + "x </span>";
-						txtCategory.innerHTML = "<span class='monospace'>" + category.getParentsString() + "</span>";
-						imgMale.src = 'img/none_s.png';
-						imgFemale.src = 'img/none_s.png';
-						imgBaby.src = 'img/none_s.png';
-						imgWinter.src = 'img/none_s.png';
-						imgSummer.src = 'img/none_s.png';
-						
-						// add to content
-						domLeft.appendChild( txtAmount );
-						domLeft.appendChild( txtCategory );
-						domEntry.appendChild( domLeft );
-						domEntry.appendChild( domRight );
-						
-						// add images
-						if( entry.male ) imgMale.src = 'img/male_s.png';
-						if( entry.female ) imgFemale.src = 'img/female_s.png';
-						if( entry.baby ) imgBaby.src = 'img/baby_s.png';
-						if( entry.winter ) imgWinter.src = 'img/winter_s.png';
-						if( entry.summer ) imgSummer.src = 'img/summer_s.png';
-						domRight.appendChild( imgMale );
-						domRight.appendChild( imgFemale );
-						domRight.appendChild( imgBaby );
-						domRight.appendChild( imgWinter );
-						domRight.appendChild( imgSummer );
-						
-						dom.appendChild( domEntry );
-						
-						highlight = !highlight;
-						
-					}
-					
-				}
-				
+				Stock.showStock( data.response, dom );
 			} else {
 				dom.innerHTML = LANG('stock_no_data');
 				dom.className = 'errortext';

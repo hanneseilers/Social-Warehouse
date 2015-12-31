@@ -6,6 +6,7 @@ function Stock(warehouseId){
 	this.category = null;
 	this.maleSelected = false;
 	this.femaleSelected = false;
+	this.childrenSelected = false;
 	this.babySelected = false;
 	this.summerSelected = false;
 	this.winterSelected = false;
@@ -65,6 +66,7 @@ function Stock(warehouseId){
 				articleInfo.innerHTML = "<font size='20pt''>" + amount + " x </font>"
 					+ ( this.maleSelected ? "<img src='img/male.png' />" : "" )
 					+ " " + ( this.femaleSelected ? "<img src='img/female.png' />" : "" )
+					+ " " + ( this.childrenSelected ? "<img src='img/children.png />" : "" )
 					+ " " + ( this.babySelected ? "<img src='img/baby.png' />" : "" )
 					+ " " + ( this.summerSelected ? "<img src='img/summer.png' />" : "" )
 					+ " " + ( this.winterSelected ? "<img src='img/winter.png' />" : "" )
@@ -83,6 +85,7 @@ function Stock(warehouseId){
 						'category': self.category,
 						'male': self.maleSelected,
 						'female': self.femaleSelected,
+						'children': self.childrenSelected,
 						'baby': self.babySelected,
 						'summer': self.summerSelected,
 						'winter': self.winterSelected,
@@ -447,6 +450,7 @@ function Stock(warehouseId){
 			this.maleSelected = false;
 		} else {
 			this.maleSelected = true;
+			this.childrenSelected = false;
 			this.babySelected = false;
 		}
 	}
@@ -460,7 +464,23 @@ function Stock(warehouseId){
 			this.femaleSelected = false;		
 		} else {
 			this.femaleSelected = true;
+			this.childrenSelected = false;
 			this.babySelected = false;
+		}
+	}
+	
+	/**
+	 * Set children attribute
+	 * @param select	Set true to select attribute, false otherwise.
+	 */
+	this.selectChildren = function(select){
+		if( !select ){
+			this.childrenSelected = false;
+		} else {
+			this.childrenSelected = true;
+			this.babySelected = false;
+			this.maleSelected = false;
+			this.femaleSelected = false;
 		}
 	}
 	
@@ -473,6 +493,7 @@ function Stock(warehouseId){
 			this.babySelected = false;		
 		} else {
 			this.babySelected = true;
+			this.childrenSelected = false;
 			this.maleSelected = false;
 			this.femaleSelected = false;
 		}
@@ -504,4 +525,82 @@ function Stock(warehouseId){
 		}
 	}
 	
+}
+
+/**
+ * Shows stock data inside DOM element.
+ * @param data	Array of stock data entries.
+ * @param dom	DOM element, where to show stock data.
+ */
+Stock.showStock = function( data, dom ){
+	dom.innerHTML = "";
+	var highlight = false;
+	
+	for( var i=0; i<data.length; i++ ){
+		
+		var entry = data[i];
+		var category = Category.getCategories( entry.category );
+		
+		if( category.length > 0 ){						
+			category = category[0];
+		
+			// create elements
+			var domEntry = document.createElement( 'div' );
+			var domLeft = document.createElement( 'span' );
+			var txtAmount = document.createElement( 'span' );
+			var txtCategory = document.createElement( 'span' );
+			var domRight = document.createElement( 'span' );
+			var imgMale = document.createElement( 'img' );
+			var imgFemale = document.createElement( 'img' );
+			var imgChildren = document.createElement( 'img' );
+			var imgBaby = document.createElement( 'img' );
+			var imgWinter = document.createElement( 'img' );
+			var imgSummer = document.createElement( 'img' );
+			
+			// set classes
+			domEntry.className = 'table';
+			if( highlight )
+				domEntry.className = 'table highlight';
+			domLeft.className = 'group_left';
+			domRight.className = 'table_cell';
+			txtAmount.className = 'table_cell';
+			txtCategory.className = 'table_cell';
+			
+			// set content
+			txtAmount.innerHTML = "<span class='monospace'>" + String(entry.amount).paddingLeft(5, '&nbsp;') + "x </span>";
+			txtCategory.innerHTML = "<span class='monospace'>" + category.getParentsString() + "</span>";
+			imgMale.src = 'img/none_s.png';
+			imgFemale.src = 'img/none_s.png';
+			imgChildren.src = 'img/none_s.png';
+			imgBaby.src = 'img/none_s.png';
+			imgWinter.src = 'img/none_s.png';
+			imgSummer.src = 'img/none_s.png';
+			
+			// add to content
+			domLeft.appendChild( txtAmount );
+			domLeft.appendChild( txtCategory );
+			domEntry.appendChild( domLeft );
+			domEntry.appendChild( domRight );
+			
+			// add images
+			if( entry.male ) imgMale.src = 'img/male_s.png';
+			if( entry.female ) imgFemale.src = 'img/female_s.png';
+			if( entry.children ) imgChildren.src = 'img/children_s.png';
+			if( entry.baby ) imgBaby.src = 'img/baby_s.png';
+			if( entry.winter ) imgWinter.src = 'img/winter_s.png';
+			if( entry.summer ) imgSummer.src = 'img/summer_s.png';
+			domRight.appendChild( imgMale );
+			domRight.appendChild( imgFemale );
+			domRight.appendChild( imgChildren );
+			domRight.appendChild( imgBaby );
+			domRight.appendChild( imgWinter );
+			domRight.appendChild( imgSummer );
+			
+			dom.appendChild( domEntry );
+			
+			highlight = !highlight;
+			
+		}
+		
+	}
 }
