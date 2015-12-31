@@ -59,6 +59,7 @@ function Stock(warehouseId){
 				var dom = document.createElement( 'div' );
 				var cartonInfo = document.createElement( 'div' );
 				var articleInfo = document.createElement( 'div' );
+				console.log( this.childrenSelected );
 				cartonInfo.innerHTML = "<b>" + LANG('carton')
 					+ ": #"	+ carton.id
 					+ ", " + LANG('location') + " " + (location ? location.name : undefined)
@@ -66,7 +67,7 @@ function Stock(warehouseId){
 				articleInfo.innerHTML = "<font size='20pt''>" + amount + " x </font>"
 					+ ( this.maleSelected ? "<img src='img/male.png' />" : "" )
 					+ " " + ( this.femaleSelected ? "<img src='img/female.png' />" : "" )
-					+ " " + ( this.childrenSelected ? "<img src='img/children.png />" : "" )
+					+ " " + ( this.childrenSelected ? "<img src='img/children.png' />" : "" )
 					+ " " + ( this.babySelected ? "<img src='img/baby.png' />" : "" )
 					+ " " + ( this.summerSelected ? "<img src='img/summer.png' />" : "" )
 					+ " " + ( this.winterSelected ? "<img src='img/winter.png' />" : "" )

@@ -14,6 +14,7 @@ class Category{
 	public $demand = 0;
 	public $male = false;
 	public $female = false;
+	public $children = false;
 	public $baby = false; 
 	
 	/**
@@ -36,14 +37,15 @@ class Category{
 	public function edit(){
 		if( $this->id > 0 && $this->warehouseId > 0
 				&& is_string($this->name) && strlen($this->name) > 0 ){
-			$sql = "UPDATE ".Database::getTableName('categories')." SET parent=?, warehouse=?, name=?, demand=?, male=?, female=?, baby=? WHERE id=?";
-			$response = Database::getInstance()->sql( 'editCategory', $sql, 'iisiiiii', [
+			$sql = "UPDATE ".Database::getTableName('categories')." SET parent=?, warehouse=?, name=?, demand=?, male=?, female=?, children=?, baby=? WHERE id=?";
+			$response = Database::getInstance()->sql( 'editCategory', $sql, 'iisiiiiii', [
 					$this->parent,
 					$this->warehouseId,
 					$this->name,
 					$this->demand,
 					$this->male,
 					$this->female,
+					$this->children,
 					$this->baby,
 					$this->id
 			], false );
@@ -99,6 +101,7 @@ class Category{
 			$this->demand = $response['demand'];
 			$this->male = $response['male'];
 			$this->female = $response['female'];
+			$this->children = $response['children'];
 			$this->baby = $response['baby'];
 		}
 	}
@@ -133,7 +136,8 @@ class Category{
 				$category->demand = $entry['demand'];
 				$category->male = $entry['male'];
 				$category->female = $entry['female'];
-				$category_baby = $entry['baby'];
+				$category->children = $entry['children'];
+				$category->baby = $entry['baby'];
 				array_push( $categories, $category );
 			}
 		}

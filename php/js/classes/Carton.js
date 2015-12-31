@@ -483,7 +483,7 @@ Carton.updateAttributeButtons = function(){
 	if( !stock.childrenSelected ){
 		btnChildren.className = "button";
 	} else {
-		btnChildren.className = 'button orange';
+		btnChildren.className = 'button green';
 		btnBaby.className = 'button';
 		btnMale.className = 'button';
 		btnFemale.className = 'button';

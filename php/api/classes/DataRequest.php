@@ -113,6 +113,7 @@ class DataRequest extends Request{
 						if( isset($data->name) ) $category->name = $data->name;
 						if( isset($data->demand) ) $category->demand = $data->demand;
 						if( isset($data->parent) ) $category->parent = $data->parent;
+						// TODO: edit category attributes (male, female, ...)
 						return $category->edit();
 					}
 					break;
@@ -236,6 +237,7 @@ class DataRequest extends Request{
 							$this->data->category,
 							(isset($this->data->male) ? $this->data->male : false),
 							(isset($this->data->female) ? $this->data->female : false),
+							(isset($this->data->children) ? $this->data->children : false),
 							(isset($this->data->baby) ? $this->data->baby : false),
 							(isset($this->data->winter) ? $this->data->winter : false),
 							(isset($this->data->summer) ? $this->data->summer : false),
@@ -254,6 +256,7 @@ class DataRequest extends Request{
 						(isset($this->data->location) ? $this->data->location : null),
 						(isset($this->data->male) ? $this->data->male : false),
 						(isset($this->data->female) ? $this->data->female : false),
+						(isset($this->data->children) ? $this->data->children : false),
 						(isset($this->data->baby) ? $this->data->male : false),
 						(isset($this->data->summer) ? $this->data->male : false),
 						(isset($this->data->winter) ? $this->data->male : false),
