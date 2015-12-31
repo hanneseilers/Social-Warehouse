@@ -66,7 +66,21 @@ function Category(id, name, parentId, demand, male, female, baby, summer, winter
 	 * @param callback	Function to call after update.
 	 */
 	this.discard = function(callback){
-		get( 'deleteCategory', {'id': this.id}, callback );
+		var dom = document.createElement( 'div' )
+		dom.style.fontSize = "large";
+		dom.innerHTML = LANG( 'category_delete_question' ).replace( '%', this.name )
+		var self = this;
+		
+		var overlay = new Overlay( dom, LANG('delete'), LANG('cancel'),
+			function(){
+				get( 'deleteCategory', {'id': self.id}, callback );
+				overlay.hide();
+			},
+			function(){
+				overlay.hide();
+				Main.getInstance().warehouse.stock.reloadCategories();
+			} );
+		overlay.show();
 	}
 	
 	/**

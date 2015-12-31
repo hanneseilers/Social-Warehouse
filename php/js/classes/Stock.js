@@ -291,7 +291,10 @@ function Stock(warehouseId){
 					"multiple" : false, // no multiselection
 					"check_callback" : true,
 				},
-				"plugins" : ["state", "search", "contextmenu", "unique", "conditionalselect"] // activate the state plugin on this instance
+				// activate the state plugin on this instance
+				"plugins" : (Main.getInstance().session.restricted ?
+								["state", "search", "unique", "conditionalselect"] :					// restricted access
+								["state", "search", "contextmenu", "unique", "conditionalselect"]) 		// admin access
 			});
 			Main.getInstance().warehouse.stock.categoriesTree = $('#categoryTree');
 			var categoriesTree = Main.getInstance().warehouse.stock.categoriesTree;
@@ -345,7 +348,7 @@ function Stock(warehouseId){
 				if( category.length > 0 ){
 					category = category[0];
 					Main.getInstance().warehouse.stock.setCategoriesLoading();
-					category.discard( function(){
+					category.discard( function(data){
 						showStatusMessage( LANG('category_deleted') );
 						Main.getInstance().warehouse.stock.reloadCategories();
 					} );
@@ -423,7 +426,7 @@ function Stock(warehouseId){
 		// show category information
 		if( element ){
 			if( category ){
-				element.innerHTML = " " + LANG( 'pcs' ) + " " + category.name;
+				element.innerHTML = " " + LANG( 'pcs' ) + " " + category.name + " (#" + category.id + ")";
 				element.className = '';
 				this.inpCategoryDemand.value = category.demand;
 				

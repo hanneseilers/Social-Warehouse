@@ -65,6 +65,7 @@ $LANG = [
 		'category_added' => "Category added",
 		'category_updated' => "Category updated",
 		'category_update_failed' => "Category update failed",
+		'category_delete_question' => "Do you realy want to delete category '%' and all articles in it?",
 		'category_deleted' => "Category deleted",
 		'category_delete_failed' => "Category cannot be deleted",
 		
