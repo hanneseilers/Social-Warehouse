@@ -4,6 +4,7 @@
 	 * Set GET parameter function to call api function.
 	 */
 	include_once '../Log.php';
+	include_once '../countries/countries.php';
 	include_once 'classloader.php';
 
 	// check if data was send
@@ -35,6 +36,8 @@
 				$request = new DataRequest( $data->sessionId, $data->f, $data->data );
 			elseif( isset($data->sessionId) )
 				$request = new DataRequest( $data->sessionId, $data->f );
+			else if( isset($data->data) )
+				$request = new DataRequest( 0, $data->f, $data->data );
 			else 
 				$request = new DataRequest( 0, $data->f );
 			$response = $request->process();

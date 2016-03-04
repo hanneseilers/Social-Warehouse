@@ -316,6 +316,17 @@ class DataRequest extends Request{
 						return $warehouse->edit();
 					}
 					break;
+				
+				case 'getCountries':
+					return getCountries();
+					break;
+					
+				case 'getCountryCode':
+					$data = $this->data;
+					if( isset($data->name) ){ 
+						return getCountryCode(null, $data->name);
+					}
+					return false;
 			}
 			
 		}
