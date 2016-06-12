@@ -54,7 +54,6 @@
 
 <div class="mainframe">
 	
-	<div></div>
 	<div id="loading" class="centertext tinytext"><img src="img/loading.gif" /> <?php print LANG('loading'); ?></div>
 	<div id="content"></div>
 	
