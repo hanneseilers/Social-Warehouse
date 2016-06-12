@@ -61,7 +61,7 @@ function Main(content){
 		Warehouse.listWarehouses( vWarehouses );
 		
 		// show register
-		// TODO
+		Register.showForm( vRegister );
 	}
 	
 	/**

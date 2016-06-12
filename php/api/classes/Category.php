@@ -74,7 +74,7 @@ class Category{
 	 * @param integer $warehouseId	Warehouse ID
 	 */
 	private function create($warehouseId){
-		$sql = "INSERT INTO ".Database::getTableName('categories')." (warehouse) VALUES(?)";
+		$sql = "INSERT INTO ".Database::getTableName('categories')." (warehouse, name) VALUES(?, '')";
 		$id = Database::getInstance()->sql( 'insertCategory', $sql, 'i', [$warehouseId] );
 		if( is_integer($id) ){
 			$this->id = $id;

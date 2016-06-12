@@ -16,6 +16,13 @@ $LANG = [
 		'close' => "Close",
 		'delete' => "Delete",
 		'help' => "Help",
+		'register' => "Register Warehouse",
+		'register_name' => "Warehouse Name",
+		'register_country' => "Warehosue Country",
+		'register_city' => "Warehouse City",
+		'register_mail' => "Mail Address",
+		'register_password' => "Login Password",
+		'register_submit' => "Register",
 		
 		'male' => 'Male',
 		'female' => 'Female',

@@ -119,8 +119,8 @@ function Warehouse(id, name, description, country, city){
 		var left = document.createElement( 'span' );
 		
 		// set classes
-		group.className = 'groupitem';
-		left.className = 'group_left boldtext';
+		group.className = 'groupitem smalltext';
+		left.className = 'group_left boldtextr';
 		
 		// set content
 		left.innerHTML = this.country +", "+ this.city +": "+ this.name;
@@ -132,10 +132,11 @@ function Warehouse(id, name, description, country, city){
 		// add base elements
 		group.appendChild( left );
 	
-		if( this.detailsLoaded )
+		if( this.detailsLoaded ){
 			group.appendChild( this.__getMenuContent() );
-		else 
+		} else { 
 			group.appendChild( this.__getListContent() );
+		}
 		
 		// add warehouse content
 		content.appendChild( group );
@@ -151,7 +152,7 @@ function Warehouse(id, name, description, country, city){
 		var btnLogout = document.createElement( 'a' );
 		
 		// set classes
-		
+		group.className = "group_right tinytext";
 		btnDemand.className = 'button table_cell yellow';
 		btnEdit.className = 'button table_cell';
 		btnLogout.className = 'button table_cell lightred';
@@ -194,7 +195,8 @@ function Warehouse(id, name, description, country, city){
 		btnInfo.className = 'button table_cell';
 		btnLogin.className = 'button table_cell green';
 		
-		// set content		
+		// set content	
+		group.className = "group_right";
 		this.domPassword.innerHTML = LANG('password') + ": ";
 		this.domPasswordInput.type = 'password';
 		btnDemand.innerHTML = "<img src='img/action/demand.png' />";

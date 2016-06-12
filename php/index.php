@@ -19,6 +19,7 @@
 <script src="js/lang.js"></script>
 <script src="js/base.js"></script>
 <script src="js/classes/Main.js"></script>
+<script src="js/classes/Register.js"></script>
 <script src="js/classes/Overlay.js"></script>
 <script src="js/classes/Warehouse.js"></script>
 <script src="js/classes/Session.js"></script>
@@ -33,21 +34,27 @@
 </head>
 <body onLoad="javascript: load();">
 
+<?php
+	// include multilanguage support
+	include( "lang/lang.php" );
+	
+	// load classloader
+	include_once 'api/classloader.php';
+?>
+
 <div class="status_message hidetext" id="status_message" onclick="javascript: hideStatusMessage();"></div>
+
+<div class="header table">
+	<div><span class="group_left"><img src="img/logo-48.png" /> Social Warehouse</span>
+	<!--  <a href="lang/<?php print HELP_FILE(); ?>" target="_blanc" class="button table_cell smalltext lightgray">
+		<?php print LANG('help'); ?>
+	</a>--></div>
+	<div id="menu"></div>
+</div>
+
 <div class="mainframe">
 	
-	<?php		
-		// include multilanguage support
-		include( "lang/lang.php" );
-	?>
-	
-	<div class="header table">
-		<span class="group_left"><img src="img/logo-48.png" /> Social Warehouse</span>
-		<a href="lang/<?php print HELP_FILE(); ?>" target="_blanc" class="button table_cell smalltext lightgray"><img src="img/help.png" />&nbsp;<?php print LANG('help'); ?></a>
-	</div>
-	
 	<div></div>
-	<div id="menu"></div>
 	<div id="loading" class="centertext tinytext"><img src="img/loading.gif" /> <?php print LANG('loading'); ?></div>
 	<div id="content"></div>
 	
