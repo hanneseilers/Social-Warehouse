@@ -86,7 +86,7 @@ function Carton(id, paletteId, locationId){
 	/**
 	 * Shows carton stock in overlay
 	 */
-	this.showStock = function(){
+	this.showStock = function(showOutgo=false){
 		var dom = document.createElement( 'div' );
 		dom.innerHTML = "<img src='img/loading.gif' /> " + LANG('loading');
 		
@@ -97,7 +97,7 @@ function Carton(id, paletteId, locationId){
 		// load stock data
 		get( 'getStock', {'carton': this.id}, function(data){
 			if( data && data.response ){
-				Stock.showStock( data.response, dom );				
+				Stock.showStock( data.response, dom, showOutgo );				
 			} else {
 				dom.innerHTML = LANG('stock_no_data');
 				dom.className = 'errortext';
@@ -166,12 +166,14 @@ Carton.showButtons = function(show){
 		document.getElementById( 'btnCartonEdit' ).style.display = 'table-cell';
 		document.getElementById( 'btnCartonPrint' ).style.display = 'table-cell';
 		document.getElementById( 'btnCartonDiscard' ).style.display = 'table-cell';
-		document.getElementById( 'btnCartonStock' ).style.display = 'table-cell';
+		document.getElementById( 'btnCartonStockIncome' ).style.display = 'table-cell';
+		document.getElementById( 'btnCartonStockOutgo' ).style.display = 'table-cell';
 	} else {
 		document.getElementById( 'btnCartonEdit' ).style.display = 'none';
 		document.getElementById( 'btnCartonPrint' ).style.display = 'none';
 		document.getElementById( 'btnCartonDiscard' ).style.display = 'none';
-		document.getElementById( 'btnCartonStock' ).style.display = 'none';
+		document.getElementById( 'btnCartonStockIncome' ).style.display = 'none';
+		document.getElementById( 'btnCartonStockOutgo' ).style.display = 'none';
 	}
 }
 
@@ -247,12 +249,20 @@ Carton.print = function(){
 		showErrorMessage( LANG('carton_none_selected') );
 }
 
+Carton.showStockIncome = function(){
+	Carton.showStock(false);
+}
+
+Carton.showStockOutgo = function(){
+	Carton.showStock(true);
+}
+
 /**
  * Shows stock information of selected carton
  */
-Carton.showStock = function(){
+Carton.showStock = function(showOutgo=false){
 	if( Carton.selected )
-		Carton.selected.showStock();
+		Carton.selected.showStock(showOutgo);
 	else
 		showErrorMessage( LANG('carton_none_selected') );
 }
@@ -272,7 +282,8 @@ Carton.initDom = function(domCarton, domStockForm){
 	var btnCartonEdit = document.createElement( 'a' );
 	var btnCartonDiscard = document.createElement( 'a' );
 	var btnCartonPrint = document.createElement( 'a' );
-	var btnCartonStock = document.createElement( 'a' );
+	var btnCartonStockIncome = document.createElement( 'a' );
+	var btnCartonStockOutgo = document.createElement( 'a' );
 	
 	inpCartonSearch.type = 'number';
 	inpCartonSearch.id = 'cartonSearch';
@@ -281,7 +292,8 @@ Carton.initDom = function(domCarton, domStockForm){
 	btnCartonDiscard.id = 'btnCartonDiscard';
 	btnCartonEdit.id = 'btnCartonEdit';
 	btnCartonPrint.id = 'btnCartonPrint';
-	btnCartonStock.id = 'btnCartonStock';
+	btnCartonStockIncome.id = 'btnCartonStockIncome';
+	btnCartonStockOutgo.id = 'btnCartonStockOutgo';
 	
 	// add event listener
 	divCartonSearch.addEventListener( 'keyup', function(e){
@@ -294,7 +306,8 @@ Carton.initDom = function(domCarton, domStockForm){
 	btnCartonEdit.addEventListener( 'click', Carton.edit );
 	btnCartonDiscard.addEventListener( 'click', Carton.discard );
 	btnCartonPrint.addEventListener( 'click', Carton.print );
-	btnCartonStock.addEventListener( 'click', Carton.showStock );
+	btnCartonStockIncome.addEventListener( 'click', Carton.showStockIncome );
+	btnCartonStockOutgo.addEventListener( 'click', Carton.showStockOutgo );
 	
 	// add classes
 	divCartonSearch.className = 'group_left';
@@ -302,13 +315,15 @@ Carton.initDom = function(domCarton, domStockForm){
 	btnCartonDiscard.className = 'button red';
 	btnCartonEdit.className = 'button';
 	btnCartonPrint.className = 'button';
-	btnCartonStock.className = 'button';
+	btnCartonStockIncome.className = 'button tinytext';
+	btnCartonStockOutgo.className = 'button tinytext';
 	divCartonInfo.className = "table_cell inline_text errortext";
 	
 	btnCartonEdit.style.display = 'none';
 	btnCartonPrint.style.display = 'none';
 	btnCartonDiscard.style.display = 'none';
-	btnCartonStock.style.display = 'none';
+	btnCartonStockIncome.style.display = 'none';
+	btnCartonStockOutgo.style.display = 'none';
 	
 	// add content
 	divCartonSearch.innerHTML = LANG( 'search' ) + " " + LANG( 'carton' ) + ": ";		
@@ -317,7 +332,8 @@ Carton.initDom = function(domCarton, domStockForm){
 	btnCartonDiscard.innerHTML = "<img src='img/action/discard.png' />";
 	btnCartonEdit.innerHTML = "<img src='img/action/edit.png' />";
 	btnCartonPrint.innerHTML = "<img src='img/action/print.png' />";
-	btnCartonStock.innerHTML = "<img src='img/action/about.png' />";
+	btnCartonStockIncome.innerHTML = "<img src='img/action/about.png' /><br />" + LANG('income');
+	btnCartonStockOutgo.innerHTML = "<img src='img/action/about.png' /><br />" + LANG('outgo');
 	
 	// append elements
 	divCartonSearch.appendChild( inpCartonSearch );	
@@ -325,7 +341,8 @@ Carton.initDom = function(domCarton, domStockForm){
 	domCarton.appendChild( divCartonInfo );
 	domCarton.appendChild( btnCartonAdd );
 	domCarton.appendChild( btnCartonPrint );
-	domCarton.appendChild( btnCartonStock );
+	domCarton.appendChild( btnCartonStockIncome );
+	domCarton.appendChild( btnCartonStockOutgo );
 	domCarton.appendChild( btnCartonEdit );
 	domCarton.appendChild( btnCartonDiscard );
 	

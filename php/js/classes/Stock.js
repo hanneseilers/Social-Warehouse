@@ -533,7 +533,7 @@ function Stock(warehouseId){
  * @param data	Array of stock data entries.
  * @param dom	DOM element, where to show stock data.
  */
-Stock.showStock = function( data, dom ){
+Stock.showStock = function( data, dom, showOutgo=false ){
 	dom.innerHTML = "";
 	var highlight = false;
 	
@@ -568,7 +568,10 @@ Stock.showStock = function( data, dom ){
 			txtCategory.className = 'table_cell';
 			
 			// set content
-			txtAmount.innerHTML = "<span class='monospace'>" + String(entry.income-entry.outgo).paddingLeft(5, '&nbsp;') + "x </span>";
+			if( showOutgo && entry.income <= entry.outgo )
+				txtAmount.innerHTML = "<span class='monospace'>" + String(-entry.outgo).paddingLeft(5, '&nbsp;') + "x </span>";
+			else if( entry.income > entry.outgo )
+				txtAmount.innerHTML = "<span class='monospace'>" + String(entry.income-entry.outgo).paddingLeft(5, '&nbsp;') + "x </span>";
 			txtCategory.innerHTML = "<span class='monospace'>" + category.getParentsString() + "</span>";
 			imgMale.src = 'img/none_s.png';
 			imgFemale.src = 'img/none_s.png';
@@ -597,9 +600,10 @@ Stock.showStock = function( data, dom ){
 			domRight.appendChild( imgWinter );
 			domRight.appendChild( imgSummer );
 			
-			dom.appendChild( domEntry );
-			
-			highlight = !highlight;
+			if( (!showOutgo && entry.income > entry.outgo) || (showOutgo && entry.income <= entry.outgo) ){
+				dom.appendChild( domEntry );
+				highlight = !highlight;
+			}
 			
 		}
 		

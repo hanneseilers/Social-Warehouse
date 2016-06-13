@@ -11,6 +11,10 @@ h1{
 	font-size: 14pt;
 }
 
+a{
+	cursor: pointer;
+}
+
 textarea{
 	width: 100%;
 }
