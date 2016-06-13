@@ -568,7 +568,7 @@ Stock.showStock = function( data, dom ){
 			txtCategory.className = 'table_cell';
 			
 			// set content
-			txtAmount.innerHTML = "<span class='monospace'>" + String(entry.amount).paddingLeft(5, '&nbsp;') + "x </span>";
+			txtAmount.innerHTML = "<span class='monospace'>" + String(entry.income-entry.outgo).paddingLeft(5, '&nbsp;') + "x </span>";
 			txtCategory.innerHTML = "<span class='monospace'>" + category.getParentsString() + "</span>";
 			imgMale.src = 'img/none_s.png';
 			imgFemale.src = 'img/none_s.png';
