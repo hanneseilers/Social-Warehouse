@@ -23,6 +23,17 @@ class Statistic{
 		return false;
 	}
 	
+	public static function getLocationStock($warehouseId, $locationId){
+		$sql = "SELECT category, male, female, children, baby, summer, winter, SUM(income) AS income, SUM(outgo) AS outgo FROM ".Database::getTableName('stock')
+			." JOIN ".Database::getTableName('cartons')." ON ".Database::getTableName('stock').".carton=".Database::getTableName('cartons').".id"
+			." WHERE ".Database::getTableName('cartons').".warehouse=? AND ".Database::getTableName('cartons').".location=?"
+			." GROUP BY category, male, female, children, baby, summer, winter";
+		$response = Database::getInstance()->sql( 'getLocationStock'.($locationId), $sql, 'ii', [$warehouseId, $locationId], false );
+		if( count($response) > 0 )
+			return $response;
+			return false;
+	}
+	
 }
 
 ?>
