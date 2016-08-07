@@ -536,6 +536,8 @@ function Stock(warehouseId){
 Stock.showStock = function( data, dom, showOutgo=false ){
 	dom.innerHTML = "";
 	var highlight = false;
+	amountTotal = 0;
+	weightTotal = 0;
 	
 	for( var i=0; i<data.length; i++ ){
 		
@@ -550,6 +552,7 @@ Stock.showStock = function( data, dom, showOutgo=false ){
 			var domLeft = document.createElement( 'span' );
 			var txtAmount = document.createElement( 'span' );
 			var txtCategory = document.createElement( 'span' );
+			var txtWeight = document.createElement( 'span' );
 			var domRight = document.createElement( 'span' );
 			var imgMale = document.createElement( 'img' );
 			var imgFemale = document.createElement( 'img' );
@@ -566,13 +569,30 @@ Stock.showStock = function( data, dom, showOutgo=false ){
 			domRight.className = 'table_cell';
 			txtAmount.className = 'table_cell';
 			txtCategory.className = 'table_cell';
+			txtWeight.className = 'table_cell';
 			
 			// set content
 			if( showOutgo && entry.income <= entry.outgo )
-				txtAmount.innerHTML = "<span class='monospace'>" + String(-entry.outgo).paddingLeft(5, '&nbsp;') + "x </span>";
+				amount = -entry.outgo;
 			else if( entry.income > entry.outgo )
-				txtAmount.innerHTML = "<span class='monospace'>" + String(entry.income-entry.outgo).paddingLeft(5, '&nbsp;') + "x </span>";
+				amount = entry.income-entry.outgo;
+			
+			weightSign = " g";
+			weight = category.weight * amount;
+			if( weight > 1000.0 ){
+				weight = weight / 1000.0;
+				weightSign = "kg";
+			}
+			if( weight > 1000.0 ){
+				weight = weight / 1000.0;
+				weightSign = " t";
+			}
+			
+			txtAmount.innerHTML = "<span class='monospace'>" + String(amount).paddingLeft(5, '&nbsp;') + "x </span>";
 			txtCategory.innerHTML = "<span class='monospace'>" + category.getParentsString() + "</span>";
+			txtWeight.innerHTML = "<span class='monospace'>"
+				+ String( "(" + Math.round(weight*100)/100 + weightSign + ")" ).paddingLeft(10, '&nbsp;')
+				+ "</span>";
 			imgMale.src = 'img/none_s.png';
 			imgFemale.src = 'img/none_s.png';
 			imgChildren.src = 'img/none_s.png';
@@ -582,6 +602,7 @@ Stock.showStock = function( data, dom, showOutgo=false ){
 			
 			// add to content
 			domLeft.appendChild( txtAmount );
+			domLeft.appendChild( txtWeight );
 			domLeft.appendChild( txtCategory );
 			domEntry.appendChild( domLeft );
 			domEntry.appendChild( domRight );
@@ -600,12 +621,53 @@ Stock.showStock = function( data, dom, showOutgo=false ){
 			domRight.appendChild( imgWinter );
 			domRight.appendChild( imgSummer );
 			
+			
 			if( (!showOutgo && entry.income > entry.outgo) || (showOutgo && entry.income <= entry.outgo) ){
 				dom.appendChild( domEntry );
 				highlight = !highlight;
+				
+				weightTotal += category.weight * amount;
+				amountTotal += amount;
 			}
 			
 		}
 		
 	}
+	
+	// add total amount and weight
+	// create elements
+	var domEntry = document.createElement( 'div' );
+	var domLeft = document.createElement( 'span' );
+	var txtAmount = document.createElement( 'span' );
+	var txtWeight = document.createElement( 'span' );
+	var domHr = document.createElement( 'hr' );
+	
+	// set classes
+	domEntry.className = 'table';
+	domLeft.className = 'group_left';
+	txtAmount.className = 'table_cell';
+	txtWeight.className = 'table_cell';
+	
+	// set content
+	weightSign = " g";
+	if( weightTotal > 1000.0 ){
+		weightTotal = weightTotal / 1000.0;
+		weightSign = "kg";
+	}
+	if( weightTotal > 1000.0 ){
+		weightTotal = weightTotal / 1000.0;
+		weightSign = " t";
+	}
+	
+	txtAmount.innerHTML = "<span class='monospace boldtext'>TOTAL: " + amountTotal + " articles "
+		+ "= " + Math.round(weightTotal*100)/100 + weightSign
+		+ "</span>";
+	
+	// add elements
+	// add to content
+	domLeft.appendChild( txtAmount );
+	domLeft.appendChild( txtWeight );
+	domEntry.appendChild( domLeft );
+	dom.appendChild( domHr );
+	dom.appendChild( domEntry );
 }

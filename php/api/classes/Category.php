@@ -15,7 +15,10 @@ class Category{
 	public $male = false;
 	public $female = false;
 	public $children = false;
-	public $baby = false; 
+	public $baby = false;
+	public $summer = false;
+	public $winter = false;
+	public $weight = 0;
 	
 	/**
 	 * Constructor
@@ -37,8 +40,8 @@ class Category{
 	public function edit(){
 		if( $this->id > 0 && $this->warehouseId > 0
 				&& is_string($this->name) && strlen($this->name) > 0 ){
-			$sql = "UPDATE ".Database::getTableName('categories')." SET parent=?, warehouse=?, name=?, demand=?, male=?, female=?, children=?, baby=? WHERE id=?";
-			$response = Database::getInstance()->sql( 'editCategory', $sql, 'iisiiiiii', [
+			$sql = "UPDATE ".Database::getTableName('categories')." SET parent=?, warehouse=?, name=?, demand=?, male=?, female=?, children=?, baby=?, summer=?, winter=?, weight=? WHERE id=?";
+			$response = Database::getInstance()->sql( 'editCategory', $sql, 'iisiiiiiiiii', [
 					$this->parent,
 					$this->warehouseId,
 					$this->name,
@@ -47,6 +50,9 @@ class Category{
 					$this->female,
 					$this->children,
 					$this->baby,
+					$this->summer,
+					$this->winter,
+					$this->weight,
 					$this->id
 			], false );
 			
@@ -103,6 +109,9 @@ class Category{
 			$this->female = $response['female'];
 			$this->children = $response['children'];
 			$this->baby = $response['baby'];
+			$this->summer = $response['summer'];
+			$this->winter = $response['winter'];
+			$this->weight = $response['weight'];
 		}
 	}
 	
@@ -138,6 +147,9 @@ class Category{
 				$category->female = $entry['female'];
 				$category->children = $entry['children'];
 				$category->baby = $entry['baby'];
+				$category->summer = $entry['summer'];
+				$category->winter = $entry['winter'];
+				$category->weight = $entry['weight'];
 				array_push( $categories, $category );
 			}
 		}

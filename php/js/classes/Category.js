@@ -1,4 +1,4 @@
-function Category(id, name, parentId, demand, male, female, children, baby, summer, winter){
+function Category(id, name, parentId, demand, male, female, children, baby, summer, winter, weight){
 	
 	this.id = id;
 	this.name = name;
@@ -10,6 +10,7 @@ function Category(id, name, parentId, demand, male, female, children, baby, summ
 	this.baby = (baby ? true : false );
 	this.summer = (summer ? true : false );
 	this.winter = (winter ? true : false );
+	this.weight = (weight ? weight : 0);
 	
 	// DOM Elements
 	this.domElement = null;
@@ -59,7 +60,8 @@ function Category(id, name, parentId, demand, male, female, children, baby, summ
 			'children': this.children,
 			'baby': this.baby,
 			'summer': this.summer,
-			'winter': this.winter
+			'winter': this.winter,
+			'weight': this.weight
 			}, callback );
 	}
 	
@@ -234,7 +236,8 @@ Category.load = function(callback){
 							categories[i].children,
 							categories[i].baby,
 							categories[i].summer,
-							categories[i].winter);
+							categories[i].winter,
+							categories[i].weight);
 					Category.categories.push( category );
 				}
 			}			

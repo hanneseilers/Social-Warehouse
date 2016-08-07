@@ -53,6 +53,16 @@ String.prototype.paddingLeft = function (paddingLength, paddingSequence) {
    return String(string);
 };
 
+String.prototype.paddingRight = function (paddingLength, paddingSequence) {
+	   var string = new String(this);
+	   var count = paddingLength - string.length;
+	   while( count > 0 ){
+		   count -= 1;
+		   string += paddingSequence;
+	   }
+	   return String(string);
+	};
+
 /**
  * Starts a timer that automatically calls a callback,
  * before session gets timed out.
