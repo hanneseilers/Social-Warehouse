@@ -151,7 +151,7 @@ Category.categories = [];
  * @param name		Name of category
  * @param parentId 	ID of parent category. Use -1 to show root categories.
  */
-Category.getCategories = function(id, name, parentId){
+Category.getCategories = function(id, name=null, parentId=null){
 	
 	var categories = [];
 	

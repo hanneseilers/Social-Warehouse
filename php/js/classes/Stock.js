@@ -137,10 +137,10 @@ function Stock(warehouseId){
 			this.domCategorySearch = document.createElement( 'div' );
 			this.domCategoryEdit = document.createElement( 'div' );
 			
-			var categoryAttributeSettings = document.createElement( 'span' );
 			var categoryInfo = document.createElement( 'span' );
 			var categoryDemandInfo = document.createElement( 'span' );
 			var categoryWeightInfo = document.createElement( 'span' );
+			var btnUpdateCategory = document.createElement( 'input' );
 			
 			this.inpCategoryDemand = document.createElement( 'input' );
 			this.inpCategoryWeight = document.createElement( 'input' );
@@ -151,6 +151,7 @@ function Stock(warehouseId){
 			this.inpCategoryDemand.type = 'number';
 			this.inpCategoryWeight.type = 'number';
 			this.inpCategorySearch.type = 'text';
+			btnUpdateCategory.type = 'submit';
 			
 			
 			// add classes
@@ -164,7 +165,6 @@ function Stock(warehouseId){
 			
 			categorySearch.className = "group_left";
 			categoryInfo.className = "table_cell inline_text";
-			categoryAttributeSettings = "group_left";			
 			
 			// add event listener
 			this.inpCategoryDemand.addEventListener( 'keyup', function(e){
@@ -180,9 +180,33 @@ function Stock(warehouseId){
 				}, 100 );				
 			} );
 			
+			btnUpdateCategory.addEventListener( 'click', function(){
+				// extract category from its id
+				var categoryId = $('#categoryTree').jstree('get_selected')[0];
+				if( categoryId > 0 ){
+					var category = Category.getCategories( categoryId );
+					if( category.length > 0 ){
+						
+						// change category settings and edit it
+						category = category[0];
+						category.demand =  Main.getInstance().warehouse.stock.inpCategoryDemand.value;
+						category.weight =  Main.getInstance().warehouse.stock.inpCategoryWeight.value;
+						category.edit( function(data){
+							if( data && data.response ){
+								Main.getInstance().warehouse.stock.reloadCategories();
+							}
+						} );
+						
+					}
+				}
+			} );
+			
+			// add content
 			categorySearch.innerHTML = LANG( 'search' ) + ": ";
 			categoryWeightInfo.innerHTML = " " + LANG( 'weight_per_article' ) + ": ";
+			btnUpdateCategory.value = LANG( 'category_update' );
 			
+			// set ids
 			this.inpCategorySearch.id = 'categorySearch';
 			categoryDemandInfo.id = 'categoryName';
 			
@@ -196,15 +220,15 @@ function Stock(warehouseId){
 			categorySearch.appendChild( this.inpCategorySearch );
 			this.domCategorySearch.appendChild( categorySearch );
 			
-			
 			categoryInfo.appendChild( categoryDemandInfo );
-			categoryInfo.appendChild( createTextElement( "<br>" + LANG( 'demand' ) + ": " ) ); 
+			categoryInfo.appendChild( createTextElement( "<br/>" + LANG( 'demand' ) + ": " ) ); 
 			categoryInfo.appendChild( this.inpCategoryDemand )
 			categoryInfo.appendChild( createTextElement( " " + LANG( 'pcs' ) + String("").paddingLeft(5, '&nbsp;') ) );
 			
 			categoryInfo.appendChild( categoryWeightInfo );
 			categoryInfo.appendChild( this.inpCategoryWeight );
-			categoryInfo.appendChild( createTextElement( " g" ) );
+			categoryInfo.appendChild( createTextElement( " g" + String("").paddingLeft(10, '&nbsp;') )  );
+			categoryInfo.appendChild( btnUpdateCategory );
 			
 			
 			if( !Main.getInstance().session.restricted )

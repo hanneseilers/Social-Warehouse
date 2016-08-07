@@ -67,6 +67,7 @@ $LANG = [
 		'location_delete_failed' => "Failed to delete location",
 		
 		'category' => "Category",
+		'category_update' => "Update Category",
 		'categories' => "Categories",
 		'category_select' => "Select category",
 		'category_added' => "Category added",
@@ -93,8 +94,8 @@ $LANG = [
 		
 		'barcode_failed' => "Failed to generate barcode",
 	
-		'weight_per_article' => "weight/pcs.",
-		'demand' => "Demand",
+		'weight_per_article' => "weight/article",
+		'demand' => "demand",
 		'income' => "Income",
 		'outgo' => "Outgo",
 		'pcs' => "pcs.",
