@@ -93,6 +93,7 @@ $LANG = [
 		
 		'barcode_failed' => "Failed to generate barcode",
 	
+		'weight_per_article' => "weight/pcs.",
 		'demand' => "Demand",
 		'income' => "Income",
 		'outgo' => "Outgo",

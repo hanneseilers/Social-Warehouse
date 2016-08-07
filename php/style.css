@@ -23,6 +23,10 @@ input{
 	font-size: 12pt;
 }
 
+.input_limit{
+	width: 80px;
+}
+
 .monospace{
 	font-family: monospace;
 }

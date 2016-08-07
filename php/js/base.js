@@ -62,6 +62,12 @@ String.prototype.paddingRight = function (paddingLength, paddingSequence) {
 	   }
 	   return String(string);
 	};
+	
+function createTextElement(html){
+	var element = document.createElement( 'span' );
+	element.innerHTML = html;
+	return element;
+}
 
 /**
  * Starts a timer that automatically calls a callback,

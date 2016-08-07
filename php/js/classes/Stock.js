@@ -21,6 +21,7 @@ function Stock(warehouseId){
 	this.domCategories = null;
 	this.domStockForm = null;
 	
+	this.inpCategoryWeight = null;
 	this.inpCategoryDemand = null;
 	this.inpCategorySearch = null;
 	this.txtCategoryName = null;
@@ -137,14 +138,18 @@ function Stock(warehouseId){
 			this.domCategoryEdit = document.createElement( 'div' );
 			
 			var categoryAttributeSettings = document.createElement( 'span' );
-			var categoryDemand = document.createElement( 'span' );
+			var categoryInfo = document.createElement( 'span' );
 			var categoryDemandInfo = document.createElement( 'span' );
+			var categoryWeightInfo = document.createElement( 'span' );
+			
 			this.inpCategoryDemand = document.createElement( 'input' );
+			this.inpCategoryWeight = document.createElement( 'input' );
 			
 			var categorySearch = document.createElement( 'span' );
 			this.inpCategorySearch = document.createElement( 'input' );
 			
 			this.inpCategoryDemand.type = 'number';
+			this.inpCategoryWeight.type = 'number';
 			this.inpCategorySearch.type = 'text';
 			
 			
@@ -154,10 +159,12 @@ function Stock(warehouseId){
 			this.domCarton.className = "groupitem";
 			this.domStockForm.className = "groupitem";
 			
-			categorySearch.className = "group_left";
-			categoryDemand.className = "table_cell righttext inline_text";
-			categoryAttributeSettings = "group_left";
+			this.inpCategoryDemand.className = "input_limit";
+			this.inpCategoryWeight.className = "input_limit";
 			
+			categorySearch.className = "group_left";
+			categoryInfo.className = "table_cell inline_text";
+			categoryAttributeSettings = "group_left";			
 			
 			// add event listener
 			this.inpCategoryDemand.addEventListener( 'keyup', function(e){
@@ -173,8 +180,8 @@ function Stock(warehouseId){
 				}, 100 );				
 			} );
 			
-			categoryDemand.innerHTML = LANG( 'demand' ) + ": ";
 			categorySearch.innerHTML = LANG( 'search' ) + ": ";
+			categoryWeightInfo.innerHTML = " " + LANG( 'weight_per_article' ) + ": ";
 			
 			this.inpCategorySearch.id = 'categorySearch';
 			categoryDemandInfo.id = 'categoryName';
@@ -189,10 +196,19 @@ function Stock(warehouseId){
 			categorySearch.appendChild( this.inpCategorySearch );
 			this.domCategorySearch.appendChild( categorySearch );
 			
-			categoryDemand.appendChild( this.inpCategoryDemand )
-			categoryDemand.appendChild( categoryDemandInfo );
+			
+			categoryInfo.appendChild( categoryDemandInfo );
+			categoryInfo.appendChild( createTextElement( "<br>" + LANG( 'demand' ) + ": " ) ); 
+			categoryInfo.appendChild( this.inpCategoryDemand )
+			categoryInfo.appendChild( createTextElement( " " + LANG( 'pcs' ) + String("").paddingLeft(5, '&nbsp;') ) );
+			
+			categoryInfo.appendChild( categoryWeightInfo );
+			categoryInfo.appendChild( this.inpCategoryWeight );
+			categoryInfo.appendChild( createTextElement( " g" ) );
+			
+			
 			if( !Main.getInstance().session.restricted )
-				this.domCategoryEdit.appendChild( categoryDemand );
+				this.domCategoryEdit.appendChild( categoryInfo );
 			
 			
 			// initi carton DOM elements
@@ -430,9 +446,10 @@ function Stock(warehouseId){
 		// show category information
 		if( element ){
 			if( category ){
-				element.innerHTML = " " + LANG( 'pcs' ) + " " + category.name + " (#" + category.id + ")";
+				element.innerHTML = category.name + " - ID: #" + category.id;
 				element.className = '';
 				this.inpCategoryDemand.value = category.demand;
+				this.inpCategoryWeight.value = category.weight;
 				
 			} else {
 				element.innerHTML = " " + LANG('category_select');
