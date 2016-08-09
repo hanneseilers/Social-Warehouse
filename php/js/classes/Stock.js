@@ -655,10 +655,13 @@ Stock.showStock = function( data, dom, showOutgo=false ){
 			if( entry.baby ) imgBaby.src = 'img/baby_s.png';
 			if( entry.winter ) imgWinter.src = 'img/winter_s.png';
 			if( entry.summer ) imgSummer.src = 'img/summer_s.png';
+			domRight.appendChild( createTextElement("|") );
 			domRight.appendChild( imgMale );
 			domRight.appendChild( imgFemale );
+			domRight.appendChild( createTextElement("|") );
 			domRight.appendChild( imgChildren );
 			domRight.appendChild( imgBaby );
+			domRight.appendChild( createTextElement("|") );
 			domRight.appendChild( imgWinter );
 			domRight.appendChild( imgSummer );
 			

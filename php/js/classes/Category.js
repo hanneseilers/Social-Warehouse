@@ -128,7 +128,7 @@ function Category(id, name, parentId, demand, male, female, children, baby, summ
 	 */
 	this.getParentsString = function(level){		
 		var parents = this.getParents(level);
-		var string = this.getShortName();
+		var string = this.getName();
 		
 		for( var i=0; i<parents.length; i++ ){
 			string = parents[i].getShortName() + " > " + string;
@@ -143,7 +143,7 @@ function Category(id, name, parentId, demand, male, female, children, baby, summ
 	
 	this.getShortName = function(length){
 		if( !length )
-			length = 8;
+			length = 10;
 		return String( this.getName() ).shorten(length, '.')
 	}
 	
