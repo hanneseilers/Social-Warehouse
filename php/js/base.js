@@ -35,7 +35,7 @@ get = function (f, data, callback){
 /**
  * New string prototype functions
  */
-String.prototype.endsWith = function(suffix) {
+String.prototype.endsWith = function(suffix){
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
@@ -43,7 +43,7 @@ String.prototype.startsWith = function (str){
     return this.indexOf(str) === 0;
 };
 
-String.prototype.paddingLeft = function (paddingLength, paddingSequence) {
+String.prototype.paddingLeft = function(paddingLength, paddingSequence){
    var string = new String(this);
    var count = paddingLength - string.length;
    while( count > 0 ){
@@ -53,7 +53,7 @@ String.prototype.paddingLeft = function (paddingLength, paddingSequence) {
    return String(string);
 };
 
-String.prototype.paddingRight = function (paddingLength, paddingSequence) {
+String.prototype.paddingRight = function(paddingLength, paddingSequence){
 	   var string = new String(this);
 	   var count = paddingLength - string.length;
 	   while( count > 0 ){
@@ -61,7 +61,20 @@ String.prototype.paddingRight = function (paddingLength, paddingSequence) {
 		   string += paddingSequence;
 	   }
 	   return String(string);
-	};
+};
+
+String.prototype.shorten = function(length, endChar){
+	var string = new String(this);
+	if( length < string.length ){
+		string = string.substr(0, length);
+		
+		if( endChar )
+			string += endChar;
+		
+	}
+	
+	return string;
+}
 	
 function createTextElement(html){
 	var element = document.createElement( 'span' );
