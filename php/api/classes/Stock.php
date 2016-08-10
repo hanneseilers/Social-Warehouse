@@ -12,6 +12,8 @@ class Stock{
 				return Statistic::getPaletteStock($warehouseId, $paletteId);
 			} else if( $locationId ){
 				return Statistic::getLocationStock($warehouseId, $locationId);
+			} else if( $categoryId ){
+				return Statistic::getCategoryStock($warehouseId, $categoryId);
 			}
 			
 		}

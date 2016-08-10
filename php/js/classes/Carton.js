@@ -348,7 +348,7 @@ Carton.initDom = function(domCarton, domStockForm){
 	
 	
 	
-	// stock form
+	// ------------------ stock form ------------------
 	var divRight = document.createElement( 'div' );
 	var txtIncome = document.createElement( 'span' );
 	var txtOutgo = document.createElement( 'span' );
@@ -358,6 +358,7 @@ Carton.initDom = function(domCarton, domStockForm){
 	var btnBaby = document.createElement( 'a' );
 	var btnSummer = document.createElement( 'a' );
 	var btnWinter = document.createElement( 'a' );
+	var btnStockInfo = document.createElement( 'a' );
 	var inpIncome = document.createElement( 'input' );
 	var inpOutgo = document.createElement( 'input' );
 	inpIncome.type = 'number';
@@ -382,6 +383,7 @@ Carton.initDom = function(domCarton, domStockForm){
 	btnBaby.className = 'button';
 	btnSummer.className = 'button';
 	btnWinter.className = 'button';
+	btnStockInfo.className = "button";
 	
 	// add event listener
 	btnMale.addEventListener( 'click', function(){
@@ -408,12 +410,15 @@ Carton.initDom = function(domCarton, domStockForm){
 		var stock = Main.getInstance().warehouse.stock;
 		stock.selectSummer( !stock.summerSelected );
 		Carton.updateAttributeButtons();
-	} )
+	} );
 	btnWinter.addEventListener( 'click', function(){
 		var stock = Main.getInstance().warehouse.stock;
 		stock.selectWinter( !stock.winterSelected );
 		Carton.updateAttributeButtons();
-	} )
+	} );
+	btnStockInfo.addEventListener( 'click', function(){
+		 Category.showStock();
+	} );
 	inpIncome.addEventListener( 'focus', function(){
 		var stock = Main.getInstance().warehouse.stock;
 		stock.incomeSelected = true;
@@ -427,7 +432,7 @@ Carton.initDom = function(domCarton, domStockForm){
 				&& ((window.event && e.keyCode == 13 ) || e.which == 13) ){
 			Main.getInstance().warehouse.stock.addArticle( parseInt(inpIncome.value) );
 		}
-	} )
+	} );
 	inpOutgo.addEventListener( 'focus', function(){
 		var stock = Main.getInstance().warehouse.stock;
 		stock.incomeSelected = false;
@@ -441,7 +446,7 @@ Carton.initDom = function(domCarton, domStockForm){
 				&& ((window.event && e.keyCode == 13 ) || e.which == 13) ){
 			Main.getInstance().warehouse.stock.addArticle( parseInt(inpOutgo.value)*(-1) );
 		}
-	} )
+	} );
 	
 	// add content
 	btnMale.innerHTML = "<img src='img/male_s.png' /> " + LANG('male');
@@ -450,8 +455,9 @@ Carton.initDom = function(domCarton, domStockForm){
 	btnBaby.innerHTML = "<img src='img/baby_s.png' /> " + LANG('baby');
 	btnSummer.innerHTML = "<img src='img/summer_s.png' /> " + LANG('summer');
 	btnWinter.innerHTML = "<img src='img/winter_s.png' /> " + LANG('winter');
+	btnStockInfo.innerHTML = "<img src='img/action/about.png' />";
 	txtIncome.innerHTML = LANG('income') + ": ";
-	txtOutgo.innerHTML = " " + LANG('outgo') + ": ";
+	txtOutgo.innerHTML = " " + LANG('outgo') + ": ";	
 	
 	// add elements
 	domStockForm.appendChild( btnMale );
@@ -466,6 +472,7 @@ Carton.initDom = function(domCarton, domStockForm){
 	divRight.appendChild( txtOutgo );
 	divRight.appendChild( inpOutgo );
 	domStockForm.appendChild( divRight );
+	domStockForm.appendChild( btnStockInfo );
 	
 }
 

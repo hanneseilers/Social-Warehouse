@@ -75,6 +75,10 @@ String.prototype.shorten = function(length, endChar){
 	
 	return string;
 }
+
+function createHrElement(){
+	return document.createElement( 'hr' );
+}
 	
 function createTextElement(html){
 	var element = document.createElement( 'span' );

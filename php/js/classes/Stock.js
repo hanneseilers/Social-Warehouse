@@ -38,7 +38,7 @@ function Stock(warehouseId){
 	 */
 	this.addArticle = function(amount){		
 		
-		// check barcodescanner state, do not continiue if barcode reading is active (state > 0)
+		// check barcodescanner state, do not continue if barcode reading is active (state > 0)
 		var barcodescanner = Main.getInstance().barcodescanner;
 		if( barcodescanner && barcodescanner.state == 0 ){
 			
@@ -206,6 +206,7 @@ function Stock(warehouseId){
 			categoryWeightInfo.innerHTML = " " + LANG( 'weight_per_article' ) + ": ";
 			btnUpdateCategory.value = LANG( 'category_update' );
 			
+			
 			// set ids
 			this.inpCategorySearch.id = 'categorySearch';
 			categoryDemandInfo.id = 'categoryName';
@@ -231,7 +232,7 @@ function Stock(warehouseId){
 			categoryInfo.appendChild( btnUpdateCategory );
 			
 			
-			if( !Main.getInstance().session.restricted )
+//			if( !Main.getInstance().session.restricted )
 				this.domCategoryEdit.appendChild( categoryInfo );
 			
 			
@@ -577,8 +578,10 @@ function Stock(warehouseId){
 Stock.showStock = function( data, dom, showOutgo=false ){
 	dom.innerHTML = "";
 	var highlight = false;
-	amountTotal = 0;
-	weightTotal = 0;
+	var amountTotal = 0;
+	var weightTotal = 0;
+	var lastLocation = "";
+	
 	
 	for( var i=0; i<data.length; i++ ){
 		
@@ -629,8 +632,13 @@ Stock.showStock = function( data, dom, showOutgo=false ){
 				weightSign = " t";
 			}
 			
+			// check if to set category name or palette number
+			if( entry.hasOwnProperty('number') )
+				txtCategory.innerHTML = "<span class='monospace'>#" + (entry.number ? entry.number : 'undefined') + "</span>";
+			else
+				txtCategory.innerHTML = "<span class='monospace'>" + category.getParentsString() + "</span>";
+			
 			txtAmount.innerHTML = "<span class='monospace'>" + String(amount).paddingLeft(5, '&nbsp;') + "x </span>";
-			txtCategory.innerHTML = "<span class='monospace'>" + category.getParentsString() + "</span>";
 			txtWeight.innerHTML = "<span class='monospace'>"
 				+ String( "(" + Math.round(weight*100)/100 + weightSign + ")" ).paddingLeft(10, '&nbsp;')
 				+ "</span>";
@@ -667,6 +675,15 @@ Stock.showStock = function( data, dom, showOutgo=false ){
 			
 			
 			if( (!showOutgo && entry.income > entry.outgo) || (showOutgo && entry.income <= entry.outgo) ){
+				// check if location is available and changed
+				if( entry.hasOwnProperty('name') && lastLocation != entry.name ){
+					var txtLocation = createTextElement( (entry.name ? entry.name : 'undefined') + ":" );
+					txtLocation.className = "boldtext";
+					dom.appendChild( txtLocation );
+					lastLocation = entry.name;
+				}
+				
+				// add data
 				dom.appendChild( domEntry );
 				highlight = !highlight;
 				
@@ -684,7 +701,6 @@ Stock.showStock = function( data, dom, showOutgo=false ){
 	var domLeft = document.createElement( 'span' );
 	var txtAmount = document.createElement( 'span' );
 	var txtWeight = document.createElement( 'span' );
-	var domHr = document.createElement( 'hr' );
 	
 	// set classes
 	domEntry.className = 'table';
@@ -707,11 +723,10 @@ Stock.showStock = function( data, dom, showOutgo=false ){
 		+ "= " + Math.round(weightTotal*100)/100 + weightSign
 		+ "</span>";
 	
-	// add elements
-	// add to content
+	// add elements to content
 	domLeft.appendChild( txtAmount );
 	domLeft.appendChild( txtWeight );
 	domEntry.appendChild( domLeft );
-	dom.appendChild( domHr );
+	dom.appendChild( createHrElement() );
 	dom.appendChild( domEntry );
 }

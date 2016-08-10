@@ -147,6 +147,25 @@ function Category(id, name, parentId, demand, male, female, children, baby, summ
 		return String( this.getName() ).shorten(length, '.')
 	}
 	
+	this.showStock = function(){
+		var dom = document.createElement( 'div' );
+		dom.innerHTML = "<img src='img/loading.gif' /> " + LANG('loading');
+		
+		// show overlay
+		var overlay = new Overlay( dom, LANG('close'), null, function(){ overlay.hide(); }, null );
+		overlay.show();
+		
+		// load stock data
+		get( 'getStock', {'category': this.id}, function(data){
+			if( data && data.response ){
+				Stock.showStock( data.response, dom );				
+			} else {
+				dom.innerHTML = LANG('stock_no_data');
+				dom.className = 'errortext';
+			}
+		} );
+	}
+	
 }
 
 
@@ -220,6 +239,14 @@ Category.getCategories = function(id, name=null, parentId=null){
 Category.add = function(category, callback){
 	if( category )
 		get( 'addCategory', {'name': category.name, 'parent': category.parentId}, callback );
+}
+
+Category.showStock = function(){
+	if( Main.getInstance().warehouse.stock.category ){
+		 var category = Category.getCategories( Main.getInstance().warehouse.stock.category );
+		 if( category.length > 0 )
+			 category[0].showStock();
+	 }
 }
 
 /**
