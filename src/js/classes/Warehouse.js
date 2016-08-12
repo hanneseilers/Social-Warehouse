@@ -165,7 +165,7 @@ function Warehouse(id, name, description, country, city){
 		// add event listener
 		var self = this;
 		btnLogout.addEventListener( 'click', function(){ self.logout(); } );
-		btnDemand.addEventListener( 'click', function(){ console.debug('show demand'); } );
+		btnDemand.addEventListener( 'click', function(){ self.showStock(); } );
 		btnEdit.addEventListener( 'click', function(){ console.debug('edit'); } );
 		
 		// append elements
@@ -206,7 +206,7 @@ function Warehouse(id, name, description, country, city){
 		// add event listener
 		var self = this;
 		btnLogin.addEventListener( 'click', function(){ self.login(); } );
-		btnDemand.addEventListener( 'click', function(){ console.debug('show demand'); } );
+		btnDemand.addEventListener( 'click', function(){ self.showStock(); } );
 		btnInfo.addEventListener( 'click', function(){ self.showInfo(); } );
 		this.domPasswordInput.addEventListener( 'keypress', function(event){ if(event.keyCode == 13) self.login(); } );
 		
@@ -319,6 +319,29 @@ function Warehouse(id, name, description, country, city){
 		
 		var overlay = Overlay.getOverlay( content, LANG('close'), null, function(){ overlay.hide(); }, null );
 		overlay.show();
+	}
+	
+	/**
+	 * Shows total warehouse stock
+	 */
+	this.showStock = function(){
+		var dom = document.createElement( 'div' );
+		dom.innerHTML = "<img src='img/loading.gif' /> " + LANG('loading');
+		
+		// show overlay
+		var overlay = new Overlay( dom, LANG('close'), null, function(){ overlay.hide(); }, null );
+		overlay.show();
+		
+		// load stock data
+		get( 'getStock', {}, function(data){
+			if( data && data.response ){
+				console.log(data);
+				Stock.showStock( data.response, dom );				
+			} else {
+				dom.innerHTML = LANG('stock_no_data');
+				dom.className = 'errortext';
+			}
+		} );
 	}
 
 }
