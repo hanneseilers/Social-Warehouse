@@ -183,15 +183,18 @@ function Stock(warehouseId){
 			btnUpdateCategory.addEventListener( 'click', function(){
 				// extract category from its id
 				var categoryId = $('#categoryTree').jstree('get_selected')[0];
+				console.log(categoryId);
 				if( categoryId > 0 ){
-					var category = Category.getCategories( categoryId );
+					var category = Category.getCategories( categoryId );					
 					if( category.length > 0 ){
 						
 						// change category settings and edit it
 						category = category[0];
-						category.demand =  Main.getInstance().warehouse.stock.inpCategoryDemand.value;
-						category.weight =  Main.getInstance().warehouse.stock.inpCategoryWeight.value;
+						console.log("categories: " + category);
+						category.demand =  parseInt(Main.getInstance().warehouse.stock.inpCategoryDemand.value);
+						category.weight =  parseInt(Main.getInstance().warehouse.stock.inpCategoryWeight.value);
 						category.edit( function(data){
+							console.log(data);
 							if( data && data.response ){
 								Main.getInstance().warehouse.stock.reloadCategories();
 							}

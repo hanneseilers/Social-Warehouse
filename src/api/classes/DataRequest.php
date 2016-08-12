@@ -106,19 +106,22 @@ class DataRequest extends Request{
 					break;
 					
 				case 'editCategory':
-					if( !$session->restricted && isset($this->data->id) ){
+					if( isset($this->data->id) ){
 						$data = $this->data;
 						$category = new Category( $this->data->id, $session->warehouseId );
 						
-						if( isset($data->name) ) $category->name = $data->name;
+						if( !$session->restricted ){
+							if( isset($data->name) ) $category->name = $data->name;							
+							if( isset($data->parent) ) $category->parent = $data->parent;
+							if( isset($data->male) ) $category->male = $data->male;
+							if( isset($data->female) ) $category->female = $data->female;
+							if( isset($data->children) ) $category->children = $data->children;
+							if( isset($data->baby) ) $category->baby = $data->baby;
+							if( isset($data->summer) ) $category->summer = $data->summer;
+							if( isset($data->winter) ) $category->winter = $data->winter;
+						}
+						
 						if( isset($data->demand) ) $category->demand = $data->demand;
-						if( isset($data->parent) ) $category->parent = $data->parent;
-						if( isset($data->male) ) $category->male = $data->male;
-						if( isset($data->female) ) $category->female = $data->female;
-						if( isset($data->children) ) $category->children = $data->children;
-						if( isset($data->baby) ) $category->baby = $data->baby;
-						if( isset($data->summer) ) $category->summer = $data->summer;
-						if( isset($data->winter) ) $category->winter = $data->winter;
 						if( isset($data->weight) ) $category->weight = $data->weight;
 						return $category->edit();
 					}
