@@ -194,9 +194,11 @@ function Stock(warehouseId){
 						category.demand =  parseInt(Main.getInstance().warehouse.stock.inpCategoryDemand.value);
 						category.weight =  parseInt(Main.getInstance().warehouse.stock.inpCategoryWeight.value);
 						category.edit( function(data){
-							console.log(data);
 							if( data && data.response ){
 								Main.getInstance().warehouse.stock.reloadCategories();
+								showStatusMessage( LANG('category_updated') );
+							} else {
+								showStatusMessage( LANG('category_update_failed'), 'red' );
 							}
 						} );
 						
