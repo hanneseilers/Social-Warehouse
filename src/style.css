@@ -47,6 +47,11 @@ input{
 
 .table_cell{
 	display: table-cell;
+	with: 100%;
+}
+
+.table_row{
+	display: table_row;
 }
 
 .table_content{
@@ -290,6 +295,16 @@ input{
 	overflow: auto;
 }
 
+.stock{
+	display: block;
+	padding: 5px;
+	overflow: auto;
+	
+	font-weight: normal;
+	font-size: 10pt;
+	background-color: #ffffff;
+}
+
 .status_message{
 	position: absolute;
 	top: 1%;
@@ -301,7 +316,6 @@ input{
 	border-radius: 10px;
 	border-color: #303030;
 }
-
 
 .warehouseslist{
 	overflow: auto;

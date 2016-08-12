@@ -325,23 +325,28 @@ function Warehouse(id, name, description, country, city){
 	 * Shows total warehouse stock
 	 */
 	this.showStock = function(){
+		var win = window.open( "stock.htm", "stock" );
 		var dom = document.createElement( 'div' );
 		dom.innerHTML = "<img src='img/loading.gif' /> " + LANG('loading');
 		
-		// show overlay
-		var overlay = new Overlay( dom, LANG('close'), null, function(){ overlay.hide(); }, null );
-		overlay.show();
+		$(win).load( function(){
+			
+			// add dom to new window
+			win.dom = dom;
+			win.init();
+			
+			// load stock data
+			get( 'getStock', {}, function(data){
+				if( data && data.response ){
+					Stock.showStock( data.response, dom, false, false );
+				} else {
+					dom.innerHTML = LANG('stock_no_data');
+					dom.className = 'errortext';
+				}
+			} );
+			
+		} );	
 		
-		// load stock data
-		get( 'getStock', {}, function(data){
-			if( data && data.response ){
-				console.log(data);
-				Stock.showStock( data.response, dom );				
-			} else {
-				dom.innerHTML = LANG('stock_no_data');
-				dom.className = 'errortext';
-			}
-		} );
 	}
 
 }

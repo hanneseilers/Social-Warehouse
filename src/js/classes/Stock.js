@@ -580,7 +580,7 @@ function Stock(warehouseId){
  * @param data	Array of stock data entries.
  * @param dom	DOM element, where to show stock data.
  */
-Stock.showStock = function( data, dom, showOutgo=false ){
+Stock.showStock = function( data, dom, showOutgo=false, showImgSpaces=true ){
 	dom.innerHTML = "";
 	var highlight = false;
 	var amountTotal = 0;
@@ -615,12 +615,13 @@ Stock.showStock = function( data, dom, showOutgo=false ){
 			if( highlight )
 				domEntry.className = 'table highlight';
 			domLeft.className = 'group_left';
-			domRight.className = 'table_cell';
+			domRight.className = 'group_right';
 			txtAmount.className = 'table_cell';
 			txtCategory.className = 'table_cell';
 			txtWeight.className = 'table_cell';
 			
 			// set content
+			amount = 0;
 			if( showOutgo && entry.income <= entry.outgo )
 				amount = -entry.outgo;
 			else if( entry.income > entry.outgo )
@@ -661,22 +662,26 @@ Stock.showStock = function( data, dom, showOutgo=false ){
 			domEntry.appendChild( domLeft );
 			domEntry.appendChild( domRight );
 			
-			// add images
+			// set images
 			if( entry.male ) imgMale.src = 'img/male_s.png';
 			if( entry.female ) imgFemale.src = 'img/female_s.png';
 			if( entry.children ) imgChildren.src = 'img/children_s.png';
 			if( entry.baby ) imgBaby.src = 'img/baby_s.png';
 			if( entry.winter ) imgWinter.src = 'img/winter_s.png';
 			if( entry.summer ) imgSummer.src = 'img/summer_s.png';
-			domRight.appendChild( createTextElement("|") );
-			domRight.appendChild( imgMale );
-			domRight.appendChild( imgFemale );
-			domRight.appendChild( createTextElement("|") );
-			domRight.appendChild( imgChildren );
-			domRight.appendChild( imgBaby );
-			domRight.appendChild( createTextElement("|") );
-			domRight.appendChild( imgWinter );
-			domRight.appendChild( imgSummer );
+			
+			// add images
+			if( showImgSpaces ) 					domRight.appendChild( createTextElement("|") );			
+			if( entry.male || showImgSpaces ) 		domRight.appendChild( imgMale );			
+			if( entry.female || showImgSpaces ) 	domRight.appendChild( imgFemale );
+			
+			if( showImgSpaces ) 					domRight.appendChild( createTextElement("|") );
+			if( entry.children || showImgSpaces ) 	domRight.appendChild( imgChildren );
+			if( entry.baby || showImgSpaces )		domRight.appendChild( imgBaby );
+			
+			if( showImgSpaces ) 					domRight.appendChild( createTextElement("|") );
+			if( entry.winter || showImgSpaces )		domRight.appendChild( imgWinter );
+			if( entry.summer || showImgSpaces )		domRight.appendChild( imgSummer );
 			
 			
 			if( (!showOutgo && entry.income > entry.outgo) || (showOutgo && entry.income <= entry.outgo) ){
