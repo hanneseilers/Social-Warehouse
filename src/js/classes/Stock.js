@@ -622,10 +622,11 @@ Stock.showStock = function( data, dom, showOutgo=false, showImgSpaces=true ){
 			
 			// set content
 			amount = 0;
-			if( showOutgo && entry.income <= entry.outgo )
+			if( showOutgo && entry.income <= entry.outgo ){
 				amount = -entry.outgo;
-			else if( entry.income > entry.outgo )
+			} else if( entry.income-entry.outgo > 0 ) {
 				amount = entry.income-entry.outgo;
+			}
 			
 			weightSign = " g";
 			weight = category.weight * amount;
@@ -684,7 +685,7 @@ Stock.showStock = function( data, dom, showOutgo=false, showImgSpaces=true ){
 			if( entry.summer || showImgSpaces )		domRight.appendChild( imgSummer );
 			
 			
-			if( (!showOutgo && entry.income > entry.outgo) || (showOutgo && entry.income <= entry.outgo) ){
+			if( (!showOutgo && amount > 0) || (showOutgo && amount < 0) ){
 				// check if location is available and changed
 				if( entry.hasOwnProperty('name') && lastLocation != entry.name ){
 					var txtLocation = createTextElement( (entry.name ? entry.name : 'undefined') + ":" );
@@ -698,7 +699,9 @@ Stock.showStock = function( data, dom, showOutgo=false, showImgSpaces=true ){
 				highlight = !highlight;
 				
 				weightTotal += category.weight * amount;
+				var vAmount = amountTotal;
 				amountTotal += amount;
+				//console.log( vAmount + " += " + amount + " = " + amountTotal );
 			}
 			
 		}
