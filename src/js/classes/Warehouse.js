@@ -325,7 +325,7 @@ function Warehouse(id, name, description, country, city){
 	 * Shows total warehouse stock
 	 */
 	this.showStock = function(){
-		var win = window.open( "stock.htm", "stock" );
+		var win = window.open( "stock.php", "stock" );
 		var dom = document.createElement( 'div' );
 		dom.innerHTML = "<img src='img/loading.gif' /> " + LANG('loading');
 		

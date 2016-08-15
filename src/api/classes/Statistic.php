@@ -53,8 +53,8 @@ class Statistic{
 	
 	public static function getWarehouseStock($warehouseId){
 		$sql = "SELECT category, parent, ".Database::getTableName('stock').".male, ".Database::getTableName('stock').".female, ".Database::getTableName('stock').".children, ".Database::getTableName('stock').".baby, ".Database::getTableName('stock').".summer, ".Database::getTableName('stock').".winter, SUM(income) AS income, SUM(outgo) AS outgo FROM ".Database::getTableName('stock')
-		." JOIN ".Database::getTableName('cartons')." ON ".Database::getTableName('stock').".carton=".Database::getTableName('cartons').".id"
-		." JOIN ".Database::getTableName('categories')." ON ".Database::getTableName('stock').".category=".Database::getTableName('categories').".id"
+		." LEFT JOIN ".Database::getTableName('cartons')." ON ".Database::getTableName('stock').".carton=".Database::getTableName('cartons').".id"
+		." LEFT JOIN ".Database::getTableName('categories')." ON ".Database::getTableName('stock').".category=".Database::getTableName('categories').".id"
 		." WHERE ".Database::getTableName('cartons').".warehouse=?"
 		." GROUP BY category, ".Database::getTableName('stock').".male, ".Database::getTableName('stock').".female, ".Database::getTableName('stock').".children, ".Database::getTableName('stock').".baby, ".Database::getTableName('stock').".summer, ".Database::getTableName('stock').".winter"
 		." ORDER BY parent, category";

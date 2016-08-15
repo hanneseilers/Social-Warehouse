@@ -41,6 +41,7 @@ $LANG = [
 		'btn_prit_tooltip' => "Print",
 		
 		'warehouses' => "Warehouses",
+		'warehouse_stock' => "Warehouse Stock",
 			
 		'palettes' => "Palettes",
 		'palette' => "Palette",
