@@ -13,7 +13,7 @@ class Statistic{
 	}
 	
 	public static function getPaletteStock($warehouseId, $paletteId){
-		$sql = "SELECT category, male, female, children, baby, summer, winter, income, outgo FROM ".Database::getTableName('stock')
+		$sql = "SELECT category, male, female, children, baby, summer, winter, SUM(income) AS income, SUM(outgo) AS outgo FROM ".Database::getTableName('stock')
 			." JOIN ".Database::getTableName('cartons')." ON ".Database::getTableName('stock').".carton=".Database::getTableName('cartons').".id"
 			." JOIN ".Database::getTableName('palettes')." ON ".Database::getTableName('cartons').".palette=".Database::getTableName('palettes').".id"
 			." WHERE ".Database::getTableName('palettes').".warehouse=? AND ".Database::getTableName('palettes').".id=?"
