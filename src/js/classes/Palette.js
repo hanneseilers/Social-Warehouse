@@ -124,7 +124,7 @@ function Palette(id, number, locationId, warehouseId){
 				doc.addImage( data.response, 'png', 20, 30, 170, 80 );
 				doc.setFontSize( 50 );
 				doc.setFontType( 'bold' );
-				doc.text( 50, 130, LANG('palette') + " #" + self.id );
+				doc.text( 50, 130, LANG('palette') + " #" + self.number );
 				doc.output('dataurlnewwindow');
 				
 			} else {
