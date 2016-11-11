@@ -164,7 +164,7 @@ function Stock(warehouseId){
 			this.inpCategoryWeight.className = "input_limit";
 			
 			categorySearch.className = "group_left";
-			categoryInfo.className = "table_cell inline_text";
+			categoryInfo.className = "table_cell inline_text hidetext";
 			
 			// add event listener
 			this.inpCategoryDemand.addEventListener( 'keyup', function(e){
